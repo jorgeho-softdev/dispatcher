@@ -127,3 +127,30 @@ export const aiSettingsUpdateSchema = aiSettingsSchema
     { message: 'A province cannot be both preferred and avoided', path: ['avoidProvinces'] },
   );
 export type AiSettingsUpdateInput = z.infer<typeof aiSettingsUpdateSchema>;
+
+// ── Negotiations (Phase 2) ─────────────────────────────────────────────
+export const startNegotiationSchema = z.object({
+  loadId: z.uuid(),
+  /** Vehicle to negotiate for; defaults to the organization's first vehicle. */
+  vehicleId: z.uuid().optional(),
+});
+export type StartNegotiationInput = z.infer<typeof startNegotiationSchema>;
+
+export const adjustOfferSchema = z.object({
+  amount: z.number().positive().max(1_000_000),
+});
+export type AdjustOfferInput = z.infer<typeof adjustOfferSchema>;
+
+export const negotiationListQuerySchema = z.object({
+  /** active = not finished; needs_approval = waiting on the user. */
+  filter: z.enum(['active', 'needs_approval', 'all']).default('active'),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+});
+export type NegotiationListQuery = z.infer<typeof negotiationListQuerySchema>;
+
+export const registerDeviceSchema = z.object({
+  /** Expo push token (ExponentPushToken[…]). */
+  token: z.string().regex(/^Expo(nent)?PushToken\[[^\]]+\]$/),
+  platform: z.enum(['ios', 'android']),
+});
+export type RegisterDeviceInput = z.infer<typeof registerDeviceSchema>;

@@ -125,7 +125,8 @@ Sigue [`docs/i18n.md`](./i18n.md):
 - **Cabeceras y CORS:** `helmet` activo y CORS con lista explícita de orígenes.
 - **Validación:** todo input externo pasa por Zod (body, query, env, respuestas de proveedores externos).
 - **Datos simulados:** siempre marcados (`isSimulated`, sufijo "(DEMO)") y nunca mezclados sin etiqueta con datos reales.
-- **IA (Fase 2):** toda acción con efectos externos pasa por el Policy Engine determinista y queda auditada.
+- **IA:** el LLM solo **propone**. Toda acción con efectos externos pasa por el Policy Engine determinista (`packages/shared/src/negotiation.ts`) y queda auditada en `negotiation_events`. Reservar siempre requiere aprobación humana. El sistema debe funcionar sin LLM (`AI_STRATEGY=rules`) y los tests no deben llamar al LLM.
+- **Jobs:** los handlers de BullMQ son idempotentes (verifican el estado y hacen transiciones atómicas con `updateMany where status = …`). Los efectos secundarios no críticos (push) nunca lanzan excepciones.
 
 ## 9. Testing
 

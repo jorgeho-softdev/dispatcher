@@ -26,6 +26,12 @@ Ver [`.env.example`](./.env.example). Se validan con Zod al arrancar (`src/confi
 | `JWT_ACCESS_TTL_SECONDS` | Vida del access token (900) |
 | `REFRESH_TOKEN_TTL_DAYS` | Vida del refresh token (30) |
 | `CORS_ORIGINS` | Orígenes permitidos, separados por comas |
+| `REDIS_URL` | Redis para BullMQ (default `redis://localhost:6380`) |
+| `AI_STRATEGY` | `auto` (Claude si hay `ANTHROPIC_API_KEY`), `claude` o `rules` |
+| `ANTHROPIC_API_KEY` | Credencial de Claude (opcional; sin ella se usan reglas) |
+| `AI_MODEL` / `AI_EFFORT` | Modelo (`claude-opus-5-5`) y esfuerzo (`medium`) |
+| `BROKER_SIM_DELAY_MS` | Retardo de respuesta del broker simulado (4000; 0 en tests) |
+| `EXPO_ACCESS_TOKEN` | Opcional: solo si Expo Push tiene "enhanced security" |
 
 ## Cómo agregar un módulo
 

@@ -61,6 +61,57 @@
       "assisted": "ਸਹਾਇਕ",
       "semi_auto": "ਅਰਧ-ਆਟੋਮੈਟਿਕ",
       "auto": "ਆਟੋਮੈਟਿਕ"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "AI ਕੰਮ ਕਰ ਰਿਹਾ ਹੈ",
+      "awaiting_send_approval": "ਤੁਹਾਡੀ ਮਨਜ਼ੂਰੀ ਚਾਹੀਦੀ ਹੈ",
+      "contacting_broker": "ਬ੍ਰੋਕਰ ਦੀ ਉਡੀਕ",
+      "awaiting_booking_approval": "ਬੁੱਕ ਕਰਨ ਲਈ ਤਿਆਰ",
+      "booking_requested": "ਬੁਕਿੰਗ ਦੀ ਬੇਨਤੀ ਕੀਤੀ",
+      "booked": "ਬੁੱਕ ਹੋਇਆ",
+      "rejected": "ਸੌਦਾ ਨਹੀਂ ਹੋਇਆ",
+      "cancelled": "ਰੱਦ",
+      "failed": "ਰੁਕੀ"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "AI ਨੇ ਪੇਸ਼ਕਸ਼ ਦਿੱਤੀ",
+      "ai_countered": "AI ਨੇ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਤਿਆਰ ਕੀਤੀ",
+      "ai_accepted": "AI ਨੇ ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਮੰਨ ਲਿਆ",
+      "ai_walked_away": "AI ਨੇ ਗੱਲਬਾਤ ਖਤਮ ਕੀਤੀ",
+      "policy_adjusted": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅਨੁਸਾਰ ਬਦਲੀ",
+      "policy_blocked": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਕਾਰਨ ਰੋਕੀ",
+      "user_approved_send": "ਤੁਸੀਂ ਪੇਸ਼ਕਸ਼ ਮਨਜ਼ੂਰ ਕੀਤੀ",
+      "user_adjusted": "ਤੁਸੀਂ ਪੇਸ਼ਕਸ਼ ਬਦਲੀ",
+      "user_approved_booking": "ਤੁਸੀਂ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕੀਤੀ",
+      "user_cancelled": "ਤੁਸੀਂ ਰੱਦ ਕੀਤਾ",
+      "offer_sent": "ਬ੍ਰੋਕਰ ਨੂੰ ਪੇਸ਼ਕਸ਼ ਭੇਜੀ",
+      "broker_countered": "ਬ੍ਰੋਕਰ ਨੇ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਦਿੱਤੀ",
+      "broker_accepted": "ਬ੍ਰੋਕਰ ਨੇ ਮੰਨ ਲਿਆ",
+      "broker_rejected": "ਬ੍ਰੋਕਰ ਨੇ ਇਨਕਾਰ ਕੀਤਾ",
+      "booking_requested": "ਬੁਕਿੰਗ ਦੀ ਬੇਨਤੀ ਕੀਤੀ",
+      "booking_confirmed": "ਬੁਕਿੰਗ ਪੱਕੀ",
+      "booking_declined": "ਬੁਕਿੰਗ ਨਾਮਨਜ਼ੂਰ",
+      "load_unavailable": "ਲੋਡ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ"
+    },
+    "actor": {
+      "ai": "AI",
+      "user": "ਤੁਸੀਂ",
+      "broker": "ਬ੍ਰੋਕਰ",
+      "system": "ਸਿਸਟਮ"
+    },
+    "aiReason": {
+      "target_markup": "ਪੋਸਟ ਕੀਤੇ ਰੇਟ ਤੋਂ {pct}% ਵੱਧ ਮੰਗ ਰਿਹਾ ਹਾਂ — ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅੰਦਰ ਅਤੇ ਇਸ ਖੇਤਰ ਵਿੱਚ ਆਮ ਤੌਰ 'ਤੇ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ।",
+      "counter_midpoint": "ਬ੍ਰੋਕਰ ਨੇ {broker} ਦੀ ਪੇਸ਼ਕਸ਼ ਕੀਤੀ; ਮੈਂ ਸਾਡੇ {last} ਤੋਂ ਵਿਚਕਾਰ ਮਿਲਣ ਦਾ ਸੁਝਾਅ ਦਿੰਦਾ ਹਾਂ।",
+      "accept_meets_minimums": "ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਮਾਰਜਨ ਅਤੇ ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਰੇਟ ਨੂੰ ਪੂਰਾ ਕਰਦਾ ਹੈ।",
+      "walk_away_below_minimums": "ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਹੈ, ਇਸ ਲਈ ਮੈਂ ਰੁਕ ਗਿਆ।",
+      "max_rounds_reached": "ਵੱਧ ਤੋਂ ਵੱਧ ਗੇੜ ਪੂਰੇ ਹੋ ਗਏ।",
+      "clamped_to_floor": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਮਨਜ਼ੂਰ ਰੇਟ ਤੱਕ ਵਧਾਇਆ।",
+      "clamped_to_ceiling": "ਤੁਹਾਡੀ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਤੱਕ ਘਟਾਇਆ।",
+      "unprofitable_at_ceiling": "ਤੁਹਾਡੀ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਨਾਲ ਵੀ ਇਹ ਲੋਡ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚਦਾ।"
+    },
+    "strategy": {
+      "claude": "Claude (AI)",
+      "rules": "ਨਿਯਮ-ਅਧਾਰਤ"
     }
   },
   "errors": {
@@ -75,7 +126,11 @@
     "NOT_FOUND": "ਜੋ ਤੁਸੀਂ ਲੱਭ ਰਹੇ ਸੀ ਉਹ ਨਹੀਂ ਮਿਲਿਆ।",
     "API_UNAVAILABLE": "ਸਰਵਰ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
     "NETWORK_ERROR": "ਸਰਵਰ ਨਾਲ ਸੰਪਰਕ ਨਹੀਂ ਹੋ ਸਕਿਆ। ਆਪਣਾ ਕਨੈਕਸ਼ਨ ਜਾਂਚੋ।",
-    "INTERNAL_ERROR": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+    "INTERNAL_ERROR": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "VEHICLE_REQUIRED": "ਗੱਲਬਾਤ ਤੋਂ ਪਹਿਲਾਂ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
+    "LOAD_UNAVAILABLE": "ਇਹ ਲੋਡ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+    "NEGOTIATION_ALREADY_ACTIVE": "ਇਸ ਲੋਡ ਲਈ ਗੱਲਬਾਤ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਹੀ ਹੈ।",
+    "NEGOTIATION_INVALID_STATE": "ਇਹ ਗੱਲਬਾਤ ਬਦਲ ਗਈ ਹੈ। ਰਿਫ੍ਰੈਸ਼ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
   },
   "auth": {
     "email": "ਈਮੇਲ",
@@ -100,7 +155,8 @@
       "dashboard": "ਡੈਸ਼ਬੋਰਡ",
       "loads": "ਲੋਡ",
       "vehicles": "ਵਾਹਨ",
-      "settings": "ਤਰਜੀਹਾਂ"
+      "settings": "ਤਰਜੀਹਾਂ",
+      "negotiations": "ਗੱਲਬਾਤਾਂ"
     },
     "dashboard": {
       "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, {name}",
@@ -185,9 +241,25 @@
       "aiSection": "AI ਡਿਸਪੈਚਰ",
       "autonomy": "ਖੁਦਮੁਖਤਿਆਰੀ ਪੱਧਰ",
       "maxCounterOfferPct": "ਪੋਸਟ ਕੀਤੇ ਰੇਟ ਤੋਂ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ (%)",
-      "aiComingSoon": "ਬ੍ਰੋਕਰਾਂ ਨਾਲ ਗੱਲਬਾਤ ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਆਵੇਗੀ।",
       "save": "ਤਰਜੀਹਾਂ ਸੇਵ ਕਰੋ",
-      "saved": "ਤਰਜੀਹਾਂ ਸੇਵ ਹੋ ਗਈਆਂ।"
+      "saved": "ਤਰਜੀਹਾਂ ਸੇਵ ਹੋ ਗਈਆਂ।",
+      "autonomyHint": "ਸਹਾਇਕ: ਤੁਸੀਂ ਹਰ ਸੁਨੇਹਾ ਅਤੇ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕਰਦੇ ਹੋ। ਅਰਧ-ਆਟੋਮੈਟਿਕ: AI ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅੰਦਰ ਗੱਲਬਾਤ ਕਰਦਾ ਹੈ ਅਤੇ ਤੁਸੀਂ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕਰਦੇ ਹੋ। ਆਟੋਮੈਟਿਕ ਹਾਲੇ ਅਰਧ-ਆਟੋਮੈਟਿਕ ਵਾਂਗ ਕੰਮ ਕਰਦਾ ਹੈ।"
+    },
+    "negotiations": {
+      "title": "ਗੱਲਬਾਤਾਂ",
+      "subtitle": "AI ਦਾ ਹਰ ਫ਼ੈਸਲਾ ਦਰਜ ਹੁੰਦਾ ਹੈ ਅਤੇ ਜਾਂਚਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+      "filterActive": "ਚੱਲ ਰਹੀਆਂ",
+      "filterNeedsApproval": "ਮਨਜ਼ੂਰੀ ਬਾਕੀ",
+      "filterAll": "ਸਾਰੀਆਂ",
+      "empty": "ਅਜੇ ਕੋਈ ਗੱਲਬਾਤ ਨਹੀਂ। ਐਪ ਵਿੱਚ ਕਿਸੇ ਲੋਡ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ।",
+      "colRoute": "ਰੂਟ",
+      "colStatus": "ਸਥਿਤੀ",
+      "colPosted": "ਪੋਸਟ ਕੀਤਾ",
+      "colOffer": "ਪੇਸ਼ਕਸ਼",
+      "colAgreed": "ਤੈਅ",
+      "colUpdated": "ਅੱਪਡੇਟ",
+      "back": "← ਸਾਰੀਆਂ ਗੱਲਬਾਤਾਂ",
+      "audit": "ਆਡਿਟ ਰਿਕਾਰਡ"
     }
   },
   "mobile": {
@@ -214,7 +286,8 @@
       "bestProfit": "ਵੱਧ ਤੋਂ ਵੱਧ ਅਨੁ. ਮੁਨਾਫ਼ਾ",
       "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ",
       "bestOpportunity": "ਸਭ ਤੋਂ ਵਧੀਆ ਮੌਕਾ",
-      "noOpportunities": "ਇਸ ਵੇਲੇ ਕੋਈ ਵਧੀਆ ਮੇਲ ਨਹੀਂ। ਜਲਦੀ ਵਾਪਸ ਵੇਖੋ।"
+      "noOpportunities": "ਇਸ ਵੇਲੇ ਕੋਈ ਵਧੀਆ ਮੇਲ ਨਹੀਂ। ਜਲਦੀ ਵਾਪਸ ਵੇਖੋ।",
+      "pendingApprovals": "ਤੁਹਾਡੀ ਮਨਜ਼ੂਰੀ ਦੀ ਉਡੀਕ"
     },
     "loads": {
       "title": "ਉਪਲਬਧ ਲੋਡ",
@@ -271,8 +344,64 @@
       "whyMatch": "ਇਹ ਮੇਲ ਕਿਉਂ",
       "positionFrom": "ਖਾਲੀ ਕਿ.ਮੀ. {source} ਤੋਂ ਮਾਪੇ ਗਏ।",
       "negotiate": "AI ਨਾਲ ਗੱਲਬਾਤ ਕਰੋ",
-      "negotiateSoon": "ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਆ ਰਿਹਾ ਹੈ",
       "noBreakdown": "ਮੁਨਾਫ਼ੇ ਦਾ ਵੇਰਵਾ ਵੇਖਣ ਲਈ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।"
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "ਪੇਸ਼ਕਸ਼ ਭੇਜਣ ਲਈ ਤਿਆਰ",
+      "body": "{route}: AI {amount} ਦਾ ਸੁਝਾਅ ਦਿੰਦਾ ਹੈ। ਬ੍ਰੋਕਰ ਨਾਲ ਸੰਪਰਕ ਲਈ ਮਨਜ਼ੂਰੀ ਦਿਓ।"
+    },
+    "bookingApproval": {
+      "title": "ਰੇਟ ਤੈਅ — ਬੁੱਕ ਕਰੀਏ?",
+      "body": "{route} {amount} 'ਤੇ। ਲੋਡ ਬੁੱਕ ਕਰਨ ਲਈ ਮਨਜ਼ੂਰੀ ਦਿਓ।"
+    },
+    "booked": {
+      "title": "ਲੋਡ ਬੁੱਕ ਹੋ ਗਿਆ!",
+      "body": "{route} {amount} 'ਤੇ ਪੱਕਾ ਹੋਇਆ।"
+    },
+    "rejected": {
+      "title": "ਗੱਲਬਾਤ ਖਤਮ",
+      "body": "{route}: ਇਸ ਵਾਰ ਸੌਦਾ ਨਹੀਂ ਹੋਇਆ।"
+    },
+    "failed": {
+      "title": "ਗੱਲਬਾਤ ਰੁਕ ਗਈ",
+      "body": "{route}: ਕਾਰਨ ਵੇਖਣ ਲਈ ਐਪ ਖੋਲ੍ਹੋ।"
+    }
+  },
+  "negotiation": {
+    "title": "ਗੱਲਬਾਤ ਅਤੇ ਬੁਕਿੰਗ",
+    "start": "AI ਨਾਲ ਗੱਲਬਾਤ ਕਰੋ",
+    "viewNegotiation": "ਗੱਲਬਾਤ ਵੇਖੋ",
+    "aiCardTitle": "ਗੱਲਬਾਤ (AI)",
+    "aiThinking": "AI ਮਾਰਕੀਟ ਅਤੇ ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ…",
+    "waitingBroker": "ਬ੍ਰੋਕਰ ਦੇ ਜਵਾਬ ਦੀ ਉਡੀਕ…",
+    "postedRate": "ਪੋਸਟ ਕੀਤਾ ਰੇਟ",
+    "myOffer": "ਮੇਰੀ ਪੇਸ਼ਕਸ਼ (AI)",
+    "brokerOffer": "ਬ੍ਰੋਕਰ ਦੀ ਪੇਸ਼ਕਸ਼",
+    "agreedRate": "ਤੈਅ ਰੇਟ",
+    "estProfit": "ਅਨੁ. ਮੁਨਾਫ਼ਾ",
+    "margin": "ਮਾਰਜਨ",
+    "limits": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ: {floor} – {ceiling}",
+    "round": "ਗੇੜ {round} / {max}",
+    "proposedBy": "{strategy} ਵੱਲੋਂ ਪ੍ਰਸਤਾਵਿਤ",
+    "stepContact": "ਬ੍ਰੋਕਰ ਨਾਲ ਸੰਪਰਕ ਅਤੇ ਗੱਲਬਾਤ",
+    "stepConfirmRate": "ਤੈਅ ਰੇਟ ਦੀ ਪੁਸ਼ਟੀ",
+    "stepBook": "ਲੋਡ ਬੁੱਕ ਕਰੋ",
+    "stepRateConfirmation": "ਰੇਟ ਕਨਫਰਮੇਸ਼ਨ ਬਣਾਓ (ਅਗਲਾ ਪੜਾਅ)",
+    "approveSend": "ਮਨਜ਼ੂਰ ਕਰੋ ਅਤੇ ਪੇਸ਼ਕਸ਼ ਭੇਜੋ",
+    "adjust": "ਪੇਸ਼ਕਸ਼ ਬਦਲੋ",
+    "adjustAmount": "ਨਵੀਂ ਪੇਸ਼ਕਸ਼ ({currency})",
+    "adjustHint": "{floor} ਅਤੇ {ceiling} ਵਿਚਕਾਰ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ; ਬਾਹਰਲੇ ਮੁੱਲ ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅਨੁਸਾਰ ਬਦਲੇ ਜਾਂਦੇ ਹਨ।",
+    "adjustSave": "ਪੇਸ਼ਕਸ਼ ਸੇਵ ਕਰੋ",
+    "approveBooking": "ਮੰਨੋ ਅਤੇ ਲੋਡ ਬੁੱਕ ਕਰੋ",
+    "cancel": "ਗੱਲਬਾਤ ਰੱਦ ਕਰੋ",
+    "cancelConfirm": "ਕੀ ਇਹ ਗੱਲਬਾਤ ਰੱਦ ਕਰਨੀ ਹੈ?",
+    "activity": "ਗਤੀਵਿਧੀ",
+    "messageToBroker": "ਬ੍ਰੋਕਰ ਨੂੰ ਸੁਨੇਹਾ",
+    "brokerMessage": "ਬ੍ਰੋਕਰ ਨੇ ਕਿਹਾ",
+    "bookedTitle": "ਲੋਡ ਬੁੱਕ ਹੋ ਗਿਆ!",
+    "bookedBody": "{amount} 'ਤੇ ਬੁੱਕ ਹੋਇਆ। ਸਫ਼ਰ ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਸਫ਼ਰਾਂ ਵਿੱਚ ਦਿਖੇਗਾ।",
+    "simulatedBroker": "ਸਿਮੂਲੇਟਡ ਬ੍ਰੋਕਰ (ਡੈਮੋ): ਜਵਾਬ ਅਸਲੀ ਨਹੀਂ ਹਨ।"
   }
 }

@@ -10,6 +10,7 @@ Monorepo con **API** (NestJS + PostgreSQL), **web admin** (Next.js) y **app móv
 | [`docs/conventions.md`](./docs/conventions.md) | Buenas prácticas **obligatorias** y Definition of Done |
 | [`docs/adr/`](./docs/adr/) | Por qué se tomó cada decisión |
 | [`docs/design-system.md`](./docs/design-system.md) | Cómo cambiar colores y fuentes (web + app) |
+| [`docs/ai-agent.md`](./docs/ai-agent.md) | Cómo negocia la IA: estados, Policy Engine, Claude, push |
 | [`docs/matching.md`](./docs/matching.md) | Cómo se calcula el match %, el deadhead y "Cerca de mí" |
 | [`docs/i18n.md`](./docs/i18n.md) | Idiomas (en, fr, es, pa): cómo traducir y agregar idiomas |
 
@@ -25,7 +26,7 @@ Monorepo con **API** (NestJS + PostgreSQL), **web admin** (Next.js) y **app móv
 npm install                          # instala todo y genera el cliente Prisma
 cp apps/api/.env.example apps/api/.env   # ajusta JWT_ACCESS_SECRET (openssl rand -base64 48)
 cp apps/web/.env.example apps/web/.env.local
-npm run db:up                        # Postgres+PostGIS :5440, Redis :6380
+npm run db:up                        # Postgres+PostGIS :5440, Redis :6380 (colas de la IA)
 npm run db:migrate                   # aplica las migraciones
 npm run db:seed                      # usuario demo + 40 cargas simuladas
 npm run dev                          # API :4000 + web :3000

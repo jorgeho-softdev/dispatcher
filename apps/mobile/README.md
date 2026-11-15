@@ -35,9 +35,11 @@ app/                    Expo Router routes
   login.tsx             Sign-in (only reachable while signed out)
   (tabs)/               Inicio, Cargas, Cuenta (only reachable while signed in)
   settings.tsx          Theme, language, notifications, legal links, dev tools
-  loads/[id].tsx        Load detail: match reasons + profit breakdown
+  loads/[id].tsx        Load detail: match reasons + profit breakdown + "Negotiate with AI"
+  negotiations/[id].tsx Negotiate & book: AI offer, approvals, activity timeline
 features/
   loads/                LoadCard, MatchBadge, LoadViewTabs (recommended / nearby / all)
+  negotiation/          Timeline, explanation hook, PushRegistration
 locales/                Localized iOS permission strings (en, es, fr, pa)
 components/
   OnboardingScreen.tsx  First-run flow (rendered instead of the navigator)
@@ -49,6 +51,7 @@ lib/
   IntlRoot.tsx          use-intl provider bound to the persisted language
   use-intl-locale.ts    Intl tag for money/number formatting
   app-alert.ts          Themed Alert.alert replacement (callbacks kept outside Redux)
+  push.ts               Expo push token (asked on first negotiation)
   location.ts           Foreground location on request ("Use my location")
   config.ts             API_URL (EXPO_PUBLIC_API_URL, or Metro host in dev)
   secure-tokens.ts      Refresh token in Keychain/Keystore (expo-secure-store)

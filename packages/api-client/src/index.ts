@@ -1,5 +1,6 @@
 import { createApi, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type {
+  AdjustOfferInput,
   AiSettingsDto,
   AiSettingsUpdateInput,
   LoadCreateInput,
@@ -8,6 +9,11 @@ import type {
   LoadListDto,
   LoadQueryInput,
   MeDto,
+  NegotiationDetailDto,
+  NegotiationDto,
+  NegotiationListQuery,
+  RegisterDeviceInput,
+  StartNegotiationInput,
   UpdateMeInput,
   VehicleCreateInput,
   VehicleDto,
@@ -17,7 +23,7 @@ import type {
 
 export type DispatcherBaseQuery = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>;
 
-export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings'] as const;
+export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings', 'Negotiation'] as const;
 
 /**
  * Builds the RTK Query api used by both clients. Paths are relative to the
@@ -77,6 +83,44 @@ export function createDispatcherApi(baseQuery: DispatcherBaseQuery) {
         query: (body) => ({ url: '/ai-settings', method: 'PATCH', body }),
         // Preferences change every match score.
         invalidatesTags: ['AiSettings', { type: 'Load', id: 'LIST' }],
+      }),
+
+      // ── Negotiations (Phase 2) ──────────────────────────────────────
+      getNegotiations: build.query<NegotiationDto[], Partial<NegotiationListQuery> | void>({
+        query: (params) => ({ url: '/negotiations', params: params ?? undefined }),
+        providesTags: (result) => [
+          ...(result?.map((n) => ({ type: 'Negotiation' as const, id: n.id })) ?? []),
+          { type: 'Negotiation', id: 'LIST' },
+        ],
+      }),
+      getNegotiation: build.query<NegotiationDetailDto, string>({
+        query: (id) => `/negotiations/${id}`,
+        providesTags: (_r, _e, id) => [{ type: 'Negotiation', id }],
+      }),
+      startNegotiation: build.mutation<NegotiationDetailDto, StartNegotiationInput>({
+        query: (body) => ({ url: '/negotiations', method: 'POST', body }),
+        invalidatesTags: [{ type: 'Negotiation', id: 'LIST' }],
+      }),
+      approveSend: build.mutation<NegotiationDetailDto, string>({
+        query: (id) => ({ url: `/negotiations/${id}/approve-send`, method: 'POST' }),
+        invalidatesTags: (_r, _e, id) => [{ type: 'Negotiation', id }, { type: 'Negotiation', id: 'LIST' }],
+      }),
+      adjustOffer: build.mutation<NegotiationDetailDto, { id: string } & AdjustOfferInput>({
+        query: ({ id, ...body }) => ({ url: `/negotiations/${id}/adjust`, method: 'POST', body }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Negotiation', id }],
+      }),
+      approveBooking: build.mutation<NegotiationDetailDto, string>({
+        query: (id) => ({ url: `/negotiations/${id}/approve-booking`, method: 'POST' }),
+        invalidatesTags: (_r, _e, id) => [{ type: 'Negotiation', id }, { type: 'Negotiation', id: 'LIST' }],
+      }),
+      cancelNegotiation: build.mutation<NegotiationDetailDto, string>({
+        query: (id) => ({ url: `/negotiations/${id}/cancel`, method: 'POST' }),
+        invalidatesTags: (_r, _e, id) => [{ type: 'Negotiation', id }, { type: 'Negotiation', id: 'LIST' }],
+      }),
+
+      /** Expo push token of this phone (mobile only). */
+      registerDevice: build.mutation<void, RegisterDeviceInput>({
+        query: (body) => ({ url: '/devices', method: 'POST', body }),
       }),
 
       getVehicles: build.query<VehicleDto[], void>({

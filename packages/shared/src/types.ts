@@ -8,6 +8,13 @@ import type {
   Role,
 } from './constants';
 import type { MatchReasonItem } from './matching';
+import type {
+  AiReasonCode,
+  NegotiationAction,
+  NegotiationActor,
+  NegotiationEventType,
+  NegotiationStatus,
+} from './negotiation';
 
 // API response shapes (JSON over the wire: dates are ISO strings, money is a
 // number in the load's currency).
@@ -139,4 +146,66 @@ export interface ApiErrorDto {
   /** Developer-facing English description; never shown to users as-is. */
   message: string;
   issues?: { path: string; message: string }[];
+}
+
+// ── Negotiations (Phase 2) ─────────────────────────────────────────────
+
+export interface NegotiationEventDto {
+  id: string;
+  type: NegotiationEventType;
+  actor: NegotiationActor;
+  amount: number | null;
+  /** Deterministic explanation, translated by clients (domain.aiReason.<code>). */
+  reasonCode: AiReasonCode | null;
+  reasonParams: Record<string, string | number> | null;
+  /** Free-text rationale written by the LLM, already in the user's language. */
+  rationale: string | null;
+  /** Message sent to / received from the broker (English). */
+  brokerMessage: string | null;
+  createdAt: string;
+}
+
+export interface NegotiationDto {
+  id: string;
+  status: NegotiationStatus;
+  autonomyLevel: AutonomyLevel;
+  /** Which strategy proposed the numbers. */
+  strategy: 'claude' | 'rules';
+  load: Pick<
+    LoadDto,
+    | 'id'
+    | 'originCity'
+    | 'originProvince'
+    | 'destinationCity'
+    | 'destinationProvince'
+    | 'pickupAt'
+    | 'distanceKm'
+    | 'weightKg'
+    | 'equipment'
+    | 'isSimulated'
+  > & { brokerName: string | null };
+  currency: Currency;
+  postedRate: number;
+  /** Our latest offer (pending approval or sent). */
+  currentOffer: number | null;
+  /** Broker's latest counter. */
+  brokerOffer: number | null;
+  /** Rate agreed with the broker (awaiting booking / booked). */
+  agreedRate: number | null;
+  round: number;
+  floorRate: number;
+  ceilingRate: number;
+  deadheadKm: number;
+  /** Profit at the most relevant rate (agreed > current offer > posted). */
+  estimatedProfit: number;
+  marginPct: number;
+  allowedActions: NegotiationAction[];
+  /** Latest AI decision, for the "AI prepared a counter-offer" card. */
+  latestAi: NegotiationEventDto | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NegotiationDetailDto extends NegotiationDto {
+  events: NegotiationEventDto[];
 }

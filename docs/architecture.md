@@ -19,9 +19,9 @@ AI Dispatcher es un **despachador con IA para owner-operators** (cargo van, Spri
            └──────────────┬─────────────────┘
                  ┌────────▼─────────┐
                  │ apps/api         │
-                 │ NestJS 11        │──► Redis (colas BullMQ — Fase 2)
+                 │ NestJS 11        │──► Redis (colas BullMQ: workflow de negociación)
                  │ Prisma 7         │──► S3 (documentos — Fase 3)
-                 └────────┬─────────┘──► LLM / Mapas / Load boards (Fases 2+)
+                 └────────┬─────────┘──► Claude API · Expo Push · (Mapas / Load boards: fases siguientes)
                  ┌────────▼─────────┐
                  │ PostgreSQL 17    │
                  │ + PostGIS        │
@@ -88,6 +88,9 @@ src/
     ├── auth/               register, login, refresh, logout, me
     ├── vehicles/           CRUD con soft delete + reporte de GPS
     ├── ai-settings/        Preferencias del transportista
+    ├── negotiations/       Agente de IA: máquina de estados, estrategias (Claude/reglas),
+    │                       broker simulado, worker BullMQ (ver ai-agent.md)
+    ├── notifications/      Tokens de dispositivo + Expo Push (textos i18n)
     └── loads/              vistas (recommended/nearby/all), detalle, alta manual
         ├── matching-context.service.ts  vehículo + posición + preferencias (reutilizable por el agente)
         └── providers/      LoadProvider (contrato) + SimulatedLoadProvider
@@ -111,7 +114,11 @@ src/
 | GET | `/v1/loads/:id` | `loads:read` | Detalle con match, razones y desglose de ganancia |
 | POST | `/v1/loads` | `loads:create` | Carga manual (privada de la organización); coordenadas y distancia se resuelven desde el catálogo de ciudades |
 | GET | `/v1/ai-settings` | `loads:read` | Preferencias del transportista (match y, en la Fase 2, límites de la IA) |
-| PATCH | `/v1/ai-settings` | `ai_settings:manage` | Editar preferencias |
+| PATCH | `/v1/ai-settings` | `ai_settings:manage` | Editar preferencias y autonomía |
+| POST | `/v1/negotiations` | `loads:book` | Inicia una negociación con IA (asíncrona). Ver [`ai-agent.md`](./ai-agent.md) |
+| GET | `/v1/negotiations[/:id]` | `loads:read` | Lista (`filter=active\|needs_approval\|all`) y detalle con auditoría |
+| POST | `/v1/negotiations/:id/{approve-send,adjust,approve-booking,cancel}` | `loads:book` | Acciones humanas del flujo |
+| POST/DELETE | `/v1/devices` | autenticado | Token de Expo Push del teléfono |
 
 La documentación OpenAPI interactiva está en `http://localhost:4000/docs`.
 
@@ -135,7 +142,8 @@ Todas las respuestas de error tienen la forma `ApiErrorDto { statusCode, code, m
 ### 4.5 Modelo de datos (Fase 0)
 
 ```
-organizations 1─┬─< memberships >─1 users 1─< refresh_tokens
+organizations 1─┬─< memberships >─1 users 1─< refresh_tokens, device_tokens
+                ├─< negotiations >─1 loads, vehicles · negotiations 1─< negotiation_events
                 ├─< vehicles
                 ├─< loads (manuales)        loads (marketplace: organization_id NULL)
                 └─1 ai_settings             loads >─1 brokers
@@ -212,9 +220,9 @@ app/_layout.tsx
 |---|---|---|
 | 0. Fundaciones | Monorepo, organizaciones/RBAC, auth, vehículos, cargas simuladas, design system, CI | ✅ |
 | 1. Cargas | PostGIS ("cerca de mí"), deadhead, match %, vistas, detalle de carga en mobile, preferencias y cargas manuales en web | ✅ |
-| 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ⏳ |
+| 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ✅ |
 | 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ⏳ |
 | 4. Web completa | Flota, reportes, configuración y auditoría de la IA | ⏳ |
 | 5. Integraciones | Load boards autorizados, canal de email, modo semiautomático | ⏳ |
 
-Diseño del agente de IA (Fase 2): el LLM decide con *tool calling*, pero toda acción con efectos externos pasa por un **Policy Engine determinista**, que aplica los límites de `ai_settings` y el nivel de autonomía. Todas las transiciones de una negociación quedan auditadas.
+Agente de IA (Fase 2): un **workflow** orquestado por código (máquina de estados + BullMQ). Claude propone montos y explicaciones con salida estructurada, y un **Policy Engine determinista** aplica los límites de `ai_settings` y el nivel de autonomía antes de cualquier acción externa. Todo queda auditado en `negotiation_events`. Detalle en [`ai-agent.md`](./ai-agent.md) y [ADR-0013](./adr/0013-ai-agent-architecture.md).

@@ -24,7 +24,16 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U dispatcher"
           --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6380:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     env:
+      REDIS_URL: redis://localhost:6380
+      # Deterministic strategy in CI (no LLM calls, no API key needed).
+      AI_STRATEGY: rules
       DATABASE_URL: postgresql://dispatcher:dispatcher@localhost:5440/dispatcher?schema=public
       JWT_ACCESS_SECRET: ci-only-secret-that-is-at-least-32-characters-long
       API_URL: http://localhost:4000/v1

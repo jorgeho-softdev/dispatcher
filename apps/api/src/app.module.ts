@@ -11,6 +11,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { LoadsModule } from './modules/loads/loads.module';
 import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
+import { NegotiationsModule } from './modules/negotiations/negotiations.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
@@ -22,12 +25,30 @@ import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
         secret: config.get('JWT_ACCESS_SECRET', { infer: true }),
       }),
     }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => {
+        const url = new URL(config.get('REDIS_URL', { infer: true }));
+        return {
+          connection: {
+            host: url.hostname,
+            port: Number(url.port || 6379),
+            ...(url.password && { password: decodeURIComponent(url.password) }),
+            ...(url.pathname.length > 1 && {
+              db: Number(url.pathname.slice(1)),
+            }),
+          },
+        };
+      },
+    }),
     PrismaModule,
     HealthModule,
     AuthModule,
     VehiclesModule,
     LoadsModule,
     AiSettingsModule,
+    NotificationsModule,
+    NegotiationsModule,
   ],
   providers: [
     // Order matters: authenticate first, then authorize.

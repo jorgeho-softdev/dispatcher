@@ -70,4 +70,12 @@ export const {
   useGetLoadQuery,
   useGetVehiclesQuery,
   useReportVehicleLocationMutation,
+  useGetNegotiationsQuery,
+  useGetNegotiationQuery,
+  useStartNegotiationMutation,
+  useApproveSendMutation,
+  useAdjustOfferMutation,
+  useApproveBookingMutation,
+  useCancelNegotiationMutation,
+  useRegisterDeviceMutation,
 } = dispatcherApi;

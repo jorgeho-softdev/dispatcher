@@ -155,7 +155,7 @@ function PreferencesFormInner({ initial }: { initial: AiSettingsDto }) {
                 onChange={num('maxCounterOfferPct')}
               />
             </div>
-            <p className="text-xs text-muted sm:col-span-2">{t('aiComingSoon')}</p>
+            <p className="text-xs text-muted sm:col-span-2">{t('autonomyHint')}</p>
           </Card>
         </fieldset>
 

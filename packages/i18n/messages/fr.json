@@ -61,6 +61,57 @@
       "assisted": "Assisté",
       "semi_auto": "Semi-automatique",
       "auto": "Automatique"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "IA au travail",
+      "awaiting_send_approval": "Requiert votre approbation",
+      "contacting_broker": "En attente du courtier",
+      "awaiting_booking_approval": "Prêt à réserver",
+      "booking_requested": "Réservation demandée",
+      "booked": "Réservé",
+      "rejected": "Pas d'entente",
+      "cancelled": "Annulée",
+      "failed": "Arrêtée"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "L'IA a proposé une offre",
+      "ai_countered": "L'IA a préparé une contre-offre",
+      "ai_accepted": "L'IA a accepté le tarif du courtier",
+      "ai_walked_away": "L'IA a mis fin à la négociation",
+      "policy_adjusted": "Ajustée à vos limites",
+      "policy_blocked": "Bloquée par vos limites",
+      "user_approved_send": "Vous avez approuvé l'offre",
+      "user_adjusted": "Vous avez ajusté l'offre",
+      "user_approved_booking": "Vous avez approuvé la réservation",
+      "user_cancelled": "Vous avez annulé",
+      "offer_sent": "Offre envoyée au courtier",
+      "broker_countered": "Le courtier a fait une contre-offre",
+      "broker_accepted": "Le courtier a accepté",
+      "broker_rejected": "Le courtier a refusé",
+      "booking_requested": "Réservation demandée",
+      "booking_confirmed": "Réservation confirmée",
+      "booking_declined": "Réservation refusée",
+      "load_unavailable": "Chargement plus disponible"
+    },
+    "actor": {
+      "ai": "IA",
+      "user": "Vous",
+      "broker": "Courtier",
+      "system": "Système"
+    },
+    "aiReason": {
+      "target_markup": "Je demande {pct} % au-dessus du tarif affiché : dans vos limites et souvent accepté dans cette région.",
+      "counter_midpoint": "Le courtier a offert {broker} ; je propose de couper la poire en deux depuis nos {last}.",
+      "accept_meets_minimums": "Le tarif du courtier respecte votre marge minimale et votre tarif au km.",
+      "walk_away_below_minimums": "Le tarif du courtier est sous vos minimums, alors j'ai arrêté.",
+      "max_rounds_reached": "Nombre maximal de rondes atteint.",
+      "clamped_to_floor": "Relevée à votre tarif minimum acceptable.",
+      "clamped_to_ceiling": "Abaissée à votre contre-offre maximale.",
+      "unprofitable_at_ceiling": "Même à votre contre-offre maximale, ce chargement n'atteint pas vos minimums."
+    },
+    "strategy": {
+      "claude": "Claude (IA)",
+      "rules": "Par règles"
     }
   },
   "errors": {
@@ -75,7 +126,11 @@
     "NOT_FOUND": "Nous n'avons pas trouvé ce que vous cherchiez.",
     "API_UNAVAILABLE": "Le serveur n'est pas disponible. Réessayez dans quelques minutes.",
     "NETWORK_ERROR": "Impossible de joindre le serveur. Vérifiez votre connexion.",
-    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer."
+    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+    "VEHICLE_REQUIRED": "Ajoutez un véhicule avant de négocier.",
+    "LOAD_UNAVAILABLE": "Ce chargement n'est plus disponible.",
+    "NEGOTIATION_ALREADY_ACTIVE": "Une négociation est déjà en cours pour ce chargement.",
+    "NEGOTIATION_INVALID_STATE": "Cette négociation a changé. Actualisez et réessayez."
   },
   "auth": {
     "email": "Courriel",
@@ -100,7 +155,8 @@
       "dashboard": "Tableau de bord",
       "loads": "Chargements",
       "vehicles": "Véhicules",
-      "settings": "Préférences"
+      "settings": "Préférences",
+      "negotiations": "Négociations"
     },
     "dashboard": {
       "greeting": "Bonjour, {name}",
@@ -185,9 +241,25 @@
       "aiSection": "Répartiteur IA",
       "autonomy": "Niveau d'autonomie",
       "maxCounterOfferPct": "Contre-offre max. au-dessus du tarif affiché (%)",
-      "aiComingSoon": "La négociation avec les courtiers arrive à la prochaine phase.",
       "save": "Enregistrer les préférences",
-      "saved": "Préférences enregistrées."
+      "saved": "Préférences enregistrées.",
+      "autonomyHint": "Assisté : vous approuvez chaque message et la réservation. Semi-automatique : l'IA négocie dans vos limites et vous approuvez la réservation. Automatique se comporte comme semi-automatique pour l'instant."
+    },
+    "negotiations": {
+      "title": "Négociations",
+      "subtitle": "Chaque décision de l'IA est enregistrée et vérifiable.",
+      "filterActive": "Actives",
+      "filterNeedsApproval": "À approuver",
+      "filterAll": "Toutes",
+      "empty": "Aucune négociation. Lancez-en une depuis un chargement dans l'app.",
+      "colRoute": "Trajet",
+      "colStatus": "Statut",
+      "colPosted": "Affiché",
+      "colOffer": "Offre",
+      "colAgreed": "Convenu",
+      "colUpdated": "Mise à jour",
+      "back": "← Toutes les négociations",
+      "audit": "Piste d'audit"
     }
   },
   "mobile": {
@@ -214,7 +286,8 @@
       "bestProfit": "Meilleur profit est.",
       "seeLoads": "Voir les chargements",
       "bestOpportunity": "Meilleure occasion",
-      "noOpportunities": "Aucune bonne compatibilité pour le moment. Revenez bientôt."
+      "noOpportunities": "Aucune bonne compatibilité pour le moment. Revenez bientôt.",
+      "pendingApprovals": "En attente de votre approbation"
     },
     "loads": {
       "title": "Chargements disponibles",
@@ -271,8 +344,64 @@
       "whyMatch": "Pourquoi cette compatibilité",
       "positionFrom": "Km à vide mesurés depuis {source}.",
       "negotiate": "Négocier avec l'IA",
-      "negotiateSoon": "Disponible à la prochaine phase",
       "noBreakdown": "Ajoutez un véhicule pour voir le détail du profit."
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "Offre prête à envoyer",
+      "body": "{route} : l'IA propose {amount}. Approuvez pour contacter le courtier."
+    },
+    "bookingApproval": {
+      "title": "Tarif convenu — on réserve ?",
+      "body": "{route} à {amount}. Approuvez pour réserver le chargement."
+    },
+    "booked": {
+      "title": "Chargement réservé !",
+      "body": "{route} confirmé à {amount}."
+    },
+    "rejected": {
+      "title": "Négociation terminée",
+      "body": "{route} : pas d'entente cette fois."
+    },
+    "failed": {
+      "title": "Négociation arrêtée",
+      "body": "{route} : ouvrez l'app pour voir pourquoi."
+    }
+  },
+  "negotiation": {
+    "title": "Négocier et réserver",
+    "start": "Négocier avec l'IA",
+    "viewNegotiation": "Voir la négociation",
+    "aiCardTitle": "Négociation (IA)",
+    "aiThinking": "L'IA analyse le marché et vos limites…",
+    "waitingBroker": "En attente de la réponse du courtier…",
+    "postedRate": "Tarif affiché",
+    "myOffer": "Mon offre (IA)",
+    "brokerOffer": "Offre du courtier",
+    "agreedRate": "Tarif convenu",
+    "estProfit": "Profit est.",
+    "margin": "Marge",
+    "limits": "Vos limites : {floor} – {ceiling}",
+    "round": "Ronde {round} sur {max}",
+    "proposedBy": "Proposé par {strategy}",
+    "stepContact": "Contacter le courtier et négocier",
+    "stepConfirmRate": "Confirmer le tarif convenu",
+    "stepBook": "Réserver le chargement",
+    "stepRateConfirmation": "Générer la confirmation de tarif (prochaine phase)",
+    "approveSend": "Approuver et envoyer l'offre",
+    "adjust": "Ajuster l'offre",
+    "adjustAmount": "Nouvelle offre ({currency})",
+    "adjustHint": "Doit être entre {floor} et {ceiling} ; les valeurs hors limites sont ajustées.",
+    "adjustSave": "Enregistrer l'offre",
+    "approveBooking": "Accepter et réserver",
+    "cancel": "Annuler la négociation",
+    "cancelConfirm": "Annuler cette négociation ?",
+    "activity": "Activité",
+    "messageToBroker": "Message au courtier",
+    "brokerMessage": "Le courtier a dit",
+    "bookedTitle": "Chargement réservé !",
+    "bookedBody": "Réservé à {amount}. Le voyage apparaîtra dans Voyages à la prochaine phase.",
+    "simulatedBroker": "Courtier simulé (DÉMO) : les réponses ne sont pas réelles."
   }
 }

@@ -11,6 +11,20 @@ export const envSchema = z.object({
   JWT_ACCESS_SECRET: z.string().min(32),
   JWT_ACCESS_TTL_SECONDS: z.coerce.number().int().positive().default(900),
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(30),
+  /** BullMQ (negotiation jobs). */
+  REDIS_URL: z.url().default('redis://localhost:6380'),
+  /**
+   * Negotiation strategy: `claude` (LLM), `rules` (deterministic) or `auto`
+   * (claude when Anthropic credentials are configured, else rules).
+   */
+  AI_STRATEGY: z.enum(['auto', 'claude', 'rules']).default('auto'),
+  ANTHROPIC_API_KEY: z.string().optional(),
+  AI_MODEL: z.string().default('claude-opus-5-5'),
+  AI_EFFORT: z.enum(['low', 'medium', 'high']).default('medium'),
+  /** Simulated broker reply delay (ms). 0 in tests. */
+  BROKER_SIM_DELAY_MS: z.coerce.number().int().min(0).default(4000),
+  /** Optional Expo access token for push (required if "enhanced security" is on in Expo). */
+  EXPO_ACCESS_TOKEN: z.string().optional(),
   CORS_ORIGINS: z
     .string()
     .default('http://localhost:3000')

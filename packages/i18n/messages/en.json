@@ -61,6 +61,57 @@
       "assisted": "Assisted",
       "semi_auto": "Semi-automatic",
       "auto": "Automatic"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "AI is working",
+      "awaiting_send_approval": "Needs your approval",
+      "contacting_broker": "Waiting for broker",
+      "awaiting_booking_approval": "Ready to book",
+      "booking_requested": "Booking requested",
+      "booked": "Booked",
+      "rejected": "No deal",
+      "cancelled": "Cancelled",
+      "failed": "Stopped"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "AI proposed an offer",
+      "ai_countered": "AI prepared a counter-offer",
+      "ai_accepted": "AI accepted the broker's rate",
+      "ai_walked_away": "AI ended the negotiation",
+      "policy_adjusted": "Adjusted to your limits",
+      "policy_blocked": "Blocked by your limits",
+      "user_approved_send": "You approved the offer",
+      "user_adjusted": "You adjusted the offer",
+      "user_approved_booking": "You approved the booking",
+      "user_cancelled": "You cancelled",
+      "offer_sent": "Offer sent to the broker",
+      "broker_countered": "Broker countered",
+      "broker_accepted": "Broker accepted",
+      "broker_rejected": "Broker declined",
+      "booking_requested": "Booking requested",
+      "booking_confirmed": "Booking confirmed",
+      "booking_declined": "Booking declined",
+      "load_unavailable": "Load no longer available"
+    },
+    "actor": {
+      "ai": "AI",
+      "user": "You",
+      "broker": "Broker",
+      "system": "System"
+    },
+    "aiReason": {
+      "target_markup": "Asking {pct}% above the posted rate — within your limits and usually accepted in this region.",
+      "counter_midpoint": "The broker offered {broker}; I propose meeting halfway from our {last}.",
+      "accept_meets_minimums": "The broker's rate meets your minimum margin and rate per km.",
+      "walk_away_below_minimums": "The broker's rate is below your minimums, so I stopped.",
+      "max_rounds_reached": "Maximum rounds reached.",
+      "clamped_to_floor": "Raised to your minimum acceptable rate.",
+      "clamped_to_ceiling": "Lowered to your maximum counter-offer.",
+      "unprofitable_at_ceiling": "Even at your maximum counter-offer this load misses your minimums."
+    },
+    "strategy": {
+      "claude": "Claude (AI)",
+      "rules": "Rule-based"
     }
   },
   "errors": {
@@ -75,7 +126,11 @@
     "NOT_FOUND": "We couldn't find what you were looking for.",
     "API_UNAVAILABLE": "The server is unavailable. Try again in a few minutes.",
     "NETWORK_ERROR": "Can't reach the server. Check your connection.",
-    "INTERNAL_ERROR": "Something went wrong. Please try again."
+    "INTERNAL_ERROR": "Something went wrong. Please try again.",
+    "VEHICLE_REQUIRED": "Add a vehicle before negotiating.",
+    "LOAD_UNAVAILABLE": "This load is no longer available.",
+    "NEGOTIATION_ALREADY_ACTIVE": "There is already a negotiation in progress for this load.",
+    "NEGOTIATION_INVALID_STATE": "This negotiation changed. Refresh and try again."
   },
   "auth": {
     "email": "Email",
@@ -100,7 +155,8 @@
       "dashboard": "Dashboard",
       "loads": "Loads",
       "vehicles": "Vehicles",
-      "settings": "Preferences"
+      "settings": "Preferences",
+      "negotiations": "Negotiations"
     },
     "dashboard": {
       "greeting": "Hi, {name}",
@@ -185,9 +241,25 @@
       "aiSection": "AI dispatcher",
       "autonomy": "Autonomy level",
       "maxCounterOfferPct": "Max. counter-offer above posted rate (%)",
-      "aiComingSoon": "Negotiation with brokers arrives in the next phase.",
       "save": "Save preferences",
-      "saved": "Preferences saved."
+      "saved": "Preferences saved.",
+      "autonomyHint": "Assisted: you approve every message and the booking. Semi-automatic: the AI negotiates within your limits and you approve the booking. Automatic behaves like semi-automatic for now."
+    },
+    "negotiations": {
+      "title": "Negotiations",
+      "subtitle": "Every AI decision is recorded and auditable.",
+      "filterActive": "Active",
+      "filterNeedsApproval": "Needs approval",
+      "filterAll": "All",
+      "empty": "No negotiations yet. Start one from a load in the mobile app.",
+      "colRoute": "Route",
+      "colStatus": "Status",
+      "colPosted": "Posted",
+      "colOffer": "Offer",
+      "colAgreed": "Agreed",
+      "colUpdated": "Updated",
+      "back": "← All negotiations",
+      "audit": "Audit trail"
     }
   },
   "mobile": {
@@ -214,7 +286,8 @@
       "bestProfit": "Best est. profit",
       "seeLoads": "See available loads",
       "bestOpportunity": "Best opportunity",
-      "noOpportunities": "No strong matches right now. Check back soon."
+      "noOpportunities": "No strong matches right now. Check back soon.",
+      "pendingApprovals": "Waiting for your approval"
     },
     "loads": {
       "title": "Available loads",
@@ -271,8 +344,64 @@
       "whyMatch": "Why this match",
       "positionFrom": "Empty km measured from {source}.",
       "negotiate": "Negotiate with AI",
-      "negotiateSoon": "Coming in the next phase",
       "noBreakdown": "Add a vehicle to see the profit breakdown."
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "Offer ready to send",
+      "body": "{route}: the AI suggests {amount}. Approve to contact the broker."
+    },
+    "bookingApproval": {
+      "title": "Rate agreed — book it?",
+      "body": "{route} at {amount}. Approve to book the load."
+    },
+    "booked": {
+      "title": "Load booked!",
+      "body": "{route} confirmed at {amount}."
+    },
+    "rejected": {
+      "title": "Negotiation ended",
+      "body": "{route}: no deal this time."
+    },
+    "failed": {
+      "title": "Negotiation stopped",
+      "body": "{route}: open the app to see why."
+    }
+  },
+  "negotiation": {
+    "title": "Negotiate & book",
+    "start": "Negotiate with AI",
+    "viewNegotiation": "See negotiation",
+    "aiCardTitle": "Negotiation (AI)",
+    "aiThinking": "The AI is analyzing the market and your limits…",
+    "waitingBroker": "Waiting for the broker's reply…",
+    "postedRate": "Posted rate",
+    "myOffer": "My offer (AI)",
+    "brokerOffer": "Broker offer",
+    "agreedRate": "Agreed rate",
+    "estProfit": "Est. profit",
+    "margin": "Margin",
+    "limits": "Your limits: {floor} – {ceiling}",
+    "round": "Round {round} of {max}",
+    "proposedBy": "Proposed by {strategy}",
+    "stepContact": "Contact the broker and negotiate",
+    "stepConfirmRate": "Confirm the agreed rate",
+    "stepBook": "Book the load",
+    "stepRateConfirmation": "Generate Rate Confirmation (next phase)",
+    "approveSend": "Approve and send offer",
+    "adjust": "Adjust offer",
+    "adjustAmount": "New offer ({currency})",
+    "adjustHint": "Must be between {floor} and {ceiling}; outside values are adjusted to your limits.",
+    "adjustSave": "Save offer",
+    "approveBooking": "Accept and book load",
+    "cancel": "Cancel negotiation",
+    "cancelConfirm": "Cancel this negotiation?",
+    "activity": "Activity",
+    "messageToBroker": "Message to broker",
+    "brokerMessage": "Broker said",
+    "bookedTitle": "Load booked!",
+    "bookedBody": "Booked at {amount}. The trip will appear in Trips in the next phase.",
+    "simulatedBroker": "Simulated broker (DEMO): replies are not real."
   }
 }

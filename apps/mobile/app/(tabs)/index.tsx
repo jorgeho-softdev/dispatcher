@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
@@ -10,7 +10,7 @@ import { useIntlLocale } from '@/lib/use-intl-locale';
 import { useColors } from '@/lib/theme';
 import { useAppSelector } from '@/store/hooks';
 import { selectMe } from '@/store/auth-slice';
-import { useGetLoadsQuery } from '@/store/api';
+import { useGetLoadsQuery, useGetNegotiationsQuery } from '@/store/api';
 import { LoadCard } from '@/features/loads/LoadCard';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 
@@ -26,6 +26,7 @@ export default function HomeScreen() {
   const loads = data?.items ?? [];
   const opportunities = loads.filter((l) => (l.match?.score ?? 0) >= OPPORTUNITY_THRESHOLD);
   const best = opportunities[0];
+  const { data: pending } = useGetNegotiationsQuery({ filter: 'needs_approval' }, { pollingInterval: 15000 });
   const bestProfit = Math.max(0, ...opportunities.map((l) => l.estimatedProfit ?? 0));
 
   const stats = [
@@ -66,6 +67,32 @@ export default function HomeScreen() {
           </Card>
         ))}
       </View>
+
+      {pending && pending.length > 0 && (
+        <>
+          <SectionTitle title={t('mobile.home.pendingApprovals')} />
+          {pending.map((n) => (
+            <Pressable
+              key={n.id}
+              accessibilityRole="button"
+              onPress={() => router.push({ pathname: '/negotiations/[id]', params: { id: n.id } })}
+            >
+              <Card className="mb-2 flex-row items-center border-primary" style={{ gap: 12 }}>
+                <Ionicons name="notifications-outline" size={22} color={colors.primary} />
+                <View className="flex-1">
+                  <Text className="font-sans-semibold text-sm text-ink" numberOfLines={1}>
+                    {n.load.originCity} → {n.load.destinationCity}
+                  </Text>
+                  <Text className="font-sans text-xs text-primary">{t(`domain.negotiationStatus.${n.status}`)}</Text>
+                </View>
+                <Text className="font-sans-bold text-base text-ink">
+                  {formatMoney(n.agreedRate ?? n.currentOffer ?? n.postedRate, n.currency, intlLocale)}
+                </Text>
+              </Card>
+            </Pressable>
+          ))}
+        </>
+      )}
 
       <Button className="mt-5" title={t('mobile.home.seeLoads')} onPress={() => router.navigate('/loads')} />
 

@@ -16,3 +16,4 @@ export const MESSAGES: Record<Locale, Messages> = { en, fr, es, pa };
 export function getMessages(locale: Locale): Messages {
   return MESSAGES[locale];
 }
+export { formatMessage } from './server';

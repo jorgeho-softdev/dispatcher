@@ -1,7 +1,7 @@
 import { ActivityIndicator, Text, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFormatter, useTranslations } from 'use-intl';
-import { formatMoney } from '@dispatcher/shared';
+import { can, formatMoney, toErrorCode } from '@dispatcher/shared';
 import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { Card } from '@/components/ui/Card';
@@ -11,7 +11,11 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { MatchBadge } from '@/features/loads/MatchBadge';
 import { useColors } from '@/lib/theme';
 import { useIntlLocale } from '@/lib/use-intl-locale';
-import { useGetLoadQuery } from '@/store/api';
+import { useGetLoadQuery, useGetNegotiationsQuery, useRegisterDeviceMutation, useStartNegotiationMutation } from '@/store/api';
+import { useAppSelector } from '@/store/hooks';
+import { selectMe } from '@/store/auth-slice';
+import { appAlert } from '@/lib/app-alert';
+import { getPushToken } from '@/lib/push';
 
 function Row({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
   return (
@@ -31,7 +35,26 @@ export default function LoadDetailScreen() {
   const format = useFormatter();
   const intlLocale = useIntlLocale();
   const colors = useColors();
+  const router = useRouter();
+  const me = useAppSelector(selectMe);
   const { data: load, isLoading, isError } = useGetLoadQuery({ id });
+  const { data: active } = useGetNegotiationsQuery({ filter: 'active' });
+  const activeNegotiation = active?.find((n) => n.load.id === id);
+  const [start, { isLoading: starting }] = useStartNegotiationMutation();
+  const [registerDevice] = useRegisterDeviceMutation();
+
+  const startNegotiation = async () => {
+    const result = await start({ loadId: id });
+    if (result.error) {
+      const code = toErrorCode((result.error as { data?: { code?: unknown } }).data?.code);
+      appAlert(t(`errors.${code}`));
+      return;
+    }
+    router.push({ pathname: '/negotiations/[id]', params: { id: result.data.id } });
+    // Ask for notifications now, when the value is obvious: the broker replies later.
+    const device = await getPushToken(true);
+    if (device) void registerDevice(device);
+  };
   const money = (n: number) => formatMoney(n, load?.currency ?? 'CAD', intlLocale);
   const km = (n: number) => `${format.number(Math.round(n))} km`;
 
@@ -114,9 +137,18 @@ export default function LoadDetailScreen() {
             </>
           )}
 
-          {/* Negotiation arrives with the AI agent (Phase 2). */}
-          <Button className="mt-6" title={t('mobile.loadDetail.negotiate')} disabled />
-          <Text className="mt-2 text-center font-sans text-xs text-muted">{t('mobile.loadDetail.negotiateSoon')}</Text>
+          {activeNegotiation ? (
+            <Button
+              className="mt-6"
+              title={t('negotiation.viewNegotiation')}
+              onPress={() => router.push({ pathname: '/negotiations/[id]', params: { id: activeNegotiation.id } })}
+            />
+          ) : (
+            can(me?.role, 'loads:book') &&
+            load.match?.compatible !== false && (
+              <Button className="mt-6" title={t('negotiation.start')} loading={starting} onPress={startNegotiation} />
+            )
+          )}
         </>
       )}
     </Screen>
