@@ -1,0 +1,34 @@
+{
+  "name": "@dispatcher/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Domain types, Zod schemas, permissions and business rules shared by api, web and mobile.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test 'src/**/*.test.ts'"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@dispatcher/tsconfig": "*",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3"
+  }
+}

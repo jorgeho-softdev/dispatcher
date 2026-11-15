@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: imresamu/postgis:17-3.5  # multi-arch (arm64+amd64) build of postgis/postgis
+    container_name: dispatcher-postgres
+    environment:
+      POSTGRES_USER: dispatcher
+      POSTGRES_PASSWORD: dispatcher
+      POSTGRES_DB: dispatcher
+    ports:
+      - "5440:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dispatcher"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: dispatcher-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  postgres-data:
+  redis-data:

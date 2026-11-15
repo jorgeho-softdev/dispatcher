@@ -1,0 +1,171 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "delete": "Supprimer",
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "demo": "Démo",
+    "language": "Langue",
+    "loadError": "Impossible de charger les informations."
+  },
+  "domain": {
+    "equipment": {
+      "cargo_van": "Fourgon",
+      "sprinter": "Sprinter",
+      "box_truck": "Camion porteur",
+      "dry_van": "Semi-remorque fermée",
+      "reefer": "Réfrigéré",
+      "flatbed": "Plateau"
+    },
+    "role": {
+      "owner": "Propriétaire",
+      "fleet_manager": "Gestionnaire de flotte",
+      "dispatcher": "Répartiteur",
+      "driver": "Chauffeur"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Certains champs sont invalides. Veuillez les vérifier.",
+    "AUTH_INVALID_CREDENTIALS": "Courriel ou mot de passe incorrect.",
+    "AUTH_EMAIL_TAKEN": "Ce courriel est déjà enregistré.",
+    "AUTH_TOKEN_MISSING": "Connectez-vous pour continuer.",
+    "AUTH_TOKEN_INVALID": "Votre session a expiré. Reconnectez-vous.",
+    "AUTH_REFRESH_INVALID": "Votre session a expiré. Reconnectez-vous.",
+    "AUTH_REFRESH_REUSED": "Pour votre sécurité, nous vous avons déconnecté. Reconnectez-vous.",
+    "FORBIDDEN": "Vous n'avez pas la permission de faire cela.",
+    "NOT_FOUND": "Nous n'avons pas trouvé ce que vous cherchiez.",
+    "API_UNAVAILABLE": "Le serveur n'est pas disponible. Réessayez dans quelques minutes.",
+    "NETWORK_ERROR": "Impossible de joindre le serveur. Vérifiez votre connexion.",
+    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "auth": {
+    "email": "Courriel",
+    "password": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion…",
+    "invalidFormat": "Vérifiez votre courriel et votre mot de passe.",
+    "signOut": "Se déconnecter",
+    "signOutConfirm": "Se déconnecter d'AI Dispatcher ?"
+  },
+  "web": {
+    "meta": {
+      "title": "AI Dispatcher Admin",
+      "description": "Panneau d'administration d'AI Dispatcher"
+    },
+    "login": {
+      "subtitle": "Panneau d'administration"
+    },
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "loads": "Chargements",
+      "vehicles": "Véhicules"
+    },
+    "dashboard": {
+      "greeting": "Bonjour, {name}",
+      "subtitle": "Aperçu des opérations",
+      "availableLoads": "Chargements disponibles",
+      "withProfit": "Avec profit estimé",
+      "vehicles": "Véhicules",
+      "bestProfit": "Meilleur profit est.",
+      "addVehicleHint": "Ajoutez un véhicule pour calculer le profit estimé de chaque chargement.",
+      "addVehicleCta": "Ajouter un véhicule →"
+    },
+    "loads": {
+      "title": "Chargements",
+      "subtitle": "Chargements du marché et chargements manuels de votre organisation",
+      "filterEquipment": "Filtrer par équipement",
+      "allEquipment": "Tout l'équipement",
+      "includeDemo": "Inclure les chargements DÉMO",
+      "colRoute": "Trajet",
+      "colPickup": "Ramassage",
+      "colEquipment": "Équipement",
+      "colDistance": "Distance",
+      "colRate": "Tarif",
+      "colProfit": "Profit est.",
+      "empty": "Aucun chargement ne correspond à ces filtres.",
+      "noBroker": "Aucun courtier",
+      "noVehicle": "Aucun véhicule",
+      "perKm": "{amount}/km"
+    },
+    "vehicles": {
+      "title": "Véhicules",
+      "subtitle": "Le coût par km sert à estimer le profit de chaque chargement",
+      "empty": "Aucun véhicule pour l'instant.",
+      "new": "Nouveau véhicule",
+      "name": "Nom",
+      "equipment": "Équipement",
+      "capacity": "Capacité (kg)",
+      "costPerKm": "Coût / km (CA$)",
+      "plate": "Plaque",
+      "homeBase": "Base",
+      "province": "Prov.",
+      "saveError": "Impossible d'enregistrer le véhicule.",
+      "submit": "Enregistrer le véhicule"
+    }
+  },
+  "mobile": {
+    "onboarding": {
+      "title": "Bienvenue sur AI Dispatcher",
+      "body": "Configurons tout. Cela ne prend qu'un instant.",
+      "cta": "Commencer"
+    },
+    "tabs": {
+      "home": "Accueil",
+      "loads": "Chargements",
+      "account": "Compte"
+    },
+    "login": {
+      "subtitle": "Votre répartiteur IA"
+    },
+    "home": {
+      "greeting": "Bonjour, {name} 👋",
+      "subtitle": "Votre répartiteur est actif et cherche des occasions.",
+      "aiAnalyzing": "Analyse du marché des chargements pour vous…",
+      "aiActive": "Actif",
+      "opportunities": "{count, plural, one {Occasion} other {Occasions}}",
+      "activeTrips": "Voyages actifs",
+      "bestProfit": "Meilleur profit est.",
+      "seeLoads": "Voir les chargements"
+    },
+    "loads": {
+      "title": "Chargements disponibles",
+      "estProfit": "Profit est.",
+      "empty": "Aucun chargement disponible pour le moment.",
+      "error": "Impossible de charger la liste. Tirez pour réessayer."
+    },
+    "account": {
+      "title": "Compte",
+      "company": "Entreprise",
+      "role": "Rôle"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "appearance": "Apparence",
+      "language": "Langue",
+      "legal": "Mentions légales",
+      "privacyPolicy": "Politique de confidentialité",
+      "termsOfUse": "Conditions d'utilisation",
+      "data": "Données",
+      "resetData": "Réinitialiser les paramètres",
+      "resetDataTitle": "Réinitialiser les paramètres ?",
+      "resetDataBody": "Le thème et la langue reviennent à leurs valeurs par défaut.",
+      "resetDataConfirm": "Réinitialiser",
+      "devResetOnboarding": "Rejouer l'accueil (dev)",
+      "appVersion": "Version {version}"
+    },
+    "notifications": {
+      "section": "Notifications",
+      "reminder": "Rappel quotidien",
+      "deniedTitle": "Notifications désactivées",
+      "deniedBody": "Activez les notifications d'AI Dispatcher dans les réglages de votre appareil.",
+      "reminderTitle": "AI Dispatcher",
+      "reminderBody": "N'oubliez pas de vérifier vos chargements aujourd'hui !"
+    }
+  }
+}

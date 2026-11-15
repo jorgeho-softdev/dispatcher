@@ -1,0 +1,171 @@
+{
+  "common": {
+    "ok": "ਠੀਕ ਹੈ",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "back": "ਪਿੱਛੇ",
+    "save": "ਸੇਵ ਕਰੋ",
+    "saving": "ਸੇਵ ਹੋ ਰਿਹਾ ਹੈ…",
+    "delete": "ਮਿਟਾਓ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    "retry": "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
+    "demo": "ਡੈਮੋ",
+    "language": "ਭਾਸ਼ਾ",
+    "loadError": "ਜਾਣਕਾਰੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ।"
+  },
+  "domain": {
+    "equipment": {
+      "cargo_van": "ਕਾਰਗੋ ਵੈਨ",
+      "sprinter": "ਸਪ੍ਰਿੰਟਰ",
+      "box_truck": "ਬਾਕਸ ਟਰੱਕ",
+      "dry_van": "ਡਰਾਈ ਵੈਨ",
+      "reefer": "ਰੀਫਰ",
+      "flatbed": "ਫਲੈਟਬੈੱਡ"
+    },
+    "role": {
+      "owner": "ਮਾਲਕ",
+      "fleet_manager": "ਫਲੀਟ ਮੈਨੇਜਰ",
+      "dispatcher": "ਡਿਸਪੈਚਰ",
+      "driver": "ਡਰਾਈਵਰ"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "ਕੁਝ ਖੇਤਰ ਗਲਤ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਜਾਂਚ ਕਰੋ।",
+    "AUTH_INVALID_CREDENTIALS": "ਈਮੇਲ ਜਾਂ ਪਾਸਵਰਡ ਗਲਤ ਹੈ।",
+    "AUTH_EMAIL_TAKEN": "ਇਹ ਈਮੇਲ ਪਹਿਲਾਂ ਹੀ ਰਜਿਸਟਰ ਹੈ।",
+    "AUTH_TOKEN_MISSING": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ।",
+    "AUTH_TOKEN_INVALID": "ਤੁਹਾਡਾ ਸੈਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਸਾਈਨ ਇਨ ਕਰੋ।",
+    "AUTH_REFRESH_INVALID": "ਤੁਹਾਡਾ ਸੈਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਸਾਈਨ ਇਨ ਕਰੋ।",
+    "AUTH_REFRESH_REUSED": "ਤੁਹਾਡੀ ਸੁਰੱਖਿਆ ਲਈ ਅਸੀਂ ਤੁਹਾਨੂੰ ਸਾਈਨ ਆਊਟ ਕਰ ਦਿੱਤਾ। ਦੁਬਾਰਾ ਸਾਈਨ ਇਨ ਕਰੋ।",
+    "FORBIDDEN": "ਤੁਹਾਨੂੰ ਇਹ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
+    "NOT_FOUND": "ਜੋ ਤੁਸੀਂ ਲੱਭ ਰਹੇ ਸੀ ਉਹ ਨਹੀਂ ਮਿਲਿਆ।",
+    "API_UNAVAILABLE": "ਸਰਵਰ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "NETWORK_ERROR": "ਸਰਵਰ ਨਾਲ ਸੰਪਰਕ ਨਹੀਂ ਹੋ ਸਕਿਆ। ਆਪਣਾ ਕਨੈਕਸ਼ਨ ਜਾਂਚੋ।",
+    "INTERNAL_ERROR": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+  },
+  "auth": {
+    "email": "ਈਮੇਲ",
+    "password": "ਪਾਸਵਰਡ",
+    "showPassword": "ਪਾਸਵਰਡ ਦਿਖਾਓ",
+    "hidePassword": "ਪਾਸਵਰਡ ਲੁਕਾਓ",
+    "signIn": "ਸਾਈਨ ਇਨ ਕਰੋ",
+    "signingIn": "ਸਾਈਨ ਇਨ ਹੋ ਰਿਹਾ ਹੈ…",
+    "invalidFormat": "ਆਪਣੀ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਜਾਂਚੋ।",
+    "signOut": "ਸਾਈਨ ਆਊਟ",
+    "signOutConfirm": "ਕੀ AI Dispatcher ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰਨਾ ਹੈ?"
+  },
+  "web": {
+    "meta": {
+      "title": "AI Dispatcher Admin",
+      "description": "AI Dispatcher ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
+    },
+    "login": {
+      "subtitle": "ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
+    },
+    "nav": {
+      "dashboard": "ਡੈਸ਼ਬੋਰਡ",
+      "loads": "ਲੋਡ",
+      "vehicles": "ਵਾਹਨ"
+    },
+    "dashboard": {
+      "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, {name}",
+      "subtitle": "ਕੰਮਕਾਜ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ",
+      "availableLoads": "ਉਪਲਬਧ ਲੋਡ",
+      "withProfit": "ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ੇ ਵਾਲੇ",
+      "vehicles": "ਵਾਹਨ",
+      "bestProfit": "ਸਭ ਤੋਂ ਵੱਧ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
+      "addVehicleHint": "ਹਰ ਲੋਡ ਦਾ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ ਗਿਣਨ ਲਈ ਇੱਕ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
+      "addVehicleCta": "ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ →"
+    },
+    "loads": {
+      "title": "ਲੋਡ",
+      "subtitle": "ਮਾਰਕੀਟ ਦੇ ਲੋਡ ਅਤੇ ਤੁਹਾਡੀ ਸੰਸਥਾ ਦੇ ਮੈਨੂਅਲ ਲੋਡ",
+      "filterEquipment": "ਉਪਕਰਨ ਅਨੁਸਾਰ ਫਿਲਟਰ ਕਰੋ",
+      "allEquipment": "ਸਾਰੇ ਉਪਕਰਨ",
+      "includeDemo": "ਡੈਮੋ ਲੋਡ ਸ਼ਾਮਲ ਕਰੋ",
+      "colRoute": "ਰੂਟ",
+      "colPickup": "ਪਿਕਅੱਪ",
+      "colEquipment": "ਉਪਕਰਨ",
+      "colDistance": "ਦੂਰੀ",
+      "colRate": "ਰੇਟ",
+      "colProfit": "ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
+      "empty": "ਇਹਨਾਂ ਫਿਲਟਰਾਂ ਨਾਲ ਕੋਈ ਲੋਡ ਨਹੀਂ ਮਿਲਿਆ।",
+      "noBroker": "ਕੋਈ ਬ੍ਰੋਕਰ ਨਹੀਂ",
+      "noVehicle": "ਕੋਈ ਵਾਹਨ ਨਹੀਂ",
+      "perKm": "{amount}/ਕਿ.ਮੀ."
+    },
+    "vehicles": {
+      "title": "ਵਾਹਨ",
+      "subtitle": "ਹਰ ਲੋਡ ਦਾ ਮੁਨਾਫ਼ਾ ਅਨੁਮਾਨ ਲਗਾਉਣ ਲਈ ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਲਾਗਤ ਵਰਤੀ ਜਾਂਦੀ ਹੈ",
+      "empty": "ਅਜੇ ਕੋਈ ਵਾਹਨ ਨਹੀਂ।",
+      "new": "ਨਵਾਂ ਵਾਹਨ",
+      "name": "ਨਾਮ",
+      "equipment": "ਉਪਕਰਨ",
+      "capacity": "ਸਮਰੱਥਾ (ਕਿ.ਗ੍ਰਾ.)",
+      "costPerKm": "ਲਾਗਤ / ਕਿ.ਮੀ. (CA$)",
+      "plate": "ਨੰਬਰ ਪਲੇਟ",
+      "homeBase": "ਬੇਸ",
+      "province": "ਸੂਬਾ",
+      "saveError": "ਵਾਹਨ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
+      "submit": "ਵਾਹਨ ਸੇਵ ਕਰੋ"
+    }
+  },
+  "mobile": {
+    "onboarding": {
+      "title": "AI Dispatcher ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
+      "body": "ਆਓ ਸਭ ਕੁਝ ਸੈੱਟ ਕਰੀਏ। ਬੱਸ ਇੱਕ ਪਲ ਲੱਗੇਗਾ।",
+      "cta": "ਸ਼ੁਰੂ ਕਰੋ"
+    },
+    "tabs": {
+      "home": "ਹੋਮ",
+      "loads": "ਲੋਡ",
+      "account": "ਖਾਤਾ"
+    },
+    "login": {
+      "subtitle": "ਤੁਹਾਡਾ AI ਡਿਸਪੈਚਰ"
+    },
+    "home": {
+      "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, {name} 👋",
+      "subtitle": "ਤੁਹਾਡਾ ਡਿਸਪੈਚਰ ਚਾਲੂ ਹੈ ਅਤੇ ਮੌਕੇ ਲੱਭ ਰਿਹਾ ਹੈ।",
+      "aiAnalyzing": "ਤੁਹਾਡੇ ਲਈ ਲੋਡ ਮਾਰਕੀਟ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ…",
+      "aiActive": "ਚਾਲੂ",
+      "opportunities": "{count, plural, one {ਮੌਕਾ} other {ਮੌਕੇ}}",
+      "activeTrips": "ਚੱਲ ਰਹੇ ਸਫ਼ਰ",
+      "bestProfit": "ਵੱਧ ਤੋਂ ਵੱਧ ਅਨੁ. ਮੁਨਾਫ਼ਾ",
+      "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ"
+    },
+    "loads": {
+      "title": "ਉਪਲਬਧ ਲੋਡ",
+      "estProfit": "ਅਨੁ. ਮੁਨਾਫ਼ਾ",
+      "empty": "ਇਸ ਵੇਲੇ ਕੋਈ ਲੋਡ ਉਪਲਬਧ ਨਹੀਂ।",
+      "error": "ਸੂਚੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਲਈ ਹੇਠਾਂ ਖਿੱਚੋ।"
+    },
+    "account": {
+      "title": "ਖਾਤਾ",
+      "company": "ਕੰਪਨੀ",
+      "role": "ਭੂਮਿਕਾ"
+    },
+    "settings": {
+      "title": "ਸੈਟਿੰਗਾਂ",
+      "appearance": "ਦਿੱਖ",
+      "language": "ਭਾਸ਼ਾ",
+      "legal": "ਕਾਨੂੰਨੀ",
+      "privacyPolicy": "ਪਰਦੇਦਾਰੀ ਨੀਤੀ",
+      "termsOfUse": "ਵਰਤੋਂ ਦੀਆਂ ਸ਼ਰਤਾਂ",
+      "data": "ਡਾਟਾ",
+      "resetData": "ਸੈਟਿੰਗਾਂ ਰੀਸੈੱਟ ਕਰੋ",
+      "resetDataTitle": "ਕੀ ਸੈਟਿੰਗਾਂ ਰੀਸੈੱਟ ਕਰਨੀਆਂ ਹਨ?",
+      "resetDataBody": "ਥੀਮ ਅਤੇ ਭਾਸ਼ਾ ਮੂਲ ਸੈਟਿੰਗਾਂ 'ਤੇ ਵਾਪਸ ਆ ਜਾਣਗੀਆਂ।",
+      "resetDataConfirm": "ਰੀਸੈੱਟ ਕਰੋ",
+      "devResetOnboarding": "ਆਨਬੋਰਡਿੰਗ ਦੁਬਾਰਾ ਚਲਾਓ (dev)",
+      "appVersion": "ਵਰਜਨ {version}"
+    },
+    "notifications": {
+      "section": "ਸੂਚਨਾਵਾਂ",
+      "reminder": "ਰੋਜ਼ਾਨਾ ਯਾਦ-ਦਹਾਨੀ",
+      "deniedTitle": "ਸੂਚਨਾਵਾਂ ਬੰਦ ਹਨ",
+      "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ AI Dispatcher ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
+      "reminderTitle": "AI Dispatcher",
+      "reminderBody": "ਅੱਜ ਆਪਣੇ ਲੋਡ ਵੇਖਣਾ ਨਾ ਭੁੱਲੋ!"
+    }
+  }
+}

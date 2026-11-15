@@ -1,0 +1,33 @@
+{
+  "name": "@dispatcher/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Supported locales, locale negotiation and ICU message catalogs shared by api, web and mobile. See docs/i18n.md.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test 'src/**/*.test.ts'"
+  },
+  "devDependencies": {
+    "@dispatcher/shared": "*",
+    "@dispatcher/tsconfig": "*",
+    "@types/node": "^22.0.0",
+    "intl-messageformat": "^10.7.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3"
+  }
+}

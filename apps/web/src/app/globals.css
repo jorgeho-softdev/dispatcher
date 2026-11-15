@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Brand colors, radius and font stack — generated from
+   packages/design-tokens/src/tokens.ts. Never add hex colors here;
+   change the tokens instead (see docs/design-system.md). */
+@import "@dispatcher/design-tokens/web-theme.css";
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-ink);
+}

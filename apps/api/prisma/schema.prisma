@@ -1,0 +1,215 @@
+// AI Dispatcher — database schema (Fase 0).
+// Conventions (docs/conventions.md#database):
+//  - Tables/columns are snake_case via @@map/@map; Prisma models are PascalCase.
+//  - Every business table is scoped by organization_id (multi-tenant).
+//  - Money is Decimal(12,2) + an explicit currency; distances are stored in km.
+//  - Enum values mirror packages/shared/src/constants.ts.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  owner
+  fleet_manager
+  dispatcher
+  driver
+}
+
+enum EquipmentType {
+  cargo_van
+  sprinter
+  box_truck
+  dry_van
+  reefer
+  flatbed
+}
+
+enum LoadSource {
+  simulated
+  manual
+  loadlink
+  dat
+  truckstop
+  loadboard_123
+  broker_direct
+}
+
+enum LoadStatus {
+  available
+  negotiating
+  booked
+  expired
+  cancelled
+}
+
+enum Currency {
+  CAD
+  USD
+}
+
+enum AutonomyLevel {
+  assisted
+  semi_auto
+  auto
+}
+
+model Organization {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  country   String   @default("CA") @db.Char(2)
+  currency  Currency @default(CAD)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  memberships Membership[]
+  vehicles    Vehicle[]
+  loads       Load[]
+  aiSettings  AiSettings?
+
+  @@map("organizations")
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  name         String
+  passwordHash String   @map("password_hash")
+  locale       String   @default("en")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  memberships   Membership[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model Membership {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  role           Role
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@map("memberships")
+}
+
+// Opaque refresh tokens, stored hashed. Rotated on every use; reusing a
+// revoked token revokes the whole family (theft detection).
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash")
+  familyId   String    @map("family_id") @db.Uuid
+  expiresAt  DateTime  @map("expires_at")
+  revokedAt  DateTime? @map("revoked_at")
+  replacedBy String?   @map("replaced_by") @db.Uuid
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+model Vehicle {
+  id               String        @id @default(uuid()) @db.Uuid
+  organizationId   String        @map("organization_id") @db.Uuid
+  name             String
+  equipment        EquipmentType
+  plate            String?
+  capacityKg       Int           @map("capacity_kg")
+  costPerKm        Decimal       @map("cost_per_km") @db.Decimal(6, 2)
+  homeBaseCity     String?       @map("home_base_city")
+  homeBaseProvince String?       @map("home_base_province") @db.Char(2)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+  deletedAt        DateTime?     @map("deleted_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@map("vehicles")
+}
+
+model Broker {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  email     String?
+  phone     String?
+  mcNumber  String?  @map("mc_number")
+  ratingAvg Decimal? @map("rating_avg") @db.Decimal(3, 2)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  loads Load[]
+
+  @@map("brokers")
+}
+
+// Marketplace loads are global (organizationId null). Manual loads belong to
+// the organization that created them. Simulated loads are ALWAYS flagged and
+// must never be presented as real opportunities.
+model Load {
+  id                  String        @id @default(uuid()) @db.Uuid
+  organizationId      String?       @map("organization_id") @db.Uuid
+  source              LoadSource
+  externalId          String?       @map("external_id")
+  isSimulated         Boolean       @default(false) @map("is_simulated")
+  status              LoadStatus    @default(available)
+  originCity          String        @map("origin_city")
+  originProvince      String        @map("origin_province") @db.Char(2)
+  originLat           Float         @map("origin_lat")
+  originLng           Float         @map("origin_lng")
+  destinationCity     String        @map("destination_city")
+  destinationProvince String        @map("destination_province") @db.Char(2)
+  destinationLat      Float         @map("destination_lat")
+  destinationLng      Float         @map("destination_lng")
+  pickupAt            DateTime      @map("pickup_at")
+  distanceKm          Decimal       @map("distance_km") @db.Decimal(8, 1)
+  weightKg            Int           @map("weight_kg")
+  equipment           EquipmentType
+  postedRate          Decimal       @map("posted_rate") @db.Decimal(12, 2)
+  currency            Currency      @default(CAD)
+  brokerId            String?       @map("broker_id") @db.Uuid
+  notes               String?
+  rawPayload          Json?         @map("raw_payload")
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @updatedAt @map("updated_at")
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  broker       Broker?       @relation(fields: [brokerId], references: [id])
+
+  @@unique([source, externalId])
+  @@index([status, pickupAt])
+  @@index([equipment, status])
+  @@index([organizationId])
+  @@map("loads")
+}
+
+model AiSettings {
+  id                 String        @id @default(uuid()) @db.Uuid
+  organizationId     String        @unique @map("organization_id") @db.Uuid
+  autonomyLevel      AutonomyLevel @default(assisted) @map("autonomy_level")
+  minRatePerKm       Decimal       @default(2.50) @map("min_rate_per_km") @db.Decimal(6, 2)
+  minMarginPct       Decimal       @default(30) @map("min_margin_pct") @db.Decimal(5, 2)
+  maxCounterOfferPct Decimal       @default(15) @map("max_counter_offer_pct") @db.Decimal(5, 2)
+  maxDeadheadKm      Int           @default(150) @map("max_deadhead_km")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_settings")
+}

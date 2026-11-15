@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: imresamu/postgis:17-3.5
+        env:
+          POSTGRES_USER: dispatcher
+          POSTGRES_PASSWORD: dispatcher
+          POSTGRES_DB: dispatcher
+        ports: ["5440:5432"]
+        options: >-
+          --health-cmd "pg_isready -U dispatcher"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://dispatcher:dispatcher@localhost:5440/dispatcher?schema=public
+      JWT_ACCESS_SECRET: ci-only-secret-that-is-at-least-32-characters-long
+      API_URL: http://localhost:4000/v1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx turbo run build typecheck lint test
+      - name: API e2e
+        run: |
+          npm run db:deploy --workspace=api
+          npm run db:seed --workspace=api
+          npm run test:e2e --workspace=api

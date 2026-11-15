@@ -1,0 +1,36 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@dispatcher/api-client": "*",
+    "@dispatcher/design-tokens": "*",
+    "@dispatcher/shared": "*",
+    "@reduxjs/toolkit": "^2.14.0",
+    "next": "16.4.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-redux": "^9.3.1",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7",
+    "next-intl": "^4.15.1",
+    "@dispatcher/i18n": "*"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}

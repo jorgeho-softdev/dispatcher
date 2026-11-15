@@ -1,0 +1,171 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "delete": "Eliminar",
+    "loading": "Cargando…",
+    "retry": "Reintentar",
+    "demo": "Demo",
+    "language": "Idioma",
+    "loadError": "No se pudo cargar la información."
+  },
+  "domain": {
+    "equipment": {
+      "cargo_van": "Cargo Van",
+      "sprinter": "Sprinter",
+      "box_truck": "Box Truck",
+      "dry_van": "Dry Van",
+      "reefer": "Refrigerado",
+      "flatbed": "Plataforma"
+    },
+    "role": {
+      "owner": "Dueño",
+      "fleet_manager": "Gerente de flota",
+      "dispatcher": "Despachador",
+      "driver": "Conductor"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Algunos campos no son válidos. Revísalos.",
+    "AUTH_INVALID_CREDENTIALS": "Correo o contraseña incorrectos.",
+    "AUTH_EMAIL_TAKEN": "Ese correo ya está registrado.",
+    "AUTH_TOKEN_MISSING": "Inicia sesión para continuar.",
+    "AUTH_TOKEN_INVALID": "Tu sesión expiró. Vuelve a iniciar sesión.",
+    "AUTH_REFRESH_INVALID": "Tu sesión expiró. Vuelve a iniciar sesión.",
+    "AUTH_REFRESH_REUSED": "Por tu seguridad cerramos tu sesión. Vuelve a iniciar sesión.",
+    "FORBIDDEN": "No tienes permiso para hacer eso.",
+    "NOT_FOUND": "No encontramos lo que buscabas.",
+    "API_UNAVAILABLE": "El servidor no está disponible. Intenta en unos minutos.",
+    "NETWORK_ERROR": "No hay conexión con el servidor. Revisa tu conexión.",
+    "INTERNAL_ERROR": "Algo salió mal. Intenta de nuevo."
+  },
+  "auth": {
+    "email": "Correo",
+    "password": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "signIn": "Entrar",
+    "signingIn": "Entrando…",
+    "invalidFormat": "Revisa tu correo y contraseña.",
+    "signOut": "Cerrar sesión",
+    "signOutConfirm": "¿Cerrar sesión en AI Dispatcher?"
+  },
+  "web": {
+    "meta": {
+      "title": "AI Dispatcher Admin",
+      "description": "Panel de administración de AI Dispatcher"
+    },
+    "login": {
+      "subtitle": "Panel de administración"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "loads": "Cargas",
+      "vehicles": "Vehículos"
+    },
+    "dashboard": {
+      "greeting": "Hola, {name}",
+      "subtitle": "Resumen de la operación",
+      "availableLoads": "Cargas disponibles",
+      "withProfit": "Con ganancia estimada",
+      "vehicles": "Vehículos",
+      "bestProfit": "Mejor ganancia est.",
+      "addVehicleHint": "Registra un vehículo para calcular la ganancia estimada de cada carga.",
+      "addVehicleCta": "Agregar vehículo →"
+    },
+    "loads": {
+      "title": "Cargas",
+      "subtitle": "Cargas del marketplace y cargas manuales de tu organización",
+      "filterEquipment": "Filtrar por equipo",
+      "allEquipment": "Todo el equipo",
+      "includeDemo": "Incluir cargas DEMO",
+      "colRoute": "Ruta",
+      "colPickup": "Recogida",
+      "colEquipment": "Equipo",
+      "colDistance": "Distancia",
+      "colRate": "Tarifa",
+      "colProfit": "Ganancia est.",
+      "empty": "No hay cargas con estos filtros.",
+      "noBroker": "Sin broker",
+      "noVehicle": "Sin vehículo",
+      "perKm": "{amount}/km"
+    },
+    "vehicles": {
+      "title": "Vehículos",
+      "subtitle": "El costo por km se usa para estimar la ganancia de cada carga",
+      "empty": "Aún no hay vehículos.",
+      "new": "Nuevo vehículo",
+      "name": "Nombre",
+      "equipment": "Equipo",
+      "capacity": "Capacidad (kg)",
+      "costPerKm": "Costo / km (CA$)",
+      "plate": "Placa",
+      "homeBase": "Base",
+      "province": "Prov.",
+      "saveError": "No se pudo guardar el vehículo.",
+      "submit": "Guardar vehículo"
+    }
+  },
+  "mobile": {
+    "onboarding": {
+      "title": "Bienvenido a AI Dispatcher",
+      "body": "Vamos a configurarlo todo. Solo toma un momento.",
+      "cta": "Empezar"
+    },
+    "tabs": {
+      "home": "Inicio",
+      "loads": "Cargas",
+      "account": "Cuenta"
+    },
+    "login": {
+      "subtitle": "Tu dispatcher con IA"
+    },
+    "home": {
+      "greeting": "Hola, {name} 👋",
+      "subtitle": "Tu dispatcher está activo y buscando oportunidades.",
+      "aiAnalyzing": "Analizando el mercado de cargas para ti…",
+      "aiActive": "Activo",
+      "opportunities": "{count, plural, one {Oportunidad} other {Oportunidades}}",
+      "activeTrips": "Viajes activos",
+      "bestProfit": "Mejor ganancia est.",
+      "seeLoads": "Ver cargas disponibles"
+    },
+    "loads": {
+      "title": "Cargas disponibles",
+      "estProfit": "Ganancia est.",
+      "empty": "No hay cargas disponibles ahora.",
+      "error": "No se pudo cargar la lista. Desliza para reintentar."
+    },
+    "account": {
+      "title": "Cuenta",
+      "company": "Empresa",
+      "role": "Rol"
+    },
+    "settings": {
+      "title": "Ajustes",
+      "appearance": "Apariencia",
+      "language": "Idioma",
+      "legal": "Legal",
+      "privacyPolicy": "Política de privacidad",
+      "termsOfUse": "Términos de uso",
+      "data": "Datos",
+      "resetData": "Restablecer ajustes",
+      "resetDataTitle": "¿Restablecer ajustes?",
+      "resetDataBody": "El tema y el idioma vuelven a sus valores por defecto.",
+      "resetDataConfirm": "Restablecer",
+      "devResetOnboarding": "Repetir onboarding (dev)",
+      "appVersion": "Versión {version}"
+    },
+    "notifications": {
+      "section": "Notificaciones",
+      "reminder": "Recordatorio diario",
+      "deniedTitle": "Notificaciones desactivadas",
+      "deniedBody": "Activa las notificaciones de AI Dispatcher en los ajustes del dispositivo.",
+      "reminderTitle": "AI Dispatcher",
+      "reminderBody": "¡No olvides revisar tus cargas hoy!"
+    }
+  }
+}

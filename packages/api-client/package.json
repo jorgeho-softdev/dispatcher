@@ -1,0 +1,39 @@
+{
+  "name": "@dispatcher/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "RTK Query endpoints shared by web and mobile. Each app supplies its own baseQuery (cookies via BFF on web, bearer token on mobile).",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean --external react --external react-redux --external @reduxjs/toolkit",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch --external react --external react-redux --external @reduxjs/toolkit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dispatcher/shared": "*"
+  },
+  "peerDependencies": {
+    "@reduxjs/toolkit": "^2.14.0",
+    "react": ">=19",
+    "react-redux": "^9.3.1"
+  },
+  "devDependencies": {
+    "@dispatcher/tsconfig": "*",
+    "@reduxjs/toolkit": "^2.14.0",
+    "@types/react": "^19.2.0",
+    "react-redux": "^9.3.1",
+    "tsup": "^8.5.1",
+    "typescript": "5.9.3"
+  }
+}

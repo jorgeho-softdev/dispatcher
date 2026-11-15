@@ -1,0 +1,171 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "back": "Back",
+    "save": "Save",
+    "saving": "Saving…",
+    "delete": "Delete",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "demo": "Demo",
+    "language": "Language",
+    "loadError": "Couldn't load the information."
+  },
+  "domain": {
+    "equipment": {
+      "cargo_van": "Cargo Van",
+      "sprinter": "Sprinter",
+      "box_truck": "Box Truck",
+      "dry_van": "Dry Van",
+      "reefer": "Reefer",
+      "flatbed": "Flatbed"
+    },
+    "role": {
+      "owner": "Owner",
+      "fleet_manager": "Fleet Manager",
+      "dispatcher": "Dispatcher",
+      "driver": "Driver"
+    }
+  },
+  "errors": {
+    "VALIDATION_FAILED": "Some fields are invalid. Please check them.",
+    "AUTH_INVALID_CREDENTIALS": "Wrong email or password.",
+    "AUTH_EMAIL_TAKEN": "That email is already registered.",
+    "AUTH_TOKEN_MISSING": "Please sign in to continue.",
+    "AUTH_TOKEN_INVALID": "Your session expired. Please sign in again.",
+    "AUTH_REFRESH_INVALID": "Your session expired. Please sign in again.",
+    "AUTH_REFRESH_REUSED": "For your security we signed you out. Please sign in again.",
+    "FORBIDDEN": "You don't have permission to do that.",
+    "NOT_FOUND": "We couldn't find what you were looking for.",
+    "API_UNAVAILABLE": "The server is unavailable. Try again in a few minutes.",
+    "NETWORK_ERROR": "Can't reach the server. Check your connection.",
+    "INTERNAL_ERROR": "Something went wrong. Please try again."
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "invalidFormat": "Check your email and password.",
+    "signOut": "Sign out",
+    "signOutConfirm": "Sign out of AI Dispatcher?"
+  },
+  "web": {
+    "meta": {
+      "title": "AI Dispatcher Admin",
+      "description": "AI Dispatcher administration panel"
+    },
+    "login": {
+      "subtitle": "Administration panel"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "loads": "Loads",
+      "vehicles": "Vehicles"
+    },
+    "dashboard": {
+      "greeting": "Hi, {name}",
+      "subtitle": "Operations overview",
+      "availableLoads": "Available loads",
+      "withProfit": "With estimated profit",
+      "vehicles": "Vehicles",
+      "bestProfit": "Best est. profit",
+      "addVehicleHint": "Add a vehicle to calculate the estimated profit of each load.",
+      "addVehicleCta": "Add vehicle →"
+    },
+    "loads": {
+      "title": "Loads",
+      "subtitle": "Marketplace loads and your organization's manual loads",
+      "filterEquipment": "Filter by equipment",
+      "allEquipment": "All equipment",
+      "includeDemo": "Include DEMO loads",
+      "colRoute": "Route",
+      "colPickup": "Pickup",
+      "colEquipment": "Equipment",
+      "colDistance": "Distance",
+      "colRate": "Rate",
+      "colProfit": "Est. profit",
+      "empty": "No loads match these filters.",
+      "noBroker": "No broker",
+      "noVehicle": "No vehicle",
+      "perKm": "{amount}/km"
+    },
+    "vehicles": {
+      "title": "Vehicles",
+      "subtitle": "Cost per km is used to estimate the profit of each load",
+      "empty": "No vehicles yet.",
+      "new": "New vehicle",
+      "name": "Name",
+      "equipment": "Equipment",
+      "capacity": "Capacity (kg)",
+      "costPerKm": "Cost / km (CA$)",
+      "plate": "Plate",
+      "homeBase": "Home base",
+      "province": "Prov.",
+      "saveError": "Couldn't save the vehicle.",
+      "submit": "Save vehicle"
+    }
+  },
+  "mobile": {
+    "onboarding": {
+      "title": "Welcome to AI Dispatcher",
+      "body": "Let's get you set up. It only takes a moment.",
+      "cta": "Let's start"
+    },
+    "tabs": {
+      "home": "Home",
+      "loads": "Loads",
+      "account": "Account"
+    },
+    "login": {
+      "subtitle": "Your AI dispatcher"
+    },
+    "home": {
+      "greeting": "Hi, {name} 👋",
+      "subtitle": "Your dispatcher is active and looking for opportunities.",
+      "aiAnalyzing": "Analyzing the load market for you…",
+      "aiActive": "Active",
+      "opportunities": "{count, plural, one {Opportunity} other {Opportunities}}",
+      "activeTrips": "Active trips",
+      "bestProfit": "Best est. profit",
+      "seeLoads": "See available loads"
+    },
+    "loads": {
+      "title": "Available loads",
+      "estProfit": "Est. profit",
+      "empty": "No loads available right now.",
+      "error": "Couldn't load the list. Pull to retry."
+    },
+    "account": {
+      "title": "Account",
+      "company": "Company",
+      "role": "Role"
+    },
+    "settings": {
+      "title": "Settings",
+      "appearance": "Appearance",
+      "language": "Language",
+      "legal": "Legal",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfUse": "Terms of Use",
+      "data": "Data",
+      "resetData": "Reset settings",
+      "resetDataTitle": "Reset settings?",
+      "resetDataBody": "Theme and language go back to their defaults.",
+      "resetDataConfirm": "Reset",
+      "devResetOnboarding": "Replay onboarding (dev)",
+      "appVersion": "Version {version}"
+    },
+    "notifications": {
+      "section": "Notifications",
+      "reminder": "Daily reminder",
+      "deniedTitle": "Notifications are off",
+      "deniedBody": "Enable notifications for AI Dispatcher in your device settings.",
+      "reminderTitle": "AI Dispatcher",
+      "reminderBody": "Don't forget to check your loads today!"
+    }
+  }
+}
