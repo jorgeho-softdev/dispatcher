@@ -35,8 +35,10 @@ app/                    Expo Router routes
   login.tsx             Sign-in (only reachable while signed out)
   (tabs)/               Inicio, Cargas, Cuenta (only reachable while signed in)
   settings.tsx          Theme, language, notifications, legal links, dev tools
+  loads/[id].tsx        Load detail: match reasons + profit breakdown
 features/
-  loads/                Load list UI (LoadCard)
+  loads/                LoadCard, MatchBadge, LoadViewTabs (recommended / nearby / all)
+locales/                Localized iOS permission strings (en, es, fr, pa)
 components/
   OnboardingScreen.tsx  First-run flow (rendered instead of the navigator)
   ui/                   Reusable themed primitives (Button, Card, Screen, ScreenHeader…)
@@ -47,6 +49,7 @@ lib/
   IntlRoot.tsx          use-intl provider bound to the persisted language
   use-intl-locale.ts    Intl tag for money/number formatting
   app-alert.ts          Themed Alert.alert replacement (callbacks kept outside Redux)
+  location.ts           Foreground location on request ("Use my location")
   config.ts             API_URL (EXPO_PUBLIC_API_URL, or Metro host in dev)
   secure-tokens.ts      Refresh token in Keychain/Keystore (expo-secure-store)
   urls.ts               Privacy policy / terms URLs (required by stores)

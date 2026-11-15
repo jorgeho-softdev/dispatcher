@@ -7,6 +7,7 @@ import type {
   LoadStatus,
   Role,
 } from './constants';
+import type { MatchReasonItem } from './matching';
 
 // API response shapes (JSON over the wire: dates are ISO strings, money is a
 // number in the load's currency).
@@ -51,6 +52,9 @@ export interface VehicleDto {
   costPerKm: number;
   homeBaseCity: string | null;
   homeBaseProvince: string | null;
+  homeBaseLat: number | null;
+  homeBaseLng: number | null;
+  lastLocationAt: string | null;
   createdAt: string;
 }
 
@@ -76,9 +80,41 @@ export interface LoadDto {
   postedRate: number;
   currency: Currency;
   broker: BrokerDto | null;
-  /** Estimate for the caller's first matching vehicle; null without one. */
-  estimatedProfit: number | null;
   ratePerKm: number;
+  /** Empty km from the matched vehicle's position to the pickup (road estimate); null if unknown. */
+  deadheadKm: number | null;
+  /** Profit after loaded + deadhead km costs for the matched vehicle; null without a vehicle. */
+  estimatedProfit: number | null;
+  marginPct: number | null;
+  /** Match against the vehicle; null when the organization has no vehicle. */
+  match: { score: number; compatible: boolean; reasons: MatchReasonItem[] } | null;
+}
+
+/** Where the position used for deadhead came from. */
+export type PositionSource = 'request' | 'vehicle_gps' | 'home_base' | null;
+
+export interface MatchContextDto {
+  vehicle: Pick<VehicleDto, 'id' | 'name' | 'equipment' | 'costPerKm'> | null;
+  positionSource: PositionSource;
+}
+
+export interface LoadListDto extends Paginated<LoadDto> {
+  context: MatchContextDto;
+}
+
+export interface LoadDetailDto extends LoadDto {
+  notes: string | null;
+  context: MatchContextDto;
+  /** Cost/profit breakdown shown in the load detail screen. */
+  breakdown: {
+    loadedKm: number;
+    deadheadKm: number;
+    totalKm: number;
+    costPerKm: number;
+    costs: number;
+    profit: number;
+    marginPct: number;
+  } | null;
 }
 
 export interface AiSettingsDto {
@@ -87,6 +123,8 @@ export interface AiSettingsDto {
   minMarginPct: number;
   maxCounterOfferPct: number;
   maxDeadheadKm: number;
+  preferredProvinces: string[];
+  avoidProvinces: string[];
 }
 
 export interface Paginated<T> {

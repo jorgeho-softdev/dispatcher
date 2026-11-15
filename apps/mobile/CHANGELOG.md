@@ -11,5 +11,9 @@ actually ships.
 - Changed: state management migrated from Zustand to Redux Toolkit + RTK Query (shared `@dispatcher/api-client`).
 - Added: sign-in screen, secure session (refresh token in Keychain/Keystore, automatic token refresh) and sign-out.
 - Changed: colors and fonts now come from the shared brand tokens (`packages/design-tokens`), so a rebrand is a single-file change.
+- Added: load matching — Recommended / Near me / All tabs, "★ 98% Match" badges with reasons, empty km to pickup, and infinite scroll.
+- Added: load detail screen with profit breakdown (loaded + empty km costs) and why-this-match reasons.
+- Added: "Use my location" for nearby loads (foreground only, on request); localized iOS permission text.
+- Changed: Home shows real opportunities (≥70% match) and the best one.
 - Added: multi-language support — English, Français, Español and ਪੰਜਾਬੀ (Punjabi), shared with the web admin; first launch follows the device language and the choice syncs to the user profile.
 - Added: Home (AI Dispatcher status + stats), Loads list (with DEMO badge and estimated profit) and Account tabs.

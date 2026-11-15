@@ -25,6 +25,10 @@ export const LOAD_SOURCES = [
 ] as const;
 export type LoadSource = (typeof LOAD_SOURCES)[number];
 
+/** Load list views (tabs in the mockup: Recomendadas / Cerca de mí / Todas). */
+export const LOAD_VIEWS = ['recommended', 'nearby', 'all'] as const;
+export type LoadView = (typeof LOAD_VIEWS)[number];
+
 export const LOAD_STATUSES = ['available', 'negotiating', 'booked', 'expired', 'cancelled'] as const;
 export type LoadStatus = (typeof LOAD_STATUSES)[number];
 

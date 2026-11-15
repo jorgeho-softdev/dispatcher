@@ -86,8 +86,10 @@ src/
 └── modules/
     ├── health/             GET /v1/health (liveness + DB)
     ├── auth/               register, login, refresh, logout, me
-    ├── vehicles/           CRUD con soft delete
-    └── loads/              listado paginado, detalle, alta manual
+    ├── vehicles/           CRUD con soft delete + reporte de GPS
+    ├── ai-settings/        Preferencias del transportista
+    └── loads/              vistas (recommended/nearby/all), detalle, alta manual
+        ├── matching-context.service.ts  vehículo + posición + preferencias (reutilizable por el agente)
         └── providers/      LoadProvider (contrato) + SimulatedLoadProvider
 ```
 
@@ -103,10 +105,13 @@ src/
 | GET | `/v1/me` | autenticado | Usuario (con `locale`), organización y rol |
 | PATCH | `/v1/me` | autenticado | Cambia el idioma preferido (`{ locale }`) |
 | GET | `/v1/vehicles` | `vehicles:read` | Vehículos de la organización |
-| POST/PATCH/DELETE | `/v1/vehicles[/:id]` | `vehicles:manage` | Alta / edición / baja lógica |
-| GET | `/v1/loads` | `loads:read` | Paginado por cursor; filtros `equipment`, `originProvince`, `status`, `includeSimulated` |
-| GET | `/v1/loads/:id` | `loads:read` | Detalle con ganancia estimada |
-| POST | `/v1/loads` | `loads:create` | Carga manual (privada de la organización) |
+| POST/PATCH/DELETE | `/v1/vehicles[/:id]` | `vehicles:manage` | Alta / edición / baja lógica. La base (`homeBaseCity/Province`) se geolocaliza con el catálogo de ciudades |
+| POST | `/v1/vehicles/:id/location` | `vehicles:report_location` | Último GPS del vehículo (app del conductor) |
+| GET | `/v1/loads` | `loads:read` | `view=recommended\|nearby\|all`, match %, deadhead, ganancia; `vehicleId`, `lat/lng`, `radiusKm`, filtros; cursor opaco. Ver [`matching.md`](./matching.md) |
+| GET | `/v1/loads/:id` | `loads:read` | Detalle con match, razones y desglose de ganancia |
+| POST | `/v1/loads` | `loads:create` | Carga manual (privada de la organización); coordenadas y distancia se resuelven desde el catálogo de ciudades |
+| GET | `/v1/ai-settings` | `loads:read` | Preferencias del transportista (match y, en la Fase 2, límites de la IA) |
+| PATCH | `/v1/ai-settings` | `ai_settings:manage` | Editar preferencias |
 
 La documentación OpenAPI interactiva está en `http://localhost:4000/docs`.
 
@@ -136,6 +141,7 @@ organizations 1─┬─< memberships >─1 users 1─< refresh_tokens
                 └─1 ai_settings             loads >─1 brokers
 ```
 
+- **Geografía:** `loads.origin_geo` (PostGIS, índice GiST) se mantiene con un trigger desde `origin_lat/lng`. Los vehículos tienen base (`home_base_lat/lng`) y último GPS (`last_lat/lng/location_at`). `ai_settings` incluye las provincias preferidas y las que se evitan. Ver [ADR-0012](./adr/0012-matching-and-geo.md).
 - Las cargas del marketplace son globales (`organization_id NULL`) y las manuales pertenecen a una organización.
 - `is_simulated` es obligatorio: las cargas simuladas **nunca** se presentan como reales. La API siempre lo devuelve, la web muestra el badge "Demo" y los brokers simulados llevan el sufijo "(DEMO)".
 - El dinero se guarda en `Decimal(12,2)` + `currency` (CAD/USD) y las distancias en km. La conversión a mi es solo de presentación.
@@ -144,9 +150,9 @@ organizations 1─┬─< memberships >─1 users 1─< refresh_tokens
 
 `LoadProvider` es el contrato común (`search(criteria) → NormalizedLoad[]`). Hoy existen `SimulatedLoadProvider` (rutas reales de AB/BC/SK con un PRNG determinista) y la carga manual. Loadlink, DAT, Truckstop y 123Loadboard serán nuevos adaptadores, sin tocar el resto del sistema.
 
-### 4.7 Ganancia estimada
+### 4.7 Ganancia estimada y match
 
-`estimateProfit()` en `@dispatcher/shared` es **determinista** y tiene tests. La IA razona sobre estos números, pero nunca los inventa. En la Fase 0 usa el `costPerKm` del primer vehículo con el mismo equipo; el deadhead (distancia hasta la recogida) llega en la Fase 1.
+`estimateProfit()` y `scoreMatch()` en `@dispatcher/shared` son **deterministas** y tienen tests. La ganancia descuenta los km con carga y los km vacíos (deadhead = haversine × 1.25) al costo/km del vehículo. El match (0–100) combina margen, tarifa/km, deadhead, recogida y región, con razones traducibles. La IA razona sobre estos números, pero nunca los inventa. Detalle en [`matching.md`](./matching.md).
 
 ## 5. Web admin: `apps/web` ([ADR-0007](./adr/0007-web-bff-session.md))
 
@@ -205,7 +211,7 @@ app/_layout.tsx
 | Fase | Alcance | Estado |
 |---|---|---|
 | 0. Fundaciones | Monorepo, organizaciones/RBAC, auth, vehículos, cargas simuladas, design system, CI | ✅ |
-| 1. Cargas | PostGIS ("cerca de mí"), deadhead, scoring/match %, detalle de carga en mobile | ⏳ |
+| 1. Cargas | PostGIS ("cerca de mí"), deadhead, match %, vistas, detalle de carga en mobile, preferencias y cargas manuales en web | ✅ |
 | 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ⏳ |
 | 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ⏳ |
 | 4. Web completa | Flota, reportes, configuración y auditoría de la IA | ⏳ |

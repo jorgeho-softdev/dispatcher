@@ -26,7 +26,19 @@ export interface LoadSearchCriteria {
   limit?: number;
 }
 
-export interface NormalizedLoad extends LoadCreateInput {
+/**
+ * Providers always deliver coordinates and distance (only manual loads may
+ * omit them and rely on the city catalog).
+ */
+export interface NormalizedLoad extends Omit<
+  LoadCreateInput,
+  'originLat' | 'originLng' | 'destinationLat' | 'destinationLng' | 'distanceKm'
+> {
+  originLat: number;
+  originLng: number;
+  destinationLat: number;
+  destinationLng: number;
+  distanceKm: number;
   source: LoadSource;
   externalId: string;
   isSimulated: boolean;

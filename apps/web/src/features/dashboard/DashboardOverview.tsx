@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { formatMoney } from '@dispatcher/shared';
+import { OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
 import { Link } from '@/i18n/navigation';
 import { useIntlLocale } from '@/i18n/use-intl-locale';
 import { useGetLoadsQuery, useGetMeQuery, useGetVehiclesQuery } from '@/lib/store/api';
@@ -11,17 +11,21 @@ export function DashboardOverview() {
   const t = useTranslations('web.dashboard');
   const intlLocale = useIntlLocale();
   const { data: me } = useGetMeQuery();
-  const { data: loads } = useGetLoadsQuery({ limit: 100 });
+  // Same ranking the mobile app shows under "Recomendadas".
+  const { data: loads } = useGetLoadsQuery({ view: 'recommended', limit: 100 });
   const { data: vehicles } = useGetVehiclesQuery();
 
   const items = loads?.items ?? [];
-  const profitable = items.filter((l) => (l.estimatedProfit ?? 0) > 0);
-  const best = [...profitable].sort((a, b) => (b.estimatedProfit ?? 0) - (a.estimatedProfit ?? 0))[0];
+  const opportunities = items.filter((l) => (l.match?.score ?? 0) >= OPPORTUNITY_THRESHOLD);
+  const best = [...opportunities].sort((a, b) => (b.estimatedProfit ?? 0) - (a.estimatedProfit ?? 0))[0];
   const count = (n: number | undefined) => (n === undefined ? '—' : n.toLocaleString(intlLocale));
 
   const stats = [
     { label: t('availableLoads'), value: count(loads ? items.length : undefined) },
-    { label: t('withProfit'), value: count(loads ? profitable.length : undefined) },
+    {
+      label: t('opportunities', { threshold: OPPORTUNITY_THRESHOLD }),
+      value: count(loads ? opportunities.length : undefined),
+    },
     { label: t('vehicles'), value: count(vehicles?.length) },
     { label: t('bestProfit'), value: best ? formatMoney(best.estimatedProfit ?? 0, best.currency, intlLocale) : '—' },
   ];

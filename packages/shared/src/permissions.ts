@@ -8,6 +8,8 @@ export const PERMISSIONS = [
   'members:manage',
   'vehicles:read',
   'vehicles:manage',
+  /** Drivers report their GPS position (deadhead / near me). */
+  'vehicles:report_location',
   'loads:read',
   'loads:create',
   'loads:book',
@@ -26,6 +28,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'members:manage',
     'vehicles:read',
     'vehicles:manage',
+    'vehicles:report_location',
     'loads:read',
     'loads:create',
     'loads:book',
@@ -34,9 +37,9 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'trips:read',
     'trips:manage',
   ],
-  dispatcher: ['vehicles:read', 'loads:read', 'loads:create', 'loads:book', 'trips:read', 'trips:manage'],
+  dispatcher: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'loads:create', 'loads:book', 'trips:read', 'trips:manage'],
   // Driver booking approval is configurable per organization in a later phase.
-  driver: ['vehicles:read', 'loads:read', 'trips:read'],
+  driver: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'trips:read'],
 };
 
 export function can(role: Role | null | undefined, permission: Permission): boolean {

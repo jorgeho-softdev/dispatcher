@@ -10,6 +10,7 @@ Monorepo con **API** (NestJS + PostgreSQL), **web admin** (Next.js) y **app móv
 | [`docs/conventions.md`](./docs/conventions.md) | Buenas prácticas **obligatorias** y Definition of Done |
 | [`docs/adr/`](./docs/adr/) | Por qué se tomó cada decisión |
 | [`docs/design-system.md`](./docs/design-system.md) | Cómo cambiar colores y fuentes (web + app) |
+| [`docs/matching.md`](./docs/matching.md) | Cómo se calcula el match %, el deadhead y "Cerca de mí" |
 | [`docs/i18n.md`](./docs/i18n.md) | Idiomas (en, fr, es, pa): cómo traducir y agregar idiomas |
 
 ## Requisitos

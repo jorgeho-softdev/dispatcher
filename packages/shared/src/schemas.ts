@@ -1,5 +1,11 @@
 import { z } from 'zod';
-import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES } from './constants';
+import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES, LOAD_VIEWS } from './constants';
+import { PROVINCES } from './geo';
+
+const lat = z.number().min(-90).max(90);
+const lng = z.number().min(-180).max(180);
+const queryLat = z.coerce.number().min(-90).max(90);
+const queryLng = z.coerce.number().min(-180).max(180);
 
 // Request schemas — validated by the api (ZodValidationPipe) and reused by
 // web/mobile forms so both sides agree on every rule.
@@ -40,14 +46,33 @@ export const vehicleCreateSchema = z.object({
   capacityKg: z.number().int().positive().max(40_000),
   costPerKm: z.number().positive().max(20),
   homeBaseCity: z.string().trim().max(80).optional(),
-  homeBaseProvince: z.string().trim().length(2).optional(),
+  homeBaseProvince: z.enum(PROVINCES).optional(),
+  /** Optional: resolved from the city catalog when omitted. */
+  homeBaseLat: lat.optional(),
+  homeBaseLng: lng.optional(),
 });
 export type VehicleCreateInput = z.infer<typeof vehicleCreateSchema>;
 
 export const vehicleUpdateSchema = vehicleCreateSchema.partial();
 export type VehicleUpdateInput = z.infer<typeof vehicleUpdateSchema>;
 
+export const vehicleLocationSchema = z.object({ lat, lng });
+export type VehicleLocationInput = z.infer<typeof vehicleLocationSchema>;
+
+/** Matching context shared by the list and detail endpoints. */
+const matchContext = {
+  /** Vehicle to match against; defaults to the organization's first vehicle. */
+  vehicleId: z.uuid().optional(),
+  /** Explicit position (e.g. the phone's GPS); overrides the vehicle's. */
+  lat: queryLat.optional(),
+  lng: queryLng.optional(),
+};
+
 export const loadQuerySchema = z.object({
+  view: z.enum(LOAD_VIEWS).default('all'),
+  ...matchContext,
+  /** "nearby" view radius around the position (km, straight line). */
+  radiusKm: z.coerce.number().int().min(10).max(2000).default(250),
   equipment: z.enum(EQUIPMENT_TYPES).optional(),
   originProvince: z.string().length(2).optional(),
   status: z.enum(LOAD_STATUSES).optional(),
@@ -56,18 +81,25 @@ export const loadQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).optional().default(20),
 });
 export type LoadQuery = z.infer<typeof loadQuerySchema>;
+/** What clients send: any subset of the parsed query (booleans are serialized to "true"/"false"). */
+export type LoadQueryInput = Partial<LoadQuery>;
 
+export const loadDetailQuerySchema = z.object(matchContext);
+export type LoadDetailQuery = z.infer<typeof loadDetailQuerySchema>;
+
+// Coordinates and distance are optional for manual loads: the api resolves
+// catalog cities (CANADIAN_CITIES) and estimates road km when omitted.
 export const loadCreateSchema = z.object({
   originCity: z.string().trim().min(1),
-  originProvince: z.string().trim().length(2),
-  originLat: z.number().min(-90).max(90),
-  originLng: z.number().min(-180).max(180),
+  originProvince: z.enum(PROVINCES),
+  originLat: lat.optional(),
+  originLng: lng.optional(),
   destinationCity: z.string().trim().min(1),
-  destinationProvince: z.string().trim().length(2),
-  destinationLat: z.number().min(-90).max(90),
-  destinationLng: z.number().min(-180).max(180),
+  destinationProvince: z.enum(PROVINCES),
+  destinationLat: lat.optional(),
+  destinationLng: lng.optional(),
   pickupAt: z.coerce.date(),
-  distanceKm: z.number().positive(),
+  distanceKm: z.number().positive().optional(),
   weightKg: z.number().int().positive(),
   equipment: z.enum(EQUIPMENT_TYPES),
   postedRate: z.number().positive(),
@@ -79,9 +111,19 @@ export type LoadCreateInput = z.infer<typeof loadCreateSchema>;
 
 export const aiSettingsSchema = z.object({
   autonomyLevel: z.enum(AUTONOMY_LEVELS),
-  minRatePerKm: z.number().positive(),
+  minRatePerKm: z.number().positive().max(20),
   minMarginPct: z.number().min(0).max(100),
   maxCounterOfferPct: z.number().min(0).max(100),
-  maxDeadheadKm: z.number().int().min(0),
+  maxDeadheadKm: z.number().int().min(0).max(2000),
+  preferredProvinces: z.array(z.enum(PROVINCES)).max(PROVINCES.length),
+  avoidProvinces: z.array(z.enum(PROVINCES)).max(PROVINCES.length),
 });
 export type AiSettingsInput = z.infer<typeof aiSettingsSchema>;
+
+export const aiSettingsUpdateSchema = aiSettingsSchema
+  .partial()
+  .refine(
+    (v) => !(v.preferredProvinces ?? []).some((p) => (v.avoidProvinces ?? []).includes(p)),
+    { message: 'A province cannot be both preferred and avoided', path: ['avoidProvinces'] },
+  );
+export type AiSettingsUpdateInput = z.infer<typeof aiSettingsUpdateSchema>;

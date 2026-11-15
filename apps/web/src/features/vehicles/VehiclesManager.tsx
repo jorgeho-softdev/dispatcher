@@ -11,6 +11,7 @@ import {
 } from '@/lib/store/api';
 import { useIntlLocale } from '@/i18n/use-intl-locale';
 import { Button, Card, ErrorState, Input, Label, PageHeader, Select } from '@/components/ui';
+import { CityPicker, parseCityKey } from '@/components/CityPicker';
 
 export function VehiclesManager() {
   const t = useTranslations('web.vehicles');
@@ -22,6 +23,7 @@ export function VehiclesManager() {
   const [createVehicle, { isLoading: creating }] = useCreateVehicleMutation();
   const [deleteVehicle] = useDeleteVehicleMutation();
   const [formError, setFormError] = useState<string | null>(null);
+  const [homeBase, setHomeBase] = useState('');
 
   // Same RBAC matrix the api enforces; hiding the UI is only a convenience.
   const canManage = can(me?.role, 'vehicles:manage');
@@ -37,8 +39,9 @@ export function VehiclesManager() {
       plate: f.get('plate') || undefined,
       capacityKg: Number(f.get('capacityKg')),
       costPerKm: Number(f.get('costPerKm')),
-      homeBaseCity: f.get('homeBaseCity') || undefined,
-      homeBaseProvince: f.get('homeBaseProvince') || undefined,
+      // The api resolves coordinates from the shared city catalog.
+      homeBaseCity: parseCityKey(homeBase)?.city,
+      homeBaseProvince: parseCityKey(homeBase)?.province,
     });
     if (!parsed.success) {
       setFormError(parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(' · '));
@@ -46,7 +49,10 @@ export function VehiclesManager() {
     }
     const result = await createVehicle(parsed.data);
     if ('error' in result) setFormError(t('saveError'));
-    else formEl.reset();
+    else {
+      formEl.reset();
+      setHomeBase('');
+    }
   }
 
   return (
@@ -65,7 +71,8 @@ export function VehiclesManager() {
                   <p className="text-xs text-muted">
                     {tEquipment(v.equipment)} · {v.capacityKg.toLocaleString(intlLocale)} kg ·{' '}
                     {formatMoney(v.costPerKm, 'CAD', intlLocale)}/km
-                    {v.homeBaseCity && ` · ${v.homeBaseCity}, ${v.homeBaseProvince ?? ''}`}
+                    {' · '}
+                    {v.homeBaseCity ? `${v.homeBaseCity}, ${v.homeBaseProvince ?? ''}` : t('noHomeBase')}
                   </p>
                 </div>
                 {canManage && (
@@ -110,15 +117,9 @@ export function VehiclesManager() {
                 <Label htmlFor="plate">{t('plate')}</Label>
                 <Input id="plate" name="plate" />
               </div>
-              <div className="grid grid-cols-[1fr_80px] gap-3">
-                <div>
-                  <Label htmlFor="homeBaseCity">{t('homeBase')}</Label>
-                  <Input id="homeBaseCity" name="homeBaseCity" placeholder="Calgary" />
-                </div>
-                <div>
-                  <Label htmlFor="homeBaseProvince">{t('province')}</Label>
-                  <Input id="homeBaseProvince" name="homeBaseProvince" placeholder="AB" maxLength={2} />
-                </div>
+              <div>
+                <Label htmlFor="homeBase">{t('homeBase')}</Label>
+                <CityPicker id="homeBase" value={homeBase} onChange={setHomeBase} placeholder={t('selectCity')} />
               </div>
               {formError && (
                 <p role="alert" className="text-xs text-danger">

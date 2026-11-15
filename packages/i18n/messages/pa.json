@@ -26,6 +26,41 @@
       "fleet_manager": "ਫਲੀਟ ਮੈਨੇਜਰ",
       "dispatcher": "ਡਿਸਪੈਚਰ",
       "driver": "ਡਰਾਈਵਰ"
+    },
+    "matchReason": {
+      "equipment_ideal": "ਢੁਕਵਾਂ ਉਪਕਰਨ",
+      "high_margin": "ਵੱਧ ਮੁਨਾਫ਼ਾ ਮਾਰਜਨ",
+      "good_rate": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਵਧੀਆ ਰੇਟ",
+      "short_deadhead": "ਘੱਟ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "pickup_soon": "ਜਲਦੀ ਪਿਕਅੱਪ",
+      "preferred_lane": "ਪਸੰਦੀਦਾ ਖੇਤਰ",
+      "equipment_larger": "ਲੋੜ ਤੋਂ ਵੱਡਾ ਵਾਹਨ",
+      "low_margin": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਮਾਰਜਨ",
+      "low_rate": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਰੇਟ",
+      "long_deadhead": "ਜ਼ਿਆਦਾ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "deadhead_unknown": "ਵਾਹਨ ਦੀ ਥਾਂ ਪਤਾ ਨਹੀਂ",
+      "pickup_far_out": "ਪਿਕਅੱਪ ਕਈ ਦਿਨਾਂ ਬਾਅਦ ਹੈ",
+      "equipment_incompatible": "ਉਪਕਰਨ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ",
+      "over_capacity": "ਵਾਹਨ ਦੀ ਸਮਰੱਥਾ ਤੋਂ ਵੱਧ",
+      "avoided_region": "ਖੇਤਰ ਜਿਸ ਤੋਂ ਤੁਸੀਂ ਬਚਦੇ ਹੋ",
+      "pickup_passed": "ਪਿਕਅੱਪ ਦਾ ਸਮਾਂ ਲੰਘ ਗਿਆ"
+    },
+    "positionSource": {
+      "request": "ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਥਾਂ",
+      "vehicle_gps": "ਵਾਹਨ ਦਾ GPS",
+      "home_base": "ਵਾਹਨ ਦਾ ਬੇਸ"
+    },
+    "loadView": {
+      "recommended": "ਸਿਫ਼ਾਰਸ਼ੀ",
+      "nearby": "ਮੇਰੇ ਨੇੜੇ",
+      "all": "ਸਾਰੇ"
+    },
+    "match": "{score}% ਮੇਲ",
+    "deadhead": "{km} ਕਿ.ਮੀ. ਖਾਲੀ",
+    "autonomy": {
+      "assisted": "ਸਹਾਇਕ",
+      "semi_auto": "ਅਰਧ-ਆਟੋਮੈਟਿਕ",
+      "auto": "ਆਟੋਮੈਟਿਕ"
     }
   },
   "errors": {
@@ -64,7 +99,8 @@
     "nav": {
       "dashboard": "ਡੈਸ਼ਬੋਰਡ",
       "loads": "ਲੋਡ",
-      "vehicles": "ਵਾਹਨ"
+      "vehicles": "ਵਾਹਨ",
+      "settings": "ਤਰਜੀਹਾਂ"
     },
     "dashboard": {
       "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, {name}",
@@ -74,7 +110,8 @@
       "vehicles": "ਵਾਹਨ",
       "bestProfit": "ਸਭ ਤੋਂ ਵੱਧ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
       "addVehicleHint": "ਹਰ ਲੋਡ ਦਾ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ ਗਿਣਨ ਲਈ ਇੱਕ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
-      "addVehicleCta": "ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ →"
+      "addVehicleCta": "ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ →",
+      "opportunities": "ਮੌਕੇ (≥{threshold}% ਮੇਲ)"
     },
     "loads": {
       "title": "ਲੋਡ",
@@ -91,7 +128,14 @@
       "empty": "ਇਹਨਾਂ ਫਿਲਟਰਾਂ ਨਾਲ ਕੋਈ ਲੋਡ ਨਹੀਂ ਮਿਲਿਆ।",
       "noBroker": "ਕੋਈ ਬ੍ਰੋਕਰ ਨਹੀਂ",
       "noVehicle": "ਕੋਈ ਵਾਹਨ ਨਹੀਂ",
-      "perKm": "{amount}/ਕਿ.ਮੀ."
+      "perKm": "{amount}/ਕਿ.ਮੀ.",
+      "colMatch": "ਮੇਲ",
+      "colDeadhead": "ਖਾਲੀ ਕਿ.ਮੀ.",
+      "newLoad": "ਨਵਾਂ ਮੈਨੂਅਲ ਲੋਡ",
+      "matchingFor": "{vehicle} ਲਈ ਮੇਲ · ਥਾਂ: {source}",
+      "noPosition": "ਨੇੜਲੇ ਲੋਡ ਅਤੇ ਖਾਲੀ ਕਿ.ਮੀ. ਵੇਖਣ ਲਈ ਆਪਣੇ ਵਾਹਨ ਦਾ ਬੇਸ ਸ਼ਾਮਲ ਕਰੋ।",
+      "noVehicleMatch": "ਮੇਲ ਅਤੇ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ ਵੇਖਣ ਲਈ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
+      "loadMore": "ਹੋਰ ਲੋਡ ਕਰੋ"
     },
     "vehicles": {
       "title": "ਵਾਹਨ",
@@ -106,7 +150,44 @@
       "homeBase": "ਬੇਸ",
       "province": "ਸੂਬਾ",
       "saveError": "ਵਾਹਨ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
-      "submit": "ਵਾਹਨ ਸੇਵ ਕਰੋ"
+      "submit": "ਵਾਹਨ ਸੇਵ ਕਰੋ",
+      "selectCity": "ਸ਼ਹਿਰ ਚੁਣੋ",
+      "noHomeBase": "ਕੋਈ ਬੇਸ ਨਹੀਂ"
+    },
+    "loadForm": {
+      "title": "ਨਵਾਂ ਮੈਨੂਅਲ ਲੋਡ",
+      "subtitle": "ਇੱਕ ਅਸਲ ਲੋਡ ਜੋ ਤੁਹਾਨੂੰ ਸਿੱਧਾ ਬ੍ਰੋਕਰ ਜਾਂ ਸ਼ਿਪਰ ਤੋਂ ਮਿਲਿਆ।",
+      "origin": "ਸ਼ੁਰੂਆਤ",
+      "destination": "ਮੰਜ਼ਿਲ",
+      "pickupAt": "ਪਿਕਅੱਪ ਮਿਤੀ ਅਤੇ ਸਮਾਂ",
+      "weightKg": "ਭਾਰ (ਕਿ.ਗ੍ਰਾ.)",
+      "equipment": "ਉਪਕਰਨ",
+      "postedRate": "ਰੇਟ (CA$)",
+      "distanceKm": "ਦੂਰੀ (ਕਿ.ਮੀ., ਵਿਕਲਪਿਕ)",
+      "distanceHint": "ਸ਼ਹਿਰਾਂ ਤੋਂ ਅਨੁਮਾਨ ਲਈ ਖਾਲੀ ਛੱਡੋ (~{km} ਕਿ.ਮੀ.)।",
+      "notes": "ਨੋਟਸ",
+      "submit": "ਲੋਡ ਸੇਵ ਕਰੋ",
+      "cancel": "ਰੱਦ ਕਰੋ",
+      "selectCity": "ਸ਼ਹਿਰ ਚੁਣੋ",
+      "sameCity": "ਸ਼ੁਰੂਆਤ ਅਤੇ ਮੰਜ਼ਿਲ ਵੱਖਰੇ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ।"
+    },
+    "settings": {
+      "title": "ਤਰਜੀਹਾਂ",
+      "subtitle": "ਲੋਡ ਮੇਲ ਲਈ ਤੁਹਾਡੇ ਨਿਯਮ। AI ਡਿਸਪੈਚਰ ਵੀ ਇਹਨਾਂ ਦੀ ਪਾਲਣਾ ਕਰੇਗਾ।",
+      "profitability": "ਮੁਨਾਫ਼ਾ",
+      "minRatePerKm": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਘੱਟੋ-ਘੱਟ ਰੇਟ (CA$)",
+      "minMarginPct": "ਘੱਟੋ-ਘੱਟ ਮਾਰਜਨ (%)",
+      "maxDeadheadKm": "ਪਿਕਅੱਪ ਤੱਕ ਵੱਧ ਤੋਂ ਵੱਧ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "regions": "ਖੇਤਰ",
+      "preferredProvinces": "ਪਸੰਦੀਦਾ ਸੂਬੇ",
+      "avoidProvinces": "ਬਚਣ ਵਾਲੇ ਸੂਬੇ",
+      "regionsHint": "ਪਸੰਦੀਦਾ ਸੂਬੇ ਮੇਲ ਵਧਾਉਂਦੇ ਹਨ; ਬਚਣ ਵਾਲੇ ਕਦੇ ਸਿਫ਼ਾਰਸ਼ ਨਹੀਂ ਹੁੰਦੇ।",
+      "aiSection": "AI ਡਿਸਪੈਚਰ",
+      "autonomy": "ਖੁਦਮੁਖਤਿਆਰੀ ਪੱਧਰ",
+      "maxCounterOfferPct": "ਪੋਸਟ ਕੀਤੇ ਰੇਟ ਤੋਂ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ (%)",
+      "aiComingSoon": "ਬ੍ਰੋਕਰਾਂ ਨਾਲ ਗੱਲਬਾਤ ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਆਵੇਗੀ।",
+      "save": "ਤਰਜੀਹਾਂ ਸੇਵ ਕਰੋ",
+      "saved": "ਤਰਜੀਹਾਂ ਸੇਵ ਹੋ ਗਈਆਂ।"
     }
   },
   "mobile": {
@@ -131,13 +212,18 @@
       "opportunities": "{count, plural, one {ਮੌਕਾ} other {ਮੌਕੇ}}",
       "activeTrips": "ਚੱਲ ਰਹੇ ਸਫ਼ਰ",
       "bestProfit": "ਵੱਧ ਤੋਂ ਵੱਧ ਅਨੁ. ਮੁਨਾਫ਼ਾ",
-      "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ"
+      "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ",
+      "bestOpportunity": "ਸਭ ਤੋਂ ਵਧੀਆ ਮੌਕਾ",
+      "noOpportunities": "ਇਸ ਵੇਲੇ ਕੋਈ ਵਧੀਆ ਮੇਲ ਨਹੀਂ। ਜਲਦੀ ਵਾਪਸ ਵੇਖੋ।"
     },
     "loads": {
       "title": "ਉਪਲਬਧ ਲੋਡ",
       "estProfit": "ਅਨੁ. ਮੁਨਾਫ਼ਾ",
       "empty": "ਇਸ ਵੇਲੇ ਕੋਈ ਲੋਡ ਉਪਲਬਧ ਨਹੀਂ।",
-      "error": "ਸੂਚੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਲਈ ਹੇਠਾਂ ਖਿੱਚੋ।"
+      "error": "ਸੂਚੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਲਈ ਹੇਠਾਂ ਖਿੱਚੋ।",
+      "nearbyNeedsLocation": "ਨੇੜਲੇ ਲੋਡ ਵੇਖਣ ਲਈ ਲੋਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ, ਜਾਂ ਵੈੱਬ 'ਤੇ ਆਪਣੇ ਵਾਹਨ ਦਾ ਬੇਸ ਸ਼ਾਮਲ ਕਰੋ।",
+      "enableLocation": "ਮੇਰੀ ਲੋਕੇਸ਼ਨ ਵਰਤੋ",
+      "noVehicle": "ਮੇਲ ਅਤੇ ਮੁਨਾਫ਼ਾ ਵੇਖਣ ਲਈ ਵੈੱਬ 'ਤੇ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।"
     },
     "account": {
       "title": "ਖਾਤਾ",
@@ -166,6 +252,27 @@
       "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ AI Dispatcher ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
       "reminderTitle": "AI Dispatcher",
       "reminderBody": "ਅੱਜ ਆਪਣੇ ਲੋਡ ਵੇਖਣਾ ਨਾ ਭੁੱਲੋ!"
+    },
+    "loadDetail": {
+      "title": "ਲੋਡ",
+      "pickup": "ਪਿਕਅੱਪ",
+      "weight": "ਭਾਰ",
+      "equipment": "ਉਪਕਰਨ",
+      "broker": "ਬ੍ਰੋਕਰ",
+      "postedRate": "ਪੋਸਟ ਕੀਤਾ ਰੇਟ",
+      "ratePerKm": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਰੇਟ",
+      "breakdown": "ਮੁਨਾਫ਼ੇ ਦਾ ਵੇਰਵਾ",
+      "loadedKm": "ਲੋਡ ਨਾਲ ਕਿ.ਮੀ.",
+      "deadheadKm": "ਪਿਕਅੱਪ ਤੱਕ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "costPerKm": "ਤੁਹਾਡੀ ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਲਾਗਤ",
+      "costs": "ਅਨੁਮਾਨਿਤ ਲਾਗਤ",
+      "profit": "ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
+      "margin": "ਮਾਰਜਨ",
+      "whyMatch": "ਇਹ ਮੇਲ ਕਿਉਂ",
+      "positionFrom": "ਖਾਲੀ ਕਿ.ਮੀ. {source} ਤੋਂ ਮਾਪੇ ਗਏ।",
+      "negotiate": "AI ਨਾਲ ਗੱਲਬਾਤ ਕਰੋ",
+      "negotiateSoon": "ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਆ ਰਿਹਾ ਹੈ",
+      "noBreakdown": "ਮੁਨਾਫ਼ੇ ਦਾ ਵੇਰਵਾ ਵੇਖਣ ਲਈ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।"
     }
   }
 }

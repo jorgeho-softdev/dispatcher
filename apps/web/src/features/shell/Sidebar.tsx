@@ -7,6 +7,7 @@ const NAV = [
   { href: '/', key: 'dashboard' },
   { href: '/loads', key: 'loads' },
   { href: '/vehicles', key: 'vehicles' },
+  { href: '/settings', key: 'settings' },
 ] as const;
 
 export function Sidebar() {

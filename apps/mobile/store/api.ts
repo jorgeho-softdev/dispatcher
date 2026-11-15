@@ -63,4 +63,11 @@ const baseQueryWithReauth: DispatcherBaseQuery = async (args, api, extra) => {
 
 export const dispatcherApi = createDispatcherApi(baseQueryWithReauth);
 
-export const { useGetMeQuery, useGetLoadsQuery, useGetLoadQuery, useGetVehiclesQuery } = dispatcherApi;
+export const {
+  useGetMeQuery,
+  useGetLoadsQuery,
+  useGetLoadPagesInfiniteQuery,
+  useGetLoadQuery,
+  useGetVehiclesQuery,
+  useReportVehicleLocationMutation,
+} = dispatcherApi;

@@ -1,4 +1,4 @@
-import type { EquipmentType } from '@dispatcher/shared';
+import type { City, EquipmentType } from '@dispatcher/shared';
 import type {
   LoadProvider,
   LoadSearchCriteria,
@@ -8,13 +8,6 @@ import type {
 // Realistic but FAKE loads for the MVP (Alberta / BC / Saskatchewan lanes).
 // Every load is flagged isSimulated=true and brokers are labelled "(DEMO)",
 // so they can never be mistaken for real opportunities.
-
-interface City {
-  city: string;
-  province: string;
-  lat: number;
-  lng: number;
-}
 
 const C = {
   calgary: { city: 'Calgary', province: 'AB', lat: 51.0447, lng: -114.0719 },

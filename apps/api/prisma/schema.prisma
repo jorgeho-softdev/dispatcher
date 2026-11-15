@@ -135,6 +135,12 @@ model Vehicle {
   costPerKm        Decimal       @map("cost_per_km") @db.Decimal(6, 2)
   homeBaseCity     String?       @map("home_base_city")
   homeBaseProvince String?       @map("home_base_province") @db.Char(2)
+  homeBaseLat      Float?        @map("home_base_lat")
+  homeBaseLng      Float?        @map("home_base_lng")
+  // Last reported GPS position (driver app). Used for deadhead / "near me".
+  lastLat          Float?        @map("last_lat")
+  lastLng          Float?        @map("last_lng")
+  lastLocationAt   DateTime?     @map("last_location_at")
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")
   deletedAt        DateTime?     @map("deleted_at")
@@ -186,6 +192,9 @@ model Load {
   brokerId            String?       @map("broker_id") @db.Uuid
   notes               String?
   rawPayload          Json?         @map("raw_payload")
+  // PostGIS point of the pickup, kept in sync with origin_lat/origin_lng by a
+  // database trigger (see migration "phase1_geo"). Queried with $queryRaw.
+  originGeo           Unsupported("geography(Point, 4326)")? @map("origin_geo")
   createdAt           DateTime      @default(now()) @map("created_at")
   updatedAt           DateTime      @updatedAt @map("updated_at")
 
@@ -196,6 +205,7 @@ model Load {
   @@index([status, pickupAt])
   @@index([equipment, status])
   @@index([organizationId])
+  @@index([originGeo], type: Gist)
   @@map("loads")
 }
 
@@ -207,6 +217,10 @@ model AiSettings {
   minMarginPct       Decimal       @default(30) @map("min_margin_pct") @db.Decimal(5, 2)
   maxCounterOfferPct Decimal       @default(15) @map("max_counter_offer_pct") @db.Decimal(5, 2)
   maxDeadheadKm      Int           @default(150) @map("max_deadhead_km")
+  /// Provinces the carrier prefers (origin or destination). Boosts match %.
+  preferredProvinces String[]      @default([]) @map("preferred_provinces")
+  /// Provinces the carrier never wants to go to/from. Excluded from matches.
+  avoidProvinces     String[]      @default([]) @map("avoid_provinces")
   updatedAt          DateTime      @updatedAt @map("updated_at")
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)

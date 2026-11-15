@@ -10,8 +10,10 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
   loadCreateSchema,
+  loadDetailQuerySchema,
   loadQuerySchema,
   type LoadCreateInput,
+  type LoadDetailQuery,
   type LoadQuery,
 } from '@dispatcher/shared';
 import { Auth, RequirePermission } from '../../common/decorators';
@@ -36,8 +38,12 @@ export class LoadsController {
 
   @Get(':id')
   @RequirePermission('loads:read')
-  get(@Auth() auth: AuthContext, @Param('id', ParseUUIDPipe) id: string) {
-    return this.loads.get(auth.organizationId, id);
+  get(
+    @Auth() auth: AuthContext,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query(new ZodValidationPipe(loadDetailQuerySchema)) query: LoadDetailQuery,
+  ) {
+    return this.loads.get(auth.organizationId, id, query);
   }
 
   @Post()

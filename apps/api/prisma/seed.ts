@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { hash } from '@node-rs/argon2';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
+import { findCity } from '@dispatcher/shared';
 import { SimulatedLoadProvider } from '../src/modules/loads/providers/simulated.provider';
 
 // Idempotent dev seed: a demo owner-operator + simulated marketplace loads.
@@ -32,7 +33,7 @@ async function main() {
       const org = await prisma.organization.create({
         data: {
           name: 'Carlos Transport (DEMO)',
-          aiSettings: { create: {} },
+          aiSettings: { create: { preferredProvinces: ['AB'] } },
           vehicles: {
             create: {
               name: 'Box Truck 16ft',
@@ -42,6 +43,8 @@ async function main() {
               costPerKm: 1.7,
               homeBaseCity: 'Calgary',
               homeBaseProvince: 'AB',
+              homeBaseLat: 51.0447,
+              homeBaseLng: -114.0719,
             },
           },
         },
@@ -49,6 +52,20 @@ async function main() {
       await prisma.membership.create({
         data: { userId: user.id, organizationId: org.id, role: 'owner' },
       });
+    }
+
+    // Backfill home-base coordinates for vehicles created before Phase 1.
+    const vehicles = await prisma.vehicle.findMany({
+      where: { homeBaseLat: null, homeBaseCity: { not: null } },
+    });
+    for (const v of vehicles) {
+      const city = findCity(v.homeBaseCity ?? '', v.homeBaseProvince ?? '');
+      if (city) {
+        await prisma.vehicle.update({
+          where: { id: v.id },
+          data: { homeBaseLat: city.lat, homeBaseLng: city.lng },
+        });
+      }
     }
 
     const loads = await new SimulatedLoadProvider(42).search({ limit: 40 });

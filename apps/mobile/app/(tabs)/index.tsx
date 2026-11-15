@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { formatMoney } from '@dispatcher/shared';
+import { OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
 import { Screen } from '@/components/ui/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -11,6 +11,8 @@ import { useColors } from '@/lib/theme';
 import { useAppSelector } from '@/store/hooks';
 import { selectMe } from '@/store/auth-slice';
 import { useGetLoadsQuery } from '@/store/api';
+import { LoadCard } from '@/features/loads/LoadCard';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 
 export default function HomeScreen() {
   const t = useTranslations();
@@ -18,10 +20,12 @@ export default function HomeScreen() {
   const colors = useColors();
   const router = useRouter();
   const me = useAppSelector(selectMe);
-  const { data } = useGetLoadsQuery({ limit: 100 });
+  // Same ranking as the "Recommended" tab; only strong matches count.
+  const { data } = useGetLoadsQuery({ view: 'recommended', limit: 100 });
 
   const loads = data?.items ?? [];
-  const opportunities = loads.filter((l) => (l.estimatedProfit ?? 0) > 0);
+  const opportunities = loads.filter((l) => (l.match?.score ?? 0) >= OPPORTUNITY_THRESHOLD);
+  const best = opportunities[0];
   const bestProfit = Math.max(0, ...opportunities.map((l) => l.estimatedProfit ?? 0));
 
   const stats = [
@@ -64,6 +68,17 @@ export default function HomeScreen() {
       </View>
 
       <Button className="mt-5" title={t('mobile.home.seeLoads')} onPress={() => router.navigate('/loads')} />
+
+      <SectionTitle title={t('mobile.home.bestOpportunity')} />
+      {best ? (
+        <LoadCard load={best} />
+      ) : (
+        data && (
+          <Card>
+            <Text className="font-sans text-sm text-muted">{t('mobile.home.noOpportunities')}</Text>
+          </Card>
+        )
+      )}
     </Screen>
   );
 }

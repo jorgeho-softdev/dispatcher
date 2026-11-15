@@ -25,7 +25,8 @@ npm run lint
 
 ```
 src/app/[locale]/        Todas las páginas, una versión por idioma (/en, /fr, /es, /pa)
-  (dashboard)/           Páginas autenticadas (shells estáticos)
+  (dashboard)/           Páginas autenticadas: dashboard, loads (vistas + match), loads/new (carga manual),
+                         vehicles (base con selector de ciudad), settings (preferencias)
   login/                 Login
 src/i18n/                next-intl: routing, navigation (Link/useRouter con idioma), request, params
 src/app/api/             BFF: auth/login, auth/logout, backend/[...path]

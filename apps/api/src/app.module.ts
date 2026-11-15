@@ -10,6 +10,7 @@ import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { LoadsModule } from './modules/loads/loads.module';
+import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { LoadsModule } from './modules/loads/loads.module';
     AuthModule,
     VehiclesModule,
     LoadsModule,
+    AiSettingsModule,
   ],
   providers: [
     // Order matters: authenticate first, then authorize.

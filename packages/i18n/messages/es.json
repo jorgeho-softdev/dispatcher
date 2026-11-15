@@ -26,6 +26,41 @@
       "fleet_manager": "Gerente de flota",
       "dispatcher": "Despachador",
       "driver": "Conductor"
+    },
+    "matchReason": {
+      "equipment_ideal": "Equipo ideal",
+      "high_margin": "Margen alto",
+      "good_rate": "Buena tarifa por km",
+      "short_deadhead": "Pocos km vacíos",
+      "pickup_soon": "Recogida pronto",
+      "preferred_lane": "Región preferida",
+      "equipment_larger": "Vehículo más grande de lo necesario",
+      "low_margin": "Margen bajo tu mínimo",
+      "low_rate": "Tarifa bajo tu mínimo",
+      "long_deadhead": "Muchos km vacíos",
+      "deadhead_unknown": "Ubicación del vehículo desconocida",
+      "pickup_far_out": "La recogida es en varios días",
+      "equipment_incompatible": "Equipo no compatible",
+      "over_capacity": "Excede la capacidad del vehículo",
+      "avoided_region": "Región que evitas",
+      "pickup_passed": "La hora de recogida ya pasó"
+    },
+    "positionSource": {
+      "request": "tu ubicación actual",
+      "vehicle_gps": "el GPS del vehículo",
+      "home_base": "la base del vehículo"
+    },
+    "loadView": {
+      "recommended": "Recomendadas",
+      "nearby": "Cerca de mí",
+      "all": "Todas"
+    },
+    "match": "{score}% Match",
+    "deadhead": "{km} km vacío",
+    "autonomy": {
+      "assisted": "Asistido",
+      "semi_auto": "Semiautomático",
+      "auto": "Automático"
     }
   },
   "errors": {
@@ -64,7 +99,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "loads": "Cargas",
-      "vehicles": "Vehículos"
+      "vehicles": "Vehículos",
+      "settings": "Preferencias"
     },
     "dashboard": {
       "greeting": "Hola, {name}",
@@ -74,7 +110,8 @@
       "vehicles": "Vehículos",
       "bestProfit": "Mejor ganancia est.",
       "addVehicleHint": "Registra un vehículo para calcular la ganancia estimada de cada carga.",
-      "addVehicleCta": "Agregar vehículo →"
+      "addVehicleCta": "Agregar vehículo →",
+      "opportunities": "Oportunidades (≥{threshold}% match)"
     },
     "loads": {
       "title": "Cargas",
@@ -91,7 +128,14 @@
       "empty": "No hay cargas con estos filtros.",
       "noBroker": "Sin broker",
       "noVehicle": "Sin vehículo",
-      "perKm": "{amount}/km"
+      "perKm": "{amount}/km",
+      "colMatch": "Match",
+      "colDeadhead": "Km vacíos",
+      "newLoad": "Nueva carga manual",
+      "matchingFor": "Match para {vehicle} · posición desde {source}",
+      "noPosition": "Agrega una base a tu vehículo para ver cargas cercanas y km vacíos.",
+      "noVehicleMatch": "Agrega un vehículo para ver el match y la ganancia estimada.",
+      "loadMore": "Cargar más"
     },
     "vehicles": {
       "title": "Vehículos",
@@ -106,7 +150,44 @@
       "homeBase": "Base",
       "province": "Prov.",
       "saveError": "No se pudo guardar el vehículo.",
-      "submit": "Guardar vehículo"
+      "submit": "Guardar vehículo",
+      "selectCity": "Selecciona una ciudad",
+      "noHomeBase": "Sin base"
+    },
+    "loadForm": {
+      "title": "Nueva carga manual",
+      "subtitle": "Una carga real que conseguiste directo con un broker o embarcador.",
+      "origin": "Origen",
+      "destination": "Destino",
+      "pickupAt": "Fecha y hora de recogida",
+      "weightKg": "Peso (kg)",
+      "equipment": "Equipo",
+      "postedRate": "Tarifa (CA$)",
+      "distanceKm": "Distancia (km, opcional)",
+      "distanceHint": "Déjala vacía para estimarla desde las ciudades (~{km} km).",
+      "notes": "Notas",
+      "submit": "Guardar carga",
+      "cancel": "Cancelar",
+      "selectCity": "Selecciona una ciudad",
+      "sameCity": "El origen y el destino deben ser distintos."
+    },
+    "settings": {
+      "title": "Preferencias",
+      "subtitle": "Tus reglas para el match de cargas. El dispatcher con IA también las seguirá.",
+      "profitability": "Rentabilidad",
+      "minRatePerKm": "Tarifa mínima por km (CA$)",
+      "minMarginPct": "Margen mínimo (%)",
+      "maxDeadheadKm": "Máximo de km vacíos hasta la recogida",
+      "regions": "Regiones",
+      "preferredProvinces": "Provincias preferidas",
+      "avoidProvinces": "Provincias a evitar",
+      "regionsHint": "Las preferidas suben el match; las evitadas nunca se recomiendan.",
+      "aiSection": "Dispatcher con IA",
+      "autonomy": "Nivel de autonomía",
+      "maxCounterOfferPct": "Contraoferta máx. sobre la tarifa publicada (%)",
+      "aiComingSoon": "La negociación con brokers llega en la siguiente fase.",
+      "save": "Guardar preferencias",
+      "saved": "Preferencias guardadas."
     }
   },
   "mobile": {
@@ -131,13 +212,18 @@
       "opportunities": "{count, plural, one {Oportunidad} other {Oportunidades}}",
       "activeTrips": "Viajes activos",
       "bestProfit": "Mejor ganancia est.",
-      "seeLoads": "Ver cargas disponibles"
+      "seeLoads": "Ver cargas disponibles",
+      "bestOpportunity": "Mejor oportunidad",
+      "noOpportunities": "No hay buenos matches ahora. Vuelve pronto."
     },
     "loads": {
       "title": "Cargas disponibles",
       "estProfit": "Ganancia est.",
       "empty": "No hay cargas disponibles ahora.",
-      "error": "No se pudo cargar la lista. Desliza para reintentar."
+      "error": "No se pudo cargar la lista. Desliza para reintentar.",
+      "nearbyNeedsLocation": "Permite el acceso a tu ubicación para ver cargas cerca, o agrega una base a tu vehículo en la web.",
+      "enableLocation": "Usar mi ubicación",
+      "noVehicle": "Agrega un vehículo en la web para ver el match y la ganancia."
     },
     "account": {
       "title": "Cuenta",
@@ -166,6 +252,27 @@
       "deniedBody": "Activa las notificaciones de AI Dispatcher en los ajustes del dispositivo.",
       "reminderTitle": "AI Dispatcher",
       "reminderBody": "¡No olvides revisar tus cargas hoy!"
+    },
+    "loadDetail": {
+      "title": "Carga",
+      "pickup": "Recogida",
+      "weight": "Peso",
+      "equipment": "Equipo",
+      "broker": "Broker",
+      "postedRate": "Tarifa publicada",
+      "ratePerKm": "Tarifa por km",
+      "breakdown": "Desglose de ganancia",
+      "loadedKm": "Km con carga",
+      "deadheadKm": "Km vacíos a la recogida",
+      "costPerKm": "Tu costo por km",
+      "costs": "Costos estimados",
+      "profit": "Ganancia estimada",
+      "margin": "Margen",
+      "whyMatch": "Por qué este match",
+      "positionFrom": "Km vacíos medidos desde {source}.",
+      "negotiate": "Negociar con IA",
+      "negotiateSoon": "Disponible en la siguiente fase",
+      "noBreakdown": "Agrega un vehículo para ver el desglose de ganancia."
     }
   }
 }

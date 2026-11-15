@@ -15,7 +15,7 @@ import {
 //
 // Only these top-level resources are reachable, so the token can never be
 // sent anywhere else. Add a resource here when the api grows.
-const ALLOWED_RESOURCES = new Set(['me', 'loads', 'vehicles']);
+const ALLOWED_RESOURCES = new Set(['me', 'loads', 'vehicles', 'ai-settings']);
 const SEGMENT = /^[A-Za-z0-9_-]+$/;
 
 type Ctx = RouteContext<'/api/backend/[...path]'>;

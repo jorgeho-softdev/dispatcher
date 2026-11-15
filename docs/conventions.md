@@ -69,6 +69,9 @@ Un cambio está terminado solo si cumple todo esto:
   - Se crean con `npm run db:migrate -- --name <descripcion>` y nunca se editan una vez integradas.
   - En producción se aplican con `npm run db:deploy`.
 - El seed es idempotente y **se niega a correr en producción**.
+- Lo que Prisma no modela (extensiones, triggers, funciones) va en SQL dentro de la migración, con un comentario que lo explique. Después se verifica que no haya drift con `prisma migrate dev --create-only` (debe salir una migración vacía, que se borra).
+- El SQL crudo se escribe **solo** con `Prisma.sql` parametrizado (nunca interpolando strings) y únicamente donde Prisma no alcanza (p. ej. consultas PostGIS).
+- Prisma 7 no regenera el cliente al migrar: después de cambiar el esquema, corre `npm run db:generate --workspace=api`.
 
 ## 5. Gestión de estado (web y mobile)
 

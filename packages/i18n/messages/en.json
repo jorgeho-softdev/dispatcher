@@ -26,6 +26,41 @@
       "fleet_manager": "Fleet Manager",
       "dispatcher": "Dispatcher",
       "driver": "Driver"
+    },
+    "matchReason": {
+      "equipment_ideal": "Ideal equipment",
+      "high_margin": "High margin",
+      "good_rate": "Good rate per km",
+      "short_deadhead": "Short empty run",
+      "pickup_soon": "Pickup soon",
+      "preferred_lane": "Preferred region",
+      "equipment_larger": "Larger vehicle than needed",
+      "low_margin": "Margin below your minimum",
+      "low_rate": "Rate below your minimum",
+      "long_deadhead": "Long empty run",
+      "deadhead_unknown": "Vehicle location unknown",
+      "pickup_far_out": "Pickup is several days away",
+      "equipment_incompatible": "Equipment not compatible",
+      "over_capacity": "Exceeds vehicle capacity",
+      "avoided_region": "Region you avoid",
+      "pickup_passed": "Pickup time has passed"
+    },
+    "positionSource": {
+      "request": "your current location",
+      "vehicle_gps": "the vehicle's GPS",
+      "home_base": "the vehicle's home base"
+    },
+    "loadView": {
+      "recommended": "Recommended",
+      "nearby": "Near me",
+      "all": "All"
+    },
+    "match": "{score}% Match",
+    "deadhead": "{km} km empty",
+    "autonomy": {
+      "assisted": "Assisted",
+      "semi_auto": "Semi-automatic",
+      "auto": "Automatic"
     }
   },
   "errors": {
@@ -64,7 +99,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "loads": "Loads",
-      "vehicles": "Vehicles"
+      "vehicles": "Vehicles",
+      "settings": "Preferences"
     },
     "dashboard": {
       "greeting": "Hi, {name}",
@@ -74,7 +110,8 @@
       "vehicles": "Vehicles",
       "bestProfit": "Best est. profit",
       "addVehicleHint": "Add a vehicle to calculate the estimated profit of each load.",
-      "addVehicleCta": "Add vehicle →"
+      "addVehicleCta": "Add vehicle →",
+      "opportunities": "Opportunities (≥{threshold}% match)"
     },
     "loads": {
       "title": "Loads",
@@ -91,7 +128,14 @@
       "empty": "No loads match these filters.",
       "noBroker": "No broker",
       "noVehicle": "No vehicle",
-      "perKm": "{amount}/km"
+      "perKm": "{amount}/km",
+      "colMatch": "Match",
+      "colDeadhead": "Empty km",
+      "newLoad": "New manual load",
+      "matchingFor": "Matching for {vehicle} · position from {source}",
+      "noPosition": "Add a home base to your vehicle to see nearby loads and empty km.",
+      "noVehicleMatch": "Add a vehicle to see match scores and estimated profit.",
+      "loadMore": "Load more"
     },
     "vehicles": {
       "title": "Vehicles",
@@ -106,7 +150,44 @@
       "homeBase": "Home base",
       "province": "Prov.",
       "saveError": "Couldn't save the vehicle.",
-      "submit": "Save vehicle"
+      "submit": "Save vehicle",
+      "selectCity": "Select a city",
+      "noHomeBase": "No home base"
+    },
+    "loadForm": {
+      "title": "New manual load",
+      "subtitle": "A real load you got directly from a broker or shipper.",
+      "origin": "Origin",
+      "destination": "Destination",
+      "pickupAt": "Pickup date and time",
+      "weightKg": "Weight (kg)",
+      "equipment": "Equipment",
+      "postedRate": "Rate (CA$)",
+      "distanceKm": "Distance (km, optional)",
+      "distanceHint": "Leave empty to estimate it from the cities (~{km} km).",
+      "notes": "Notes",
+      "submit": "Save load",
+      "cancel": "Cancel",
+      "selectCity": "Select a city",
+      "sameCity": "Origin and destination must be different."
+    },
+    "settings": {
+      "title": "Preferences",
+      "subtitle": "Your rules for matching loads. The AI dispatcher will follow them too.",
+      "profitability": "Profitability",
+      "minRatePerKm": "Minimum rate per km (CA$)",
+      "minMarginPct": "Minimum margin (%)",
+      "maxDeadheadKm": "Maximum empty km to pickup",
+      "regions": "Regions",
+      "preferredProvinces": "Preferred provinces",
+      "avoidProvinces": "Provinces to avoid",
+      "regionsHint": "Preferred provinces raise the match; avoided ones are never recommended.",
+      "aiSection": "AI dispatcher",
+      "autonomy": "Autonomy level",
+      "maxCounterOfferPct": "Max. counter-offer above posted rate (%)",
+      "aiComingSoon": "Negotiation with brokers arrives in the next phase.",
+      "save": "Save preferences",
+      "saved": "Preferences saved."
     }
   },
   "mobile": {
@@ -131,13 +212,18 @@
       "opportunities": "{count, plural, one {Opportunity} other {Opportunities}}",
       "activeTrips": "Active trips",
       "bestProfit": "Best est. profit",
-      "seeLoads": "See available loads"
+      "seeLoads": "See available loads",
+      "bestOpportunity": "Best opportunity",
+      "noOpportunities": "No strong matches right now. Check back soon."
     },
     "loads": {
       "title": "Available loads",
       "estProfit": "Est. profit",
       "empty": "No loads available right now.",
-      "error": "Couldn't load the list. Pull to retry."
+      "error": "Couldn't load the list. Pull to retry.",
+      "nearbyNeedsLocation": "Allow location access to see loads near you, or add a home base to your vehicle on the web.",
+      "enableLocation": "Use my location",
+      "noVehicle": "Add a vehicle on the web to see match scores and profit."
     },
     "account": {
       "title": "Account",
@@ -166,6 +252,27 @@
       "deniedBody": "Enable notifications for AI Dispatcher in your device settings.",
       "reminderTitle": "AI Dispatcher",
       "reminderBody": "Don't forget to check your loads today!"
+    },
+    "loadDetail": {
+      "title": "Load",
+      "pickup": "Pickup",
+      "weight": "Weight",
+      "equipment": "Equipment",
+      "broker": "Broker",
+      "postedRate": "Posted rate",
+      "ratePerKm": "Rate per km",
+      "breakdown": "Profit breakdown",
+      "loadedKm": "Loaded km",
+      "deadheadKm": "Empty km to pickup",
+      "costPerKm": "Your cost per km",
+      "costs": "Estimated costs",
+      "profit": "Estimated profit",
+      "margin": "Margin",
+      "whyMatch": "Why this match",
+      "positionFrom": "Empty km measured from {source}.",
+      "negotiate": "Negotiate with AI",
+      "negotiateSoon": "Coming in the next phase",
+      "noBreakdown": "Add a vehicle to see the profit breakdown."
     }
   }
 }

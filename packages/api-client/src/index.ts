@@ -1,18 +1,23 @@
 import { createApi, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type {
-  LoadDto,
-  LoadQuery,
+  AiSettingsDto,
+  AiSettingsUpdateInput,
+  LoadCreateInput,
+  LoadDetailDto,
+  LoadDetailQuery,
+  LoadListDto,
+  LoadQueryInput,
   MeDto,
-  Paginated,
   UpdateMeInput,
   VehicleCreateInput,
   VehicleDto,
+  VehicleLocationInput,
   VehicleUpdateInput,
 } from '@dispatcher/shared';
 
 export type DispatcherBaseQuery = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>;
 
-export const TAGS = ['Me', 'Vehicle', 'Load'] as const;
+export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings'] as const;
 
 /**
  * Builds the RTK Query api used by both clients. Paths are relative to the
@@ -35,16 +40,43 @@ export function createDispatcherApi(baseQuery: DispatcherBaseQuery) {
         invalidatesTags: ['Me'],
       }),
 
-      getLoads: build.query<Paginated<LoadDto>, Partial<LoadQuery> | void>({
+      getLoads: build.query<LoadListDto, LoadQueryInput | void>({
         query: (params) => ({ url: '/loads', params: params ?? undefined }),
         providesTags: (result) => [
           ...(result?.items.map((l) => ({ type: 'Load' as const, id: l.id })) ?? []),
           { type: 'Load', id: 'LIST' },
         ],
       }),
-      getLoad: build.query<LoadDto, string>({
-        query: (id) => `/loads/${id}`,
-        providesTags: (_r, _e, id) => [{ type: 'Load', id }],
+      /** Cursor-paginated list for "load more" / infinite scroll (web table, mobile FlatList). */
+      getLoadPages: build.infiniteQuery<LoadListDto, LoadQueryInput, string>({
+        infiniteQueryOptions: {
+          initialPageParam: '',
+          getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+        },
+        query: ({ queryArg, pageParam }) => ({
+          url: '/loads',
+          params: { ...queryArg, ...(pageParam && { cursor: pageParam }) },
+        }),
+        providesTags: [{ type: 'Load', id: 'LIST' }],
+      }),
+      getLoad: build.query<LoadDetailDto, { id: string } & Partial<LoadDetailQuery>>({
+        query: ({ id, ...params }) => ({ url: `/loads/${id}`, params }),
+        providesTags: (_r, _e, { id }) => [{ type: 'Load', id }],
+      }),
+      /** Manual load (cities from the catalog; coordinates/distance optional). */
+      createLoad: build.mutation<LoadDetailDto, LoadCreateInput>({
+        query: (body) => ({ url: '/loads', method: 'POST', body }),
+        invalidatesTags: [{ type: 'Load', id: 'LIST' }],
+      }),
+
+      getAiSettings: build.query<AiSettingsDto, void>({
+        query: () => '/ai-settings',
+        providesTags: ['AiSettings'],
+      }),
+      updateAiSettings: build.mutation<AiSettingsDto, AiSettingsUpdateInput>({
+        query: (body) => ({ url: '/ai-settings', method: 'PATCH', body }),
+        // Preferences change every match score.
+        invalidatesTags: ['AiSettings', { type: 'Load', id: 'LIST' }],
       }),
 
       getVehicles: build.query<VehicleDto[], void>({
@@ -65,6 +97,11 @@ export function createDispatcherApi(baseQuery: DispatcherBaseQuery) {
           { type: 'Vehicle', id },
           { type: 'Load', id: 'LIST' },
         ],
+      }),
+      /** Driver app GPS fix; moves deadhead / "near me" to the real position. */
+      reportVehicleLocation: build.mutation<void, { id: string } & VehicleLocationInput>({
+        query: ({ id, ...body }) => ({ url: `/vehicles/${id}/location`, method: 'POST', body }),
+        invalidatesTags: [{ type: 'Load', id: 'LIST' }],
       }),
       deleteVehicle: build.mutation<void, string>({
         query: (id) => ({ url: `/vehicles/${id}`, method: 'DELETE' }),

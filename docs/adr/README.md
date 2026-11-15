@@ -15,3 +15,4 @@ Cada decisión técnica relevante se documenta aquí (es **obligatorio**; ver [`
 | [0009](./0009-canada-first-defaults.md) | Canadá primero, moneda y unidades como datos | Aceptado |
 | [0010](./0010-design-tokens-single-source.md) | Tokens de diseño como fuente única (colores y fuentes) | Aceptado |
 | [0011](./0011-i18n-shared-catalogs.md) | i18n con catálogos ICU compartidos y errores por código | Aceptado |
+| [0012](./0012-matching-and-geo.md) | Match determinista, PostGIS por trigger y deadhead aproximado | Aceptado |

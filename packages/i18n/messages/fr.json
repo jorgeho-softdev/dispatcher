@@ -26,6 +26,41 @@
       "fleet_manager": "Gestionnaire de flotte",
       "dispatcher": "Répartiteur",
       "driver": "Chauffeur"
+    },
+    "matchReason": {
+      "equipment_ideal": "Équipement idéal",
+      "high_margin": "Marge élevée",
+      "good_rate": "Bon tarif au km",
+      "short_deadhead": "Peu de km à vide",
+      "pickup_soon": "Ramassage bientôt",
+      "preferred_lane": "Région préférée",
+      "equipment_larger": "Véhicule plus grand que nécessaire",
+      "low_margin": "Marge sous votre minimum",
+      "low_rate": "Tarif sous votre minimum",
+      "long_deadhead": "Beaucoup de km à vide",
+      "deadhead_unknown": "Position du véhicule inconnue",
+      "pickup_far_out": "Ramassage dans plusieurs jours",
+      "equipment_incompatible": "Équipement incompatible",
+      "over_capacity": "Dépasse la capacité du véhicule",
+      "avoided_region": "Région que vous évitez",
+      "pickup_passed": "L'heure de ramassage est passée"
+    },
+    "positionSource": {
+      "request": "votre position actuelle",
+      "vehicle_gps": "le GPS du véhicule",
+      "home_base": "la base du véhicule"
+    },
+    "loadView": {
+      "recommended": "Recommandés",
+      "nearby": "Près de moi",
+      "all": "Tous"
+    },
+    "match": "{score} % compatible",
+    "deadhead": "{km} km à vide",
+    "autonomy": {
+      "assisted": "Assisté",
+      "semi_auto": "Semi-automatique",
+      "auto": "Automatique"
     }
   },
   "errors": {
@@ -64,7 +99,8 @@
     "nav": {
       "dashboard": "Tableau de bord",
       "loads": "Chargements",
-      "vehicles": "Véhicules"
+      "vehicles": "Véhicules",
+      "settings": "Préférences"
     },
     "dashboard": {
       "greeting": "Bonjour, {name}",
@@ -74,7 +110,8 @@
       "vehicles": "Véhicules",
       "bestProfit": "Meilleur profit est.",
       "addVehicleHint": "Ajoutez un véhicule pour calculer le profit estimé de chaque chargement.",
-      "addVehicleCta": "Ajouter un véhicule →"
+      "addVehicleCta": "Ajouter un véhicule →",
+      "opportunities": "Occasions (≥{threshold} % compatibles)"
     },
     "loads": {
       "title": "Chargements",
@@ -91,7 +128,14 @@
       "empty": "Aucun chargement ne correspond à ces filtres.",
       "noBroker": "Aucun courtier",
       "noVehicle": "Aucun véhicule",
-      "perKm": "{amount}/km"
+      "perKm": "{amount}/km",
+      "colMatch": "Compatibilité",
+      "colDeadhead": "Km à vide",
+      "newLoad": "Nouveau chargement manuel",
+      "matchingFor": "Compatibilité pour {vehicle} · position selon {source}",
+      "noPosition": "Ajoutez une base à votre véhicule pour voir les chargements proches et les km à vide.",
+      "noVehicleMatch": "Ajoutez un véhicule pour voir la compatibilité et le profit estimé.",
+      "loadMore": "Charger plus"
     },
     "vehicles": {
       "title": "Véhicules",
@@ -106,7 +150,44 @@
       "homeBase": "Base",
       "province": "Prov.",
       "saveError": "Impossible d'enregistrer le véhicule.",
-      "submit": "Enregistrer le véhicule"
+      "submit": "Enregistrer le véhicule",
+      "selectCity": "Choisissez une ville",
+      "noHomeBase": "Aucune base"
+    },
+    "loadForm": {
+      "title": "Nouveau chargement manuel",
+      "subtitle": "Un vrai chargement obtenu directement d'un courtier ou expéditeur.",
+      "origin": "Origine",
+      "destination": "Destination",
+      "pickupAt": "Date et heure de ramassage",
+      "weightKg": "Poids (kg)",
+      "equipment": "Équipement",
+      "postedRate": "Tarif (CA$)",
+      "distanceKm": "Distance (km, facultatif)",
+      "distanceHint": "Laissez vide pour l'estimer à partir des villes (~{km} km).",
+      "notes": "Notes",
+      "submit": "Enregistrer le chargement",
+      "cancel": "Annuler",
+      "selectCity": "Choisissez une ville",
+      "sameCity": "L'origine et la destination doivent être différentes."
+    },
+    "settings": {
+      "title": "Préférences",
+      "subtitle": "Vos règles de compatibilité. Le répartiteur IA les suivra aussi.",
+      "profitability": "Rentabilité",
+      "minRatePerKm": "Tarif minimum au km (CA$)",
+      "minMarginPct": "Marge minimale (%)",
+      "maxDeadheadKm": "Maximum de km à vide jusqu'au ramassage",
+      "regions": "Régions",
+      "preferredProvinces": "Provinces préférées",
+      "avoidProvinces": "Provinces à éviter",
+      "regionsHint": "Les préférées augmentent la compatibilité; les évitées ne sont jamais recommandées.",
+      "aiSection": "Répartiteur IA",
+      "autonomy": "Niveau d'autonomie",
+      "maxCounterOfferPct": "Contre-offre max. au-dessus du tarif affiché (%)",
+      "aiComingSoon": "La négociation avec les courtiers arrive à la prochaine phase.",
+      "save": "Enregistrer les préférences",
+      "saved": "Préférences enregistrées."
     }
   },
   "mobile": {
@@ -131,13 +212,18 @@
       "opportunities": "{count, plural, one {Occasion} other {Occasions}}",
       "activeTrips": "Voyages actifs",
       "bestProfit": "Meilleur profit est.",
-      "seeLoads": "Voir les chargements"
+      "seeLoads": "Voir les chargements",
+      "bestOpportunity": "Meilleure occasion",
+      "noOpportunities": "Aucune bonne compatibilité pour le moment. Revenez bientôt."
     },
     "loads": {
       "title": "Chargements disponibles",
       "estProfit": "Profit est.",
       "empty": "Aucun chargement disponible pour le moment.",
-      "error": "Impossible de charger la liste. Tirez pour réessayer."
+      "error": "Impossible de charger la liste. Tirez pour réessayer.",
+      "nearbyNeedsLocation": "Autorisez la localisation pour voir les chargements proches, ou ajoutez une base à votre véhicule sur le web.",
+      "enableLocation": "Utiliser ma position",
+      "noVehicle": "Ajoutez un véhicule sur le web pour voir la compatibilité et le profit."
     },
     "account": {
       "title": "Compte",
@@ -166,6 +252,27 @@
       "deniedBody": "Activez les notifications d'AI Dispatcher dans les réglages de votre appareil.",
       "reminderTitle": "AI Dispatcher",
       "reminderBody": "N'oubliez pas de vérifier vos chargements aujourd'hui !"
+    },
+    "loadDetail": {
+      "title": "Chargement",
+      "pickup": "Ramassage",
+      "weight": "Poids",
+      "equipment": "Équipement",
+      "broker": "Courtier",
+      "postedRate": "Tarif affiché",
+      "ratePerKm": "Tarif au km",
+      "breakdown": "Détail du profit",
+      "loadedKm": "Km chargés",
+      "deadheadKm": "Km à vide jusqu'au ramassage",
+      "costPerKm": "Votre coût au km",
+      "costs": "Coûts estimés",
+      "profit": "Profit estimé",
+      "margin": "Marge",
+      "whyMatch": "Pourquoi cette compatibilité",
+      "positionFrom": "Km à vide mesurés depuis {source}.",
+      "negotiate": "Négocier avec l'IA",
+      "negotiateSoon": "Disponible à la prochaine phase",
+      "noBreakdown": "Ajoutez un véhicule pour voir le détail du profit."
     }
   }
 }
