@@ -20,7 +20,7 @@ AI Dispatcher es un **despachador con IA para owner-operators** (cargo van, Spri
                  ┌────────▼─────────┐
                  │ apps/api         │
                  │ NestJS 11        │──► Redis (colas BullMQ: workflow de negociación)
-                 │ Prisma 7         │──► S3 (documentos — Fase 3)
+                 │ Prisma 7         │──► S3 (documentos de viaje; SeaweedFS en local)
                  └────────┬─────────┘──► Claude API · Expo Push · (Mapas / Load boards: fases siguientes)
                  ┌────────▼─────────┐
                  │ PostgreSQL 17    │
@@ -91,6 +91,8 @@ src/
     ├── negotiations/       Agente de IA: máquina de estados, estrategias (Claude/reglas),
     │                       broker simulado, worker BullMQ (ver ai-agent.md)
     ├── notifications/      Tokens de dispositivo + Expo Push (textos i18n)
+    ├── storage/            S3 (URLs firmadas; SeaweedFS en local)
+    ├── trips/              Viajes: ciclo de vida, GPS/ETA, documentos, gastos, Rate Confirmation PDF
     └── loads/              vistas (recommended/nearby/all), detalle, alta manual
         ├── matching-context.service.ts  vehículo + posición + preferencias (reutilizable por el agente)
         └── providers/      LoadProvider (contrato) + SimulatedLoadProvider
@@ -119,6 +121,10 @@ src/
 | GET | `/v1/negotiations[/:id]` | `loads:read` | Lista (`filter=active\|needs_approval\|all`) y detalle con auditoría |
 | POST | `/v1/negotiations/:id/{approve-send,adjust,approve-booking,cancel}` | `loads:book` | Acciones humanas del flujo |
 | POST/DELETE | `/v1/devices` | autenticado | Token de Expo Push del teléfono |
+| GET | `/v1/trips[/:id]` | `trips:read` | Viajes (`filter=active\|completed\|all`) y detalle con documentos, gastos y finanzas. Ver [`trips.md`](./trips.md) |
+| POST | `/v1/trips/:id/{status,locations,documents/upload-url,documents/:docId/complete,expenses}` | `trips:progress` | Progreso del conductor, GPS, documentos (URL firmada) y gastos |
+| POST | `/v1/trips/:id/{complete,cancel,broker-rating}` | `trips:manage` | Cierre (requiere POD), cancelación y calificación del broker |
+| GET | `/v1/documents/:id/download-url` | `trips:read` | URL firmada de descarga (5 min) |
 
 La documentación OpenAPI interactiva está en `http://localhost:4000/docs`.
 
@@ -144,6 +150,7 @@ Todas las respuestas de error tienen la forma `ApiErrorDto { statusCode, code, m
 ```
 organizations 1─┬─< memberships >─1 users 1─< refresh_tokens, device_tokens
                 ├─< negotiations >─1 loads, vehicles · negotiations 1─< negotiation_events
+                ├─< trips (1─1 negotiation) ─< trip_locations, trip_documents, trip_expenses · trips 1─1 broker_ratings
                 ├─< vehicles
                 ├─< loads (manuales)        loads (marketplace: organization_id NULL)
                 └─1 ai_settings             loads >─1 brokers
@@ -221,7 +228,7 @@ app/_layout.tsx
 | 0. Fundaciones | Monorepo, organizaciones/RBAC, auth, vehículos, cargas simuladas, design system, CI | ✅ |
 | 1. Cargas | PostGIS ("cerca de mí"), deadhead, match %, vistas, detalle de carga en mobile, preferencias y cargas manuales en web | ✅ |
 | 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ✅ |
-| 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ⏳ |
+| 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ✅ (rastreo en segundo plano: siguiente iteración) |
 | 4. Web completa | Flota, reportes, configuración y auditoría de la IA | ⏳ |
 | 5. Integraciones | Load boards autorizados, canal de email, modo semiautomático | ⏳ |
 

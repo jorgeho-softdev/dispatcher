@@ -3,6 +3,9 @@ import type {
   AdjustOfferInput,
   AiSettingsDto,
   AiSettingsUpdateInput,
+  BrokerRatingInput,
+  DownloadUrlDto,
+  ExpenseCreateInput,
   LoadCreateInput,
   LoadDetailDto,
   LoadDetailQuery,
@@ -14,6 +17,13 @@ import type {
   NegotiationListQuery,
   RegisterDeviceInput,
   StartNegotiationInput,
+  TripDetailDto,
+  TripDto,
+  TripListQuery,
+  TripLocationsInput,
+  TripStatusUpdateInput,
+  UploadRequestInput,
+  UploadUrlDto,
   UpdateMeInput,
   VehicleCreateInput,
   VehicleDto,
@@ -23,7 +33,7 @@ import type {
 
 export type DispatcherBaseQuery = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>;
 
-export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings', 'Negotiation'] as const;
+export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings', 'Negotiation', 'Trip'] as const;
 
 /**
  * Builds the RTK Query api used by both clients. Paths are relative to the
@@ -111,11 +121,67 @@ export function createDispatcherApi(baseQuery: DispatcherBaseQuery) {
       }),
       approveBooking: build.mutation<NegotiationDetailDto, string>({
         query: (id) => ({ url: `/negotiations/${id}/approve-booking`, method: 'POST' }),
-        invalidatesTags: (_r, _e, id) => [{ type: 'Negotiation', id }, { type: 'Negotiation', id: 'LIST' }],
+        invalidatesTags: (_r, _e, id) => [
+          { type: 'Negotiation', id },
+          { type: 'Negotiation', id: 'LIST' },
+          { type: 'Trip', id: 'LIST' },
+        ],
       }),
       cancelNegotiation: build.mutation<NegotiationDetailDto, string>({
         query: (id) => ({ url: `/negotiations/${id}/cancel`, method: 'POST' }),
         invalidatesTags: (_r, _e, id) => [{ type: 'Negotiation', id }, { type: 'Negotiation', id: 'LIST' }],
+      }),
+
+      // ── Trips (Phase 3) ─────────────────────────────────────────────
+      getTrips: build.query<TripDto[], Partial<TripListQuery> | void>({
+        query: (params) => ({ url: '/trips', params: params ?? undefined }),
+        providesTags: (result) => [
+          ...(result?.map((t) => ({ type: 'Trip' as const, id: t.id })) ?? []),
+          { type: 'Trip', id: 'LIST' },
+        ],
+      }),
+      getTrip: build.query<TripDetailDto, string>({
+        query: (id) => `/trips/${id}`,
+        providesTags: (_r, _e, id) => [{ type: 'Trip', id }],
+      }),
+      updateTripStatus: build.mutation<TripDetailDto, { id: string } & TripStatusUpdateInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/status`, method: 'POST', body }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }],
+      }),
+      /** GPS batch; doesn't invalidate the trip (the screen polls) to avoid refetch storms. */
+      recordTripLocations: build.mutation<TripDto, { id: string } & TripLocationsInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/locations`, method: 'POST', body }),
+      }),
+      requestTripUpload: build.mutation<UploadUrlDto, { id: string } & UploadRequestInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/documents/upload-url`, method: 'POST', body }),
+      }),
+      completeTripUpload: build.mutation<TripDetailDto, { id: string; documentId: string }>({
+        query: ({ id, documentId }) => ({ url: `/trips/${id}/documents/${documentId}/complete`, method: 'POST' }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }],
+      }),
+      getDocumentDownloadUrl: build.mutation<DownloadUrlDto, string>({
+        // A mutation on purpose: every call must return a fresh short-lived URL.
+        query: (id) => ({ url: `/documents/${id}/download-url`, method: 'GET' }),
+      }),
+      addTripExpense: build.mutation<TripDetailDto, { id: string } & ExpenseCreateInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/expenses`, method: 'POST', body }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }],
+      }),
+      deleteTripExpense: build.mutation<TripDetailDto, { id: string; expenseId: string }>({
+        query: ({ id, expenseId }) => ({ url: `/trips/${id}/expenses/${expenseId}`, method: 'DELETE' }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }],
+      }),
+      completeTrip: build.mutation<TripDetailDto, string>({
+        query: (id) => ({ url: `/trips/${id}/complete`, method: 'POST' }),
+        invalidatesTags: (_r, _e, id) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }],
+      }),
+      cancelTrip: build.mutation<TripDetailDto, string>({
+        query: (id) => ({ url: `/trips/${id}/cancel`, method: 'POST' }),
+        invalidatesTags: (_r, _e, id) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }, { type: 'Load', id: 'LIST' }],
+      }),
+      rateBroker: build.mutation<TripDetailDto, { id: string } & BrokerRatingInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/broker-rating`, method: 'POST', body }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }],
       }),
 
       /** Expo push token of this phone (mobile only). */

@@ -59,6 +59,14 @@
           "isIosBackgroundLocationEnabled": false,
           "isAndroidBackgroundLocationEnabled": false
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "AI Dispatcher uses the camera to photograph delivery documents (POD, BOL, receipts).",
+          "photosPermission": "AI Dispatcher accesses your photos so you can attach delivery documents.",
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {

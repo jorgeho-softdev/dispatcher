@@ -1,3 +1,5 @@
 {
-  "NSLocationWhenInUseUsageDescription": "AI Dispatcher utilise votre position pour trouver des chargements près de vous et calculer les kilomètres à vide jusqu'au ramassage."
+  "NSLocationWhenInUseUsageDescription": "AI Dispatcher utilise votre position pour trouver des chargements près de vous et calculer les kilomètres à vide jusqu'au ramassage.",
+  "NSCameraUsageDescription": "AI Dispatcher utilise la caméra pour photographier les documents de livraison (POD, BOL, reçus).",
+  "NSPhotoLibraryUsageDescription": "AI Dispatcher accède à vos photos pour joindre les documents de livraison."
 }

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import type { Env } from '../../config/env';
 import { LoadsModule } from '../loads/loads.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { TripsModule } from '../trips/trips.module';
 import { BROKER_CHANNEL } from './broker/broker-channel';
 import { SimulatedBrokerChannel } from './broker/simulated-broker.channel';
 import { ClaudeStrategy } from './strategy/claude.strategy';
@@ -22,6 +23,7 @@ import { NEGOTIATIONS_QUEUE } from './negotiations.queue';
     BullModule.registerQueue({ name: NEGOTIATIONS_QUEUE }),
     LoadsModule,
     NotificationsModule,
+    TripsModule,
   ],
   controllers: [NegotiationsController],
   providers: [

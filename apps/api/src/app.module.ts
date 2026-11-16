@@ -14,6 +14,8 @@ import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
 import { NegotiationsModule } from './modules/negotiations/negotiations.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { BullModule } from '@nestjs/bullmq';
+import { StorageModule } from './modules/storage/storage.module';
+import { TripsModule } from './modules/trips/trips.module';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { BullModule } from '@nestjs/bullmq';
       useFactory: (config: ConfigService<Env, true>) => {
         const url = new URL(config.get('REDIS_URL', { infer: true }));
         return {
+          prefix: config.get('QUEUE_PREFIX', { infer: true }),
           connection: {
             host: url.hostname,
             port: Number(url.port || 6379),
@@ -42,6 +45,7 @@ import { BullModule } from '@nestjs/bullmq';
       },
     }),
     PrismaModule,
+    StorageModule,
     HealthModule,
     AuthModule,
     VehiclesModule,
@@ -49,6 +53,7 @@ import { BullModule } from '@nestjs/bullmq';
     AiSettingsModule,
     NotificationsModule,
     NegotiationsModule,
+    TripsModule,
   ],
   providers: [
     // Order matters: authenticate first, then authorize.

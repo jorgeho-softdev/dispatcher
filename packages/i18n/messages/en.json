@@ -112,6 +112,34 @@
     "strategy": {
       "claude": "Claude (AI)",
       "rules": "Rule-based"
+    },
+    "tripStatus": {
+      "scheduled": "Scheduled",
+      "at_pickup": "At pickup",
+      "in_transit": "En route",
+      "delivered": "Delivered",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "tripStep": {
+      "at_pickup": "Pickup",
+      "in_transit": "En route",
+      "delivered": "Delivery"
+    },
+    "documentType": {
+      "rate_confirmation": "Rate Confirmation",
+      "bol": "BOL (bill of lading)",
+      "pod": "POD (proof of delivery)",
+      "receipt": "Receipt",
+      "other": "Other"
+    },
+    "expenseCategory": {
+      "fuel": "Fuel",
+      "tolls": "Tolls",
+      "parking": "Parking",
+      "maintenance": "Maintenance",
+      "lumper": "Lumper / unloading",
+      "other": "Other"
     }
   },
   "errors": {
@@ -130,7 +158,11 @@
     "VEHICLE_REQUIRED": "Add a vehicle before negotiating.",
     "LOAD_UNAVAILABLE": "This load is no longer available.",
     "NEGOTIATION_ALREADY_ACTIVE": "There is already a negotiation in progress for this load.",
-    "NEGOTIATION_INVALID_STATE": "This negotiation changed. Refresh and try again."
+    "NEGOTIATION_INVALID_STATE": "This negotiation changed. Refresh and try again.",
+    "TRIP_INVALID_STATE": "This trip changed. Refresh and try again.",
+    "POD_REQUIRED": "Upload the proof of delivery (POD) to close the trip.",
+    "UPLOAD_NOT_FOUND": "The file didn't finish uploading. Try again.",
+    "BROKER_ALREADY_RATED": "You already rated this broker for this trip."
   },
   "auth": {
     "email": "Email",
@@ -156,7 +188,8 @@
       "loads": "Loads",
       "vehicles": "Vehicles",
       "settings": "Preferences",
-      "negotiations": "Negotiations"
+      "negotiations": "Negotiations",
+      "trips": "Trips"
     },
     "dashboard": {
       "greeting": "Hi, {name}",
@@ -260,6 +293,21 @@
       "colUpdated": "Updated",
       "back": "← All negotiations",
       "audit": "Audit trail"
+    },
+    "trips": {
+      "title": "Trips",
+      "subtitle": "Booked loads in progress and their real profit.",
+      "filterAll": "All",
+      "colCode": "Trip",
+      "colRoute": "Route",
+      "colStatus": "Status",
+      "colEta": "ETA",
+      "colRate": "Rate",
+      "colProfit": "Real profit",
+      "back": "← All trips",
+      "progress": "Progress",
+      "financials": "Financials",
+      "download": "Download"
     }
   },
   "mobile": {
@@ -271,7 +319,8 @@
     "tabs": {
       "home": "Home",
       "loads": "Loads",
-      "account": "Account"
+      "account": "Account",
+      "trips": "Trips"
     },
     "login": {
       "subtitle": "Your AI dispatcher"
@@ -287,7 +336,8 @@
       "seeLoads": "See available loads",
       "bestOpportunity": "Best opportunity",
       "noOpportunities": "No strong matches right now. Check back soon.",
-      "pendingApprovals": "Waiting for your approval"
+      "pendingApprovals": "Waiting for your approval",
+      "nextTrip": "Next trip"
     },
     "loads": {
       "title": "Available loads",
@@ -403,5 +453,60 @@
     "bookedTitle": "Load booked!",
     "bookedBody": "Booked at {amount}. The trip will appear in Trips in the next phase.",
     "simulatedBroker": "Simulated broker (DEMO): replies are not real."
+  },
+  "trip": {
+    "title": "Trip #{code}",
+    "eta": "Estimated ETA",
+    "remaining": "Remaining",
+    "navigate": "Navigate",
+    "callBroker": "Call broker",
+    "noBrokerPhone": "The simulated broker has no phone.",
+    "documents": "Documents",
+    "uploadPod": "Upload POD",
+    "uploadDocument": "Upload document",
+    "takePhoto": "Take photo",
+    "chooseFromLibrary": "Choose from library",
+    "uploading": "Uploading…",
+    "cameraDenied": "Allow camera access in Settings to photograph documents.",
+    "next": {
+      "at_pickup": "I'm at pickup",
+      "in_transit": "Loaded — start route",
+      "delivered": "Mark as delivered"
+    },
+    "confirmDelivered": "Confirm the load was delivered?",
+    "expenses": "Expenses",
+    "addExpense": "Add expense",
+    "amount": "Amount ({currency})",
+    "note": "Note (optional)",
+    "saveExpense": "Save expense",
+    "noExpenses": "No expenses recorded yet.",
+    "finalRate": "Final rate",
+    "actualExpenses": "Actual expenses",
+    "actualProfit": "Real profit",
+    "finalMargin": "Final margin",
+    "estimatedProfit": "Estimated at booking",
+    "completedTitle": "Delivery completed!",
+    "completedBody": "The load was delivered and the trip is closed.",
+    "closeTrip": "Close trip",
+    "podMissing": "Upload the POD to close the trip.",
+    "podDone": "POD (delivery)",
+    "docsComplete": "Documents complete",
+    "rateBroker": "Rate the broker",
+    "ratedThanks": "Thanks for rating {broker}.",
+    "starsLabel": "{stars, plural, one {# star} other {# stars}}",
+    "findNextLoad": "Find next load",
+    "tracking": "Sharing location while this screen is open.",
+    "trackingOff": "Location sharing is off. Allow location to update the ETA.",
+    "noTrips": "No trips yet. Book a load to start one.",
+    "filterActive": "Active",
+    "filterCompleted": "Completed",
+    "viewTrip": "View trip",
+    "open": "Open",
+    "cancelTrip": "Cancel trip",
+    "cancelConfirm": "Cancel this trip? The load goes back to the marketplace.",
+    "lastUpdate": "Last position {time}",
+    "noPosition": "No position yet",
+    "pickup": "Pickup",
+    "delivery": "Delivery"
   }
 }

@@ -31,6 +31,11 @@ Ver [`.env.example`](./.env.example). Se validan con Zod al arrancar (`src/confi
 | `ANTHROPIC_API_KEY` | Credencial de Claude (opcional; sin ella se usan reglas) |
 | `AI_MODEL` / `AI_EFFORT` | Modelo (`claude-opus-5-5`) y esfuerzo (`medium`) |
 | `BROKER_SIM_DELAY_MS` | Retardo de respuesta del broker simulado (4000; 0 en tests) |
+| `QUEUE_PREFIX` | Prefijo de colas BullMQ (`bull`; los e2e usan `bull-e2e`) |
+| `S3_ENDPOINT` / `S3_PUBLIC_ENDPOINT` | S3 para el servidor / host para URLs firmadas que usan los clientes |
+| `S3_REGION` / `S3_BUCKET` | Región (`ca-central-1`) y bucket de documentos |
+| `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Credenciales S3 (local: `dispatcher` / `dispatcher-secret`) |
+| `S3_FORCE_PATH_STYLE` | `true` para SeaweedFS/MinIO/R2 |
 | `EXPO_ACCESS_TOKEN` | Opcional: solo si Expo Push tiene "enhanced security" |
 
 ## Cómo agregar un módulo

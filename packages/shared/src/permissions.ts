@@ -16,6 +16,9 @@ export const PERMISSIONS = [
   'ai_settings:manage',
   'finances:read',
   'trips:read',
+  /** Driver progress: status updates, GPS, documents, expenses. */
+  'trips:progress',
+  /** Close-out: complete, cancel, rate the broker. */
   'trips:manage',
 ] as const;
 export type Permission = (typeof PERMISSIONS)[number];
@@ -35,11 +38,12 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'ai_settings:manage',
     'finances:read',
     'trips:read',
+    'trips:progress',
     'trips:manage',
   ],
-  dispatcher: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'loads:create', 'loads:book', 'trips:read', 'trips:manage'],
+  dispatcher: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'loads:create', 'loads:book', 'trips:read', 'trips:progress', 'trips:manage'],
   // Driver booking approval is configurable per organization in a later phase.
-  driver: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'trips:read'],
+  driver: ['vehicles:read', 'vehicles:report_location', 'loads:read', 'trips:read', 'trips:progress'],
 };
 
 export function can(role: Role | null | undefined, permission: Permission): boolean {

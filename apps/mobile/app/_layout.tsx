@@ -71,6 +71,7 @@ function RootNavigator() {
               <Stack.Screen name="settings" />
               <Stack.Screen name="loads/[id]" />
               <Stack.Screen name="negotiations/[id]" />
+              <Stack.Screen name="trips/[id]" />
             </Stack.Protected>
             <Stack.Protected guard={!signedIn}>
               <Stack.Screen name="login" />

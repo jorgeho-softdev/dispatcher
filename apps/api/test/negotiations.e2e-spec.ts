@@ -63,7 +63,15 @@ describe('Negotiations (e2e)', () => {
         .set(auth)
         .expect(200)
     ).body as LoadListDto;
-    const load = items.filter((l) => !touchedLoads.includes(l.id))[skip]!;
+    const active = (
+      await request(app.getHttpServer())
+        .get('/v1/negotiations?filter=active')
+        .set(auth)
+    ).body as NegotiationDetailDto[];
+    const busy = new Set(active.map((n) => n.load.id));
+    const load = items.filter(
+      (l) => !touchedLoads.includes(l.id) && !busy.has(l.id),
+    )[skip]!;
     touchedLoads.push(load.id);
     return load;
   };

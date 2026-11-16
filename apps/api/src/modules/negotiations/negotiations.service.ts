@@ -32,6 +32,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma, type Negotiation } from '../../generated/prisma/client';
 import { MatchingContextService } from '../loads/matching-context.service';
 import { PushService, type PushTemplate } from '../notifications/push.service';
+import { TripsService } from '../trips/trips.service';
 import {
   BROKER_CHANNEL,
   type BrokerChannel,
@@ -81,6 +82,7 @@ export class NegotiationsService {
     private readonly prisma: PrismaService,
     private readonly matching: MatchingContextService,
     private readonly push: PushService,
+    private readonly trips: TripsService,
     @Inject(NEGOTIATION_STRATEGY)
     private readonly strategy: NegotiationStrategy,
     @Inject(FALLBACK_STRATEGY) private readonly fallback: NegotiationStrategy,
@@ -457,6 +459,9 @@ export class NegotiationsService {
         amount: n.agreedRate,
         brokerMessage: response.message,
       });
+      // The trip exists BEFORE the negotiation shows as booked, so clients
+      // never see "booked" without its trip. Idempotent if the job retries.
+      await this.trips.createFromNegotiation(n.id);
       await this.finish(n, 'booked', 'booked');
       return;
     }

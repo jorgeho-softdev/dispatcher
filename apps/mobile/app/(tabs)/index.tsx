@@ -10,7 +10,7 @@ import { useIntlLocale } from '@/lib/use-intl-locale';
 import { useColors } from '@/lib/theme';
 import { useAppSelector } from '@/store/hooks';
 import { selectMe } from '@/store/auth-slice';
-import { useGetLoadsQuery, useGetNegotiationsQuery } from '@/store/api';
+import { useGetLoadsQuery, useGetNegotiationsQuery, useGetTripsQuery } from '@/store/api';
 import { LoadCard } from '@/features/loads/LoadCard';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 
@@ -26,12 +26,14 @@ export default function HomeScreen() {
   const loads = data?.items ?? [];
   const opportunities = loads.filter((l) => (l.match?.score ?? 0) >= OPPORTUNITY_THRESHOLD);
   const best = opportunities[0];
+  const { data: activeTrips } = useGetTripsQuery({ filter: 'active' });
+  const nextTrip = activeTrips?.[0];
   const { data: pending } = useGetNegotiationsQuery({ filter: 'needs_approval' }, { pollingInterval: 15000 });
   const bestProfit = Math.max(0, ...opportunities.map((l) => l.estimatedProfit ?? 0));
 
   const stats = [
     { icon: 'clipboard-outline' as const, value: opportunities.length.toLocaleString(intlLocale), label: t('mobile.home.opportunities', { count: opportunities.length }) },
-    { icon: 'bus-outline' as const, value: (0).toLocaleString(intlLocale), label: t('mobile.home.activeTrips') },
+    { icon: 'bus-outline' as const, value: (activeTrips?.length ?? 0).toLocaleString(intlLocale), label: t('mobile.home.activeTrips') },
     { icon: 'stats-chart' as const, value: formatMoney(bestProfit, 'CAD', intlLocale), label: t('mobile.home.bestProfit') },
   ];
 
@@ -95,6 +97,32 @@ export default function HomeScreen() {
       )}
 
       <Button className="mt-5" title={t('mobile.home.seeLoads')} onPress={() => router.navigate('/loads')} />
+
+      {nextTrip && (
+        <>
+          <SectionTitle title={t('mobile.home.nextTrip')} />
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push({ pathname: '/trips/[id]', params: { id: nextTrip.id } })}
+          >
+            <Card className="flex-row items-center" style={{ gap: 12 }}>
+              <View className="h-11 w-11 items-center justify-center rounded-2xl bg-primary-light">
+                <Ionicons name="bus" size={22} color={colors.primary} />
+              </View>
+              <View className="flex-1">
+                <Text className="font-sans-bold text-sm text-ink" numberOfLines={1}>
+                  {nextTrip.load.originCity}, {nextTrip.load.originProvince} → {nextTrip.load.destinationCity},{' '}
+                  {nextTrip.load.destinationProvince}
+                </Text>
+                <Text className="font-sans text-xs text-muted">
+                  #{nextTrip.code} · {t(`domain.tripStatus.${nextTrip.status}`)}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.muted} />
+            </Card>
+          </Pressable>
+        </>
+      )}
 
       <SectionTitle title={t('mobile.home.bestOpportunity')} />
       {best ? (

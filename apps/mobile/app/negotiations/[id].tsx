@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useFormatter, useTranslations } from 'use-intl';
 import {
@@ -53,6 +53,7 @@ export default function NegotiationScreen() {
   const intlLocale = useIntlLocale();
   const colors = useColors();
   const explain = useExplain();
+  const router = useRouter();
   const [adjusting, setAdjusting] = useState(false);
   const [amount, setAmount] = useState('');
 
@@ -198,6 +199,13 @@ export default function NegotiationScreen() {
         <Card className="mt-3 border-success">
           <Text className="font-sans-bold text-base text-success">{t('negotiation.bookedTitle')}</Text>
           <Text className="mt-1 font-sans text-sm text-muted">{t('negotiation.bookedBody', { amount: money(n.agreedRate) })}</Text>
+          {n.tripId && (
+            <Button
+              className="mt-3"
+              title={t('trip.viewTrip')}
+              onPress={() => router.push({ pathname: '/trips/[id]', params: { id: n.tripId! } })}
+            />
+          )}
         </Card>
       )}
 

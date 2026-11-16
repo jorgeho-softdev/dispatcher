@@ -23,6 +23,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   plugins = withPluginOptions(plugins, 'expo-splash-screen', { backgroundColor: brand.background });
   plugins = withPluginOptions(plugins, 'expo-notifications', { color: brand.primary.DEFAULT });
 
+  // Android maps need a Google Maps SDK key (iOS uses Apple Maps, no key).
+  // Set GOOGLE_MAPS_ANDROID_API_KEY in .env / EAS env; never commit it.
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_ANDROID_API_KEY;
+
   return {
     ...config,
     name: config.name ?? 'AI Dispatcher',
@@ -30,6 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       ...config.android,
       adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: brand.background },
+      ...(googleMapsApiKey && { config: { ...config.android?.config, googleMaps: { apiKey: googleMapsApiKey } } }),
     },
     plugins,
   };

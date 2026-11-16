@@ -12,6 +12,7 @@ export const NEGOTIATION_INCLUDE = {
   load: { include: { broker: true } },
   createdBy: true,
   events: { orderBy: { createdAt: 'asc' } },
+  trip: { select: { id: true } },
 } satisfies Prisma.NegotiationInclude;
 
 export type NegotiationWithRelations = Prisma.NegotiationGetPayload<{
@@ -79,6 +80,7 @@ export function toNegotiationDto(n: NegotiationWithRelations): NegotiationDto {
     estimatedProfit: estimate.profit,
     marginPct: estimate.marginPct,
     allowedActions: allowedActions(n.status),
+    tripId: n.trip?.id ?? null,
     latestAi: latestAi ? toEventDto(latestAi) : null,
     createdAt: n.createdAt.toISOString(),
     updatedAt: n.updatedAt.toISOString(),

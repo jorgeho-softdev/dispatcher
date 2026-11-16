@@ -37,6 +37,11 @@ jobs:
       DATABASE_URL: postgresql://dispatcher:dispatcher@localhost:5440/dispatcher?schema=public
       JWT_ACCESS_SECRET: ci-only-secret-that-is-at-least-32-characters-long
       API_URL: http://localhost:4000/v1
+      S3_ENDPOINT: http://localhost:9000
+      S3_ACCESS_KEY_ID: dispatcher
+      S3_SECRET_ACCESS_KEY: dispatcher-secret
+      S3_REGION: ca-central-1
+      S3_BUCKET: dispatcher-documents
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,6 +50,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx turbo run build typecheck lint test
+      # Service containers can't take a command, so S3 (SeaweedFS) starts here.
+      - name: Start S3 (SeaweedFS)
+        run: |
+          docker run -d --name s3 -p 9000:8333 \
+            -v "$PWD/infra/seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro" \
+            chrislusf/seaweedfs:4.51 server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+          for i in $(seq 1 30); do curl -s -o /dev/null localhost:9000 && break; sleep 2; done
       - name: API e2e
         run: |
           npm run db:deploy --workspace=api

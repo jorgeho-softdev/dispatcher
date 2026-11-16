@@ -13,6 +13,8 @@ export const envSchema = z.object({
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(30),
   /** BullMQ (negotiation jobs). */
   REDIS_URL: z.url().default('redis://localhost:6380'),
+  /** BullMQ key prefix; isolates environments sharing a Redis (e.g. tests vs dev). */
+  QUEUE_PREFIX: z.string().default('bull'),
   /**
    * Negotiation strategy: `claude` (LLM), `rules` (deterministic) or `auto`
    * (claude when Anthropic credentials are configured, else rules).
@@ -25,6 +27,18 @@ export const envSchema = z.object({
   BROKER_SIM_DELAY_MS: z.coerce.number().int().min(0).default(4000),
   /** Optional Expo access token for push (required if "enhanced security" is on in Expo). */
   EXPO_ACCESS_TOKEN: z.string().optional(),
+  /** S3-compatible storage for trip documents (SeaweedFS locally, S3/R2 in prod). */
+  S3_ENDPOINT: z.url().optional(),
+  /**
+   * Host clients use for presigned URLs (phones can't reach "localhost").
+   * Defaults to S3_ENDPOINT. On a physical device use your LAN IP.
+   */
+  S3_PUBLIC_ENDPOINT: z.url().optional(),
+  S3_REGION: z.string().default('ca-central-1'),
+  S3_BUCKET: z.string().default('dispatcher-documents'),
+  S3_ACCESS_KEY_ID: z.string().min(1),
+  S3_SECRET_ACCESS_KEY: z.string().min(1),
+  S3_FORCE_PATH_STYLE: z.stringbool().default(true),
   CORS_ORIGINS: z
     .string()
     .default('http://localhost:3000')

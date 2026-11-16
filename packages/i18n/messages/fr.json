@@ -112,6 +112,34 @@
     "strategy": {
       "claude": "Claude (IA)",
       "rules": "Par règles"
+    },
+    "tripStatus": {
+      "scheduled": "Planifié",
+      "at_pickup": "Au ramassage",
+      "in_transit": "En route",
+      "delivered": "Livré",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "tripStep": {
+      "at_pickup": "Ramassage",
+      "in_transit": "En route",
+      "delivered": "Livraison"
+    },
+    "documentType": {
+      "rate_confirmation": "Confirmation de tarif",
+      "bol": "Connaissement (BOL)",
+      "pod": "POD (preuve de livraison)",
+      "receipt": "Reçu",
+      "other": "Autre"
+    },
+    "expenseCategory": {
+      "fuel": "Carburant",
+      "tolls": "Péages",
+      "parking": "Stationnement",
+      "maintenance": "Entretien",
+      "lumper": "Lumper / déchargement",
+      "other": "Autre"
     }
   },
   "errors": {
@@ -130,7 +158,11 @@
     "VEHICLE_REQUIRED": "Ajoutez un véhicule avant de négocier.",
     "LOAD_UNAVAILABLE": "Ce chargement n'est plus disponible.",
     "NEGOTIATION_ALREADY_ACTIVE": "Une négociation est déjà en cours pour ce chargement.",
-    "NEGOTIATION_INVALID_STATE": "Cette négociation a changé. Actualisez et réessayez."
+    "NEGOTIATION_INVALID_STATE": "Cette négociation a changé. Actualisez et réessayez.",
+    "TRIP_INVALID_STATE": "Ce voyage a changé. Actualisez et réessayez.",
+    "POD_REQUIRED": "Téléversez la preuve de livraison (POD) pour fermer le voyage.",
+    "UPLOAD_NOT_FOUND": "Le fichier n'a pas fini de se téléverser. Réessayez.",
+    "BROKER_ALREADY_RATED": "Vous avez déjà évalué ce courtier pour ce voyage."
   },
   "auth": {
     "email": "Courriel",
@@ -156,7 +188,8 @@
       "loads": "Chargements",
       "vehicles": "Véhicules",
       "settings": "Préférences",
-      "negotiations": "Négociations"
+      "negotiations": "Négociations",
+      "trips": "Voyages"
     },
     "dashboard": {
       "greeting": "Bonjour, {name}",
@@ -260,6 +293,21 @@
       "colUpdated": "Mise à jour",
       "back": "← Toutes les négociations",
       "audit": "Piste d'audit"
+    },
+    "trips": {
+      "title": "Voyages",
+      "subtitle": "Chargements réservés en cours et leur profit réel.",
+      "filterAll": "Tous",
+      "colCode": "Voyage",
+      "colRoute": "Trajet",
+      "colStatus": "Statut",
+      "colEta": "HAE",
+      "colRate": "Tarif",
+      "colProfit": "Profit réel",
+      "back": "← Tous les voyages",
+      "progress": "Progression",
+      "financials": "Finances",
+      "download": "Télécharger"
     }
   },
   "mobile": {
@@ -271,7 +319,8 @@
     "tabs": {
       "home": "Accueil",
       "loads": "Chargements",
-      "account": "Compte"
+      "account": "Compte",
+      "trips": "Voyages"
     },
     "login": {
       "subtitle": "Votre répartiteur IA"
@@ -287,7 +336,8 @@
       "seeLoads": "Voir les chargements",
       "bestOpportunity": "Meilleure occasion",
       "noOpportunities": "Aucune bonne compatibilité pour le moment. Revenez bientôt.",
-      "pendingApprovals": "En attente de votre approbation"
+      "pendingApprovals": "En attente de votre approbation",
+      "nextTrip": "Prochain voyage"
     },
     "loads": {
       "title": "Chargements disponibles",
@@ -403,5 +453,60 @@
     "bookedTitle": "Chargement réservé !",
     "bookedBody": "Réservé à {amount}. Le voyage apparaîtra dans Voyages à la prochaine phase.",
     "simulatedBroker": "Courtier simulé (DÉMO) : les réponses ne sont pas réelles."
+  },
+  "trip": {
+    "title": "Voyage #{code}",
+    "eta": "HAE estimée",
+    "remaining": "Restant",
+    "navigate": "Naviguer",
+    "callBroker": "Appeler le courtier",
+    "noBrokerPhone": "Le courtier simulé n'a pas de téléphone.",
+    "documents": "Documents",
+    "uploadPod": "Téléverser POD",
+    "uploadDocument": "Téléverser un document",
+    "takePhoto": "Prendre une photo",
+    "chooseFromLibrary": "Choisir dans la galerie",
+    "uploading": "Téléversement…",
+    "cameraDenied": "Autorisez la caméra dans Réglages pour photographier les documents.",
+    "next": {
+      "at_pickup": "Je suis au ramassage",
+      "in_transit": "Chargé — démarrer",
+      "delivered": "Marquer comme livré"
+    },
+    "confirmDelivered": "Confirmer que le chargement a été livré ?",
+    "expenses": "Dépenses",
+    "addExpense": "Ajouter une dépense",
+    "amount": "Montant ({currency})",
+    "note": "Note (facultatif)",
+    "saveExpense": "Enregistrer la dépense",
+    "noExpenses": "Aucune dépense enregistrée.",
+    "finalRate": "Tarif final",
+    "actualExpenses": "Dépenses réelles",
+    "actualProfit": "Profit réel",
+    "finalMargin": "Marge finale",
+    "estimatedProfit": "Estimé à la réservation",
+    "completedTitle": "Livraison terminée !",
+    "completedBody": "Le chargement a été livré et le voyage est fermé.",
+    "closeTrip": "Fermer le voyage",
+    "podMissing": "Téléversez le POD pour fermer le voyage.",
+    "podDone": "POD (livraison)",
+    "docsComplete": "Documents complets",
+    "rateBroker": "Évaluer le courtier",
+    "ratedThanks": "Merci d'avoir évalué {broker}.",
+    "starsLabel": "{stars, plural, one {# étoile} other {# étoiles}}",
+    "findNextLoad": "Trouver le prochain chargement",
+    "tracking": "Position partagée tant que cet écran est ouvert.",
+    "trackingOff": "Position désactivée. Autorisez-la pour mettre à jour l'HAE.",
+    "noTrips": "Aucun voyage. Réservez un chargement pour commencer.",
+    "filterActive": "Actifs",
+    "filterCompleted": "Terminés",
+    "viewTrip": "Voir le voyage",
+    "open": "Ouvrir",
+    "cancelTrip": "Annuler le voyage",
+    "cancelConfirm": "Annuler ce voyage ? Le chargement retourne au marché.",
+    "lastUpdate": "Dernière position {time}",
+    "noPosition": "Pas encore de position",
+    "pickup": "Ramassage",
+    "delivery": "Livraison"
   }
 }

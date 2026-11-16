@@ -24,6 +24,21 @@ services:
     volumes:
       - redis-data:/data
 
+  # S3-compatible object storage for trip documents (POD, BOL, Rate
+  # Confirmation). Local development only — production uses real S3 / R2 with
+  # the same code. MinIO stopped publishing images, so SeaweedFS is used.
+  # S3 endpoint: http://localhost:9000 (dispatcher / dispatcher-secret)
+  s3:
+    image: chrislusf/seaweedfs:4.51
+    container_name: dispatcher-s3
+    command: server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    ports:
+      - "9000:8333"
+    volumes:
+      - s3-data:/data
+      - ./infra/seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro
+
 volumes:
   postgres-data:
   redis-data:
+  s3-data:

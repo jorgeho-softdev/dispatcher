@@ -15,6 +15,7 @@ import type {
   NegotiationEventType,
   NegotiationStatus,
 } from './negotiation';
+import type { DocumentType, ExpenseCategory, TripFinancials, TripStatus } from './trips';
 
 // API response shapes (JSON over the wire: dates are ISO strings, money is a
 // number in the load's currency).
@@ -200,6 +201,8 @@ export interface NegotiationDto {
   estimatedProfit: number;
   marginPct: number;
   allowedActions: NegotiationAction[];
+  /** Trip created when the load was booked (Phase 3). */
+  tripId: string | null;
   /** Latest AI decision, for the "AI prepared a counter-offer" card. */
   latestAi: NegotiationEventDto | null;
   createdAt: string;
@@ -208,4 +211,84 @@ export interface NegotiationDto {
 
 export interface NegotiationDetailDto extends NegotiationDto {
   events: NegotiationEventDto[];
+}
+
+// ── Trips (Phase 3) ────────────────────────────────────────────────────
+
+export interface TripDocumentDto {
+  id: string;
+  type: DocumentType;
+  /** pending = upload URL issued, file not confirmed yet. */
+  status: 'pending' | 'uploaded';
+  fileName: string;
+  mimeType: string;
+  sizeBytes: number;
+  createdAt: string;
+}
+
+export interface UploadUrlDto {
+  document: TripDocumentDto;
+  /** Presigned URL: PUT the file bytes here directly (never through the api). */
+  uploadUrl: string;
+  method: 'PUT';
+  headers: Record<string, string>;
+  expiresAt: string;
+}
+
+export interface DownloadUrlDto {
+  url: string;
+  expiresAt: string;
+}
+
+export interface TripExpenseDto {
+  id: string;
+  category: ExpenseCategory;
+  amount: number;
+  currency: Currency;
+  note: string | null;
+  incurredAt: string;
+}
+
+export interface TripDto {
+  id: string;
+  /** "TR-1045" */
+  code: string;
+  status: TripStatus;
+  nextStatus: TripStatus | null;
+  negotiationId: string | null;
+  load: {
+    id: string;
+    originCity: string;
+    originProvince: string;
+    originLat: number;
+    originLng: number;
+    destinationCity: string;
+    destinationProvince: string;
+    destinationLat: number;
+    destinationLng: number;
+    pickupAt: string;
+    distanceKm: number;
+    weightKg: number;
+    equipment: EquipmentType;
+    isSimulated: boolean;
+    brokerName: string | null;
+    brokerPhone: string | null;
+  };
+  vehicle: { id: string; name: string };
+  plannedKm: number;
+  lastPosition: { lat: number; lng: number; at: string } | null;
+  remainingKm: number | null;
+  etaAt: string | null;
+  pickedUpAt: string | null;
+  deliveredAt: string | null;
+  completedAt: string | null;
+  hasPod: boolean;
+  financials: TripFinancials;
+  createdAt: string;
+}
+
+export interface TripDetailDto extends TripDto {
+  documents: TripDocumentDto[];
+  expenses: TripExpenseDto[];
+  brokerRating: { stars: number; comment: string | null } | null;
 }

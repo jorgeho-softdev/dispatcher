@@ -112,6 +112,34 @@
     "strategy": {
       "claude": "Claude (IA)",
       "rules": "Por reglas"
+    },
+    "tripStatus": {
+      "scheduled": "Programado",
+      "at_pickup": "En recogida",
+      "in_transit": "En ruta",
+      "delivered": "Entregado",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "tripStep": {
+      "at_pickup": "Recogida",
+      "in_transit": "En ruta",
+      "delivered": "Entrega"
+    },
+    "documentType": {
+      "rate_confirmation": "Rate Confirmation",
+      "bol": "BOL (conocimiento de embarque)",
+      "pod": "POD (prueba de entrega)",
+      "receipt": "Recibo",
+      "other": "Otro"
+    },
+    "expenseCategory": {
+      "fuel": "Combustible",
+      "tolls": "Peajes",
+      "parking": "Estacionamiento",
+      "maintenance": "Mantenimiento",
+      "lumper": "Lumper / descarga",
+      "other": "Otro"
     }
   },
   "errors": {
@@ -130,7 +158,11 @@
     "VEHICLE_REQUIRED": "Agrega un vehículo antes de negociar.",
     "LOAD_UNAVAILABLE": "Esta carga ya no está disponible.",
     "NEGOTIATION_ALREADY_ACTIVE": "Ya hay una negociación en curso para esta carga.",
-    "NEGOTIATION_INVALID_STATE": "Esta negociación cambió. Actualiza e intenta de nuevo."
+    "NEGOTIATION_INVALID_STATE": "Esta negociación cambió. Actualiza e intenta de nuevo.",
+    "TRIP_INVALID_STATE": "Este viaje cambió. Actualiza e intenta de nuevo.",
+    "POD_REQUIRED": "Sube la prueba de entrega (POD) para cerrar el viaje.",
+    "UPLOAD_NOT_FOUND": "El archivo no terminó de subirse. Intenta de nuevo.",
+    "BROKER_ALREADY_RATED": "Ya calificaste a este broker en este viaje."
   },
   "auth": {
     "email": "Correo",
@@ -156,7 +188,8 @@
       "loads": "Cargas",
       "vehicles": "Vehículos",
       "settings": "Preferencias",
-      "negotiations": "Negociaciones"
+      "negotiations": "Negociaciones",
+      "trips": "Viajes"
     },
     "dashboard": {
       "greeting": "Hola, {name}",
@@ -260,6 +293,21 @@
       "colUpdated": "Actualizada",
       "back": "← Todas las negociaciones",
       "audit": "Auditoría"
+    },
+    "trips": {
+      "title": "Viajes",
+      "subtitle": "Cargas reservadas en curso y su ganancia real.",
+      "filterAll": "Todos",
+      "colCode": "Viaje",
+      "colRoute": "Ruta",
+      "colStatus": "Estado",
+      "colEta": "ETA",
+      "colRate": "Tarifa",
+      "colProfit": "Ganancia real",
+      "back": "← Todos los viajes",
+      "progress": "Progreso",
+      "financials": "Finanzas",
+      "download": "Descargar"
     }
   },
   "mobile": {
@@ -271,7 +319,8 @@
     "tabs": {
       "home": "Inicio",
       "loads": "Cargas",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "trips": "Viajes"
     },
     "login": {
       "subtitle": "Tu dispatcher con IA"
@@ -287,7 +336,8 @@
       "seeLoads": "Ver cargas disponibles",
       "bestOpportunity": "Mejor oportunidad",
       "noOpportunities": "No hay buenos matches ahora. Vuelve pronto.",
-      "pendingApprovals": "Esperando tu aprobación"
+      "pendingApprovals": "Esperando tu aprobación",
+      "nextTrip": "Próximo viaje"
     },
     "loads": {
       "title": "Cargas disponibles",
@@ -403,5 +453,60 @@
     "bookedTitle": "¡Carga reservada!",
     "bookedBody": "Reservada por {amount}. El viaje aparecerá en Viajes en la siguiente fase.",
     "simulatedBroker": "Broker simulado (DEMO): las respuestas no son reales."
+  },
+  "trip": {
+    "title": "Viaje #{code}",
+    "eta": "ETA estimada",
+    "remaining": "Restante",
+    "navigate": "Navegar",
+    "callBroker": "Llamar al broker",
+    "noBrokerPhone": "El broker simulado no tiene teléfono.",
+    "documents": "Documentos",
+    "uploadPod": "Subir POD",
+    "uploadDocument": "Subir documento",
+    "takePhoto": "Tomar foto",
+    "chooseFromLibrary": "Elegir de la galería",
+    "uploading": "Subiendo…",
+    "cameraDenied": "Permite el acceso a la cámara en Ajustes para fotografiar documentos.",
+    "next": {
+      "at_pickup": "Llegué a la recogida",
+      "in_transit": "Cargado — iniciar ruta",
+      "delivered": "Marcar como entregado"
+    },
+    "confirmDelivered": "¿Confirmas que la carga fue entregada?",
+    "expenses": "Gastos",
+    "addExpense": "Agregar gasto",
+    "amount": "Monto ({currency})",
+    "note": "Nota (opcional)",
+    "saveExpense": "Guardar gasto",
+    "noExpenses": "Aún no hay gastos registrados.",
+    "finalRate": "Tarifa final",
+    "actualExpenses": "Gastos reales",
+    "actualProfit": "Ganancia real",
+    "finalMargin": "Margen final",
+    "estimatedProfit": "Estimada al reservar",
+    "completedTitle": "¡Entrega completada!",
+    "completedBody": "La carga ha sido entregada y el viaje está finalizado.",
+    "closeTrip": "Cerrar viaje",
+    "podMissing": "Sube el POD para cerrar el viaje.",
+    "podDone": "POD (entrega)",
+    "docsComplete": "Documentos completos",
+    "rateBroker": "Calificar al broker",
+    "ratedThanks": "Gracias por calificar a {broker}.",
+    "starsLabel": "{stars, plural, one {# estrella} other {# estrellas}}",
+    "findNextLoad": "Buscar siguiente carga",
+    "tracking": "Compartiendo ubicación mientras esta pantalla está abierta.",
+    "trackingOff": "Ubicación desactivada. Permite la ubicación para actualizar la ETA.",
+    "noTrips": "Aún no hay viajes. Reserva una carga para empezar.",
+    "filterActive": "Activos",
+    "filterCompleted": "Completados",
+    "viewTrip": "Ver viaje",
+    "open": "Abrir",
+    "cancelTrip": "Cancelar viaje",
+    "cancelConfirm": "¿Cancelar este viaje? La carga vuelve al marketplace.",
+    "lastUpdate": "Última posición {time}",
+    "noPosition": "Sin posición aún",
+    "pickup": "Recogida",
+    "delivery": "Entrega"
   }
 }

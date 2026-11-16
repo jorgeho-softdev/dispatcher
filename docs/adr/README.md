@@ -18,3 +18,5 @@ Cada decisión técnica relevante se documenta aquí (es **obligatorio**; ver [`
 | [0012](./0012-matching-and-geo.md) | Match determinista, PostGIS por trigger y deadhead aproximado | Aceptado |
 | [0013](./0013-ai-agent-architecture.md) | Agente de negociación como workflow con Policy Engine determinista | Aceptado |
 | [0014](./0014-jobs-and-push.md) | BullMQ para el workflow y Expo Push HTTP API | Aceptado |
+| [0015](./0015-document-storage.md) | Documentos en S3 con URLs firmadas (SeaweedFS local) | Aceptado |
+| [0016](./0016-trip-tracking.md) | Seguimiento de viajes en primer plano primero | Aceptado |

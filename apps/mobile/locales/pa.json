@@ -1,3 +1,5 @@
 {
-  "NSLocationWhenInUseUsageDescription": "AI Dispatcher ਤੁਹਾਡੇ ਨੇੜੇ ਲੋਡ ਲੱਭਣ ਅਤੇ ਪਿਕਅੱਪ ਤੱਕ ਖਾਲੀ ਕਿਲੋਮੀਟਰ ਗਿਣਨ ਲਈ ਤੁਹਾਡੀ ਲੋਕੇਸ਼ਨ ਵਰਤਦਾ ਹੈ।"
+  "NSLocationWhenInUseUsageDescription": "AI Dispatcher ਤੁਹਾਡੇ ਨੇੜੇ ਲੋਡ ਲੱਭਣ ਅਤੇ ਪਿਕਅੱਪ ਤੱਕ ਖਾਲੀ ਕਿਲੋਮੀਟਰ ਗਿਣਨ ਲਈ ਤੁਹਾਡੀ ਲੋਕੇਸ਼ਨ ਵਰਤਦਾ ਹੈ।",
+  "NSCameraUsageDescription": "AI Dispatcher ਡਿਲੀਵਰੀ ਦਸਤਾਵੇਜ਼ਾਂ (POD, BOL, ਰਸੀਦਾਂ) ਦੀ ਫ਼ੋਟੋ ਲਈ ਕੈਮਰਾ ਵਰਤਦਾ ਹੈ।",
+  "NSPhotoLibraryUsageDescription": "AI Dispatcher ਡਿਲੀਵਰੀ ਦਸਤਾਵੇਜ਼ ਜੋੜਨ ਲਈ ਤੁਹਾਡੀਆਂ ਫ਼ੋਟੋਆਂ ਤੱਕ ਪਹੁੰਚ ਕਰਦਾ ਹੈ।"
 }

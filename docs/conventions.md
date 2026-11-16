@@ -126,6 +126,8 @@ Sigue [`docs/i18n.md`](./i18n.md):
 - **Validación:** todo input externo pasa por Zod (body, query, env, respuestas de proveedores externos).
 - **Datos simulados:** siempre marcados (`isSimulated`, sufijo "(DEMO)") y nunca mezclados sin etiqueta con datos reales.
 - **IA:** el LLM solo **propone**. Toda acción con efectos externos pasa por el Policy Engine determinista (`packages/shared/src/negotiation.ts`) y queda auditada en `negotiation_events`. Reservar siempre requiere aprobación humana. El sistema debe funcionar sin LLM (`AI_STRATEGY=rules`) y los tests no deben llamar al LLM.
+- **Archivos:** nunca pasan por la API. Se suben y bajan con URLs firmadas de vida corta, la API verifica en S3 (`HEAD`) antes de confiar en una subida, y en la base solo van metadatos (ver ADR-0015).
+- **Ubicación del usuario:** solo con permiso explícito y en primer plano mientras no exista un consentimiento específico para el segundo plano (ADR-0016).
 - **Jobs:** los handlers de BullMQ son idempotentes (verifican el estado y hacen transiciones atómicas con `updateMany where status = …`). Los efectos secundarios no críticos (push) nunca lanzan excepciones.
 
 ## 9. Testing

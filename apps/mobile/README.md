@@ -37,9 +37,12 @@ app/                    Expo Router routes
   settings.tsx          Theme, language, notifications, legal links, dev tools
   loads/[id].tsx        Load detail: match reasons + profit breakdown + "Negotiate with AI"
   negotiations/[id].tsx Negotiate & book: AI offer, approvals, activity timeline
+  trips/[id].tsx        Trip in progress (stepper, map, ETA, documents, expenses) and close-out
+  (tabs)/trips.tsx      Active / completed trips
 features/
   loads/                LoadCard, MatchBadge, LoadViewTabs (recommended / nearby / all)
   negotiation/          Timeline, explanation hook, PushRegistration
+  trips/                TripStepper, TripMap, useTripTracking (GPS batches), useDocumentUpload (presigned S3)
 locales/                Localized iOS permission strings (en, es, fr, pa)
 components/
   OnboardingScreen.tsx  First-run flow (rendered instead of the navigator)
