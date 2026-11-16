@@ -92,7 +92,10 @@ src/
     │                       broker simulado, worker BullMQ (ver ai-agent.md)
     ├── notifications/      Tokens de dispositivo + Expo Push (textos i18n)
     ├── storage/            S3 (URLs firmadas; SeaweedFS en local)
-    ├── trips/              Viajes: ciclo de vida, GPS/ETA, documentos, gastos, Rate Confirmation PDF
+    ├── trips/              Viajes: ciclo de vida, GPS/ETA, documentos, gastos, Rate Confirmation PDF,
+    │                       asignación de conductor, mapa en vivo (alcance por rol)
+    ├── team/               Miembros, roles e invitaciones por enlace
+    ├── reports/            Reportes financieros, CSV y desempeño de la IA
     └── loads/              vistas (recommended/nearby/all), detalle, alta manual
         ├── matching-context.service.ts  vehículo + posición + preferencias (reutilizable por el agente)
         └── providers/      LoadProvider (contrato) + SimulatedLoadProvider
@@ -125,6 +128,12 @@ src/
 | POST | `/v1/trips/:id/{status,locations,documents/upload-url,documents/:docId/complete,expenses}` | `trips:progress` | Progreso del conductor, GPS, documentos (URL firmada) y gastos |
 | POST | `/v1/trips/:id/{complete,cancel,broker-rating}` | `trips:manage` | Cierre (requiere POD), cancelación y calificación del broker |
 | GET | `/v1/documents/:id/download-url` | `trips:read` | URL firmada de descarga (5 min) |
+| POST | `/v1/trips/:id/driver` | `trips:manage` | Asignar conductor |
+| GET | `/v1/fleet/live` | `trips:read` | Mapa en vivo: viajes activos + posición de vehículos |
+| GET / PATCH / DELETE | `/v1/members[/:id]` | `vehicles:read` / `members:manage` | Equipo y roles. Ver [`team.md`](./team.md) |
+| GET / POST / DELETE | `/v1/invitations[/:id]` | `members:manage` | Invitaciones por enlace |
+| GET / POST | `/v1/invitations/{preview,accept}` | público | Ver y aceptar una invitación |
+| GET | `/v1/reports/{summary,trips.csv,ai}` | `finances:read` | Reportes financieros, CSV y desempeño de la IA. Ver [`reports.md`](./reports.md) |
 
 La documentación OpenAPI interactiva está en `http://localhost:4000/docs`.
 
@@ -150,6 +159,7 @@ Todas las respuestas de error tienen la forma `ApiErrorDto { statusCode, code, m
 ```
 organizations 1─┬─< memberships >─1 users 1─< refresh_tokens, device_tokens
                 ├─< negotiations >─1 loads, vehicles · negotiations 1─< negotiation_events
+                ├─< invitations (token hasheado)
                 ├─< trips (1─1 negotiation) ─< trip_locations, trip_documents, trip_expenses · trips 1─1 broker_ratings
                 ├─< vehicles
                 ├─< loads (manuales)        loads (marketplace: organization_id NULL)
@@ -229,7 +239,7 @@ app/_layout.tsx
 | 1. Cargas | PostGIS ("cerca de mí"), deadhead, match %, vistas, detalle de carga en mobile, preferencias y cargas manuales en web | ✅ |
 | 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ✅ |
 | 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ✅ (rastreo en segundo plano: siguiente iteración) |
-| 4. Web completa | Flota, reportes, configuración y auditoría de la IA | ⏳ |
+| 4. Web completa | Equipo/roles/invitaciones, asignación de conductores, mapa en vivo, reportes + CSV, desempeño de la IA | ✅ (PDF de reportes y emails: pendientes) |
 | 5. Integraciones | Load boards autorizados, canal de email, modo semiautomático | ⏳ |
 
 Agente de IA (Fase 2): un **workflow** orquestado por código (máquina de estados + BullMQ). Claude propone montos y explicaciones con salida estructurada, y un **Policy Engine determinista** aplica los límites de `ai_settings` y el nivel de autonomía antes de cualquier acción externa. Todo queda auditado en `negotiation_events`. Detalle en [`ai-agent.md`](./ai-agent.md) y [ADR-0013](./adr/0013-ai-agent-architecture.md).

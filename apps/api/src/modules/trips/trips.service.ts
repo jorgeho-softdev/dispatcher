@@ -16,6 +16,8 @@ import {
   type BrokerRatingInput,
   type DownloadUrlDto,
   type ExpenseCreateInput,
+  type FleetLiveDto,
+  type TripDriverInput,
   type TripDetailDto,
   type TripDto,
   type TripListQuery,
@@ -99,7 +101,15 @@ export class TripsService {
     return trip;
   }
 
-  async list(organizationId: string, query: TripListQuery): Promise<TripDto[]> {
+  /** Drivers only ever see the trips assigned to them. */
+  private scope(auth: AuthContext): Prisma.TripWhereInput {
+    return {
+      organizationId: auth.organizationId,
+      ...(auth.role === 'driver' && { driverId: auth.userId }),
+    };
+  }
+
+  async list(auth: AuthContext, query: TripListQuery): Promise<TripDto[]> {
     const status: Prisma.TripWhereInput['status'] =
       query.filter === 'active'
         ? { in: [...ACTIVE_TRIP_STATUSES] }
@@ -107,7 +117,7 @@ export class TripsService {
           ? 'completed'
           : undefined;
     const trips = await this.prisma.trip.findMany({
-      where: { organizationId, ...(status && { status }) },
+      where: { ...this.scope(auth), ...(status && { status }) },
       include: TRIP_INCLUDE,
       orderBy: [{ updatedAt: 'desc' }],
       take: query.limit,
@@ -115,8 +125,96 @@ export class TripsService {
     return trips.map(toTripDto);
   }
 
-  async get(organizationId: string, id: string): Promise<TripDetailDto> {
-    return toTripDetailDto(await this.findOwned(organizationId, id));
+  async get(auth: AuthContext, id: string): Promise<TripDetailDto> {
+    return toTripDetailDto(await this.findOwned(auth, id));
+  }
+
+  /** Reassigns the trip to another member of the organization (Phase 4). */
+  async assignDriver(
+    auth: AuthContext,
+    id: string,
+    input: TripDriverInput,
+  ): Promise<TripDetailDto> {
+    const trip = await this.findOwned(auth, id);
+    if (!ACTIVE_TRIP_STATUSES.includes(trip.status))
+      throw this.invalidState(trip);
+    const member = await this.prisma.membership.findFirst({
+      where: { organizationId: auth.organizationId, userId: input.driverId },
+    });
+    if (!member)
+      throw new NotFoundException(apiError('NOT_FOUND', 'Member not found'));
+    await this.prisma.trip.update({
+      where: { id: trip.id },
+      data: { driverId: input.driverId },
+    });
+    return this.get(auth, id);
+  }
+
+  /** Live map (web): active trips with their last GPS fix + every vehicle's position. */
+  async liveMap(auth: AuthContext): Promise<FleetLiveDto> {
+    const [trips, vehicles] = await Promise.all([
+      this.prisma.trip.findMany({
+        where: {
+          ...this.scope(auth),
+          status: { in: [...ACTIVE_TRIP_STATUSES] },
+        },
+        include: { load: true, vehicle: true, driver: true },
+        orderBy: { updatedAt: 'desc' },
+      }),
+      auth.role === 'driver'
+        ? Promise.resolve([])
+        : this.prisma.vehicle.findMany({
+            where: { organizationId: auth.organizationId, deletedAt: null },
+          }),
+    ]);
+    const onTrip = new Set(trips.map((t) => t.vehicleId));
+    return {
+      trips: trips.map((t) => ({
+        id: t.id,
+        code: tripCode(t.sequence),
+        status: t.status,
+        driverName: t.driver.name,
+        vehicleName: t.vehicle.name,
+        origin: {
+          city: t.load.originCity,
+          lat: t.load.originLat,
+          lng: t.load.originLng,
+        },
+        destination: {
+          city: t.load.destinationCity,
+          lat: t.load.destinationLat,
+          lng: t.load.destinationLng,
+        },
+        lastPosition:
+          t.lastLat !== null && t.lastLng !== null && t.lastAt
+            ? { lat: t.lastLat, lng: t.lastLng, at: t.lastAt.toISOString() }
+            : null,
+        etaAt: t.etaAt?.toISOString() ?? null,
+        remainingKm: t.remainingKm?.toNumber() ?? null,
+      })),
+      vehicles: vehicles.map((v) => ({
+        id: v.id,
+        name: v.name,
+        equipment: v.equipment,
+        position:
+          v.lastLat !== null && v.lastLng !== null
+            ? {
+                lat: v.lastLat,
+                lng: v.lastLng,
+                source: 'gps' as const,
+                at: v.lastLocationAt?.toISOString() ?? null,
+              }
+            : v.homeBaseLat !== null && v.homeBaseLng !== null
+              ? {
+                  lat: v.homeBaseLat,
+                  lng: v.homeBaseLng,
+                  source: 'home_base' as const,
+                  at: null,
+                }
+              : null,
+        onTrip: onTrip.has(v.id),
+      })),
+    };
   }
 
   /** Driver progress: Recogida → En ruta → Entrega (strict order). */
@@ -125,7 +223,7 @@ export class TripsService {
     id: string,
     input: TripStatusUpdateInput,
   ): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     const now = new Date();
     const data: Prisma.TripUpdateManyMutationInput = {
       ...(input.status === 'in_transit' && { pickedUpAt: now }),
@@ -136,7 +234,7 @@ export class TripsService {
       }),
     };
     await this.transition(trip, trip.status, input.status, data);
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   /**
@@ -149,7 +247,7 @@ export class TripsService {
     id: string,
     input: TripLocationsInput,
   ): Promise<TripDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     if (!['scheduled', 'at_pickup', 'in_transit'].includes(trip.status))
       throw this.invalidState(trip);
 
@@ -193,7 +291,7 @@ export class TripsService {
         },
       }),
     ]);
-    return toTripDto(await this.findOwned(auth.organizationId, id));
+    return toTripDto(await this.findOwned(auth, id));
   }
 
   // ── Documents ─────────────────────────────────────────────────────────
@@ -204,7 +302,7 @@ export class TripsService {
     id: string,
     input: UploadRequestInput,
   ): Promise<UploadUrlDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     if (trip.status === 'cancelled') throw this.invalidState(trip);
     const docId = randomUUID();
     const key = `org/${trip.organizationId}/trips/${trip.id}/${docId}/${safeName(input.fileName)}`;
@@ -236,7 +334,7 @@ export class TripsService {
     id: string,
     documentId: string,
   ): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     const doc = await this.prisma.tripDocument.findFirst({
       where: { id: documentId, tripId: trip.id },
     });
@@ -258,15 +356,15 @@ export class TripsService {
         },
       });
     }
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   async downloadUrl(
-    organizationId: string,
+    auth: AuthContext,
     documentId: string,
   ): Promise<DownloadUrlDto> {
     const doc = await this.prisma.tripDocument.findFirst({
-      where: { id: documentId, status: 'uploaded', trip: { organizationId } },
+      where: { id: documentId, status: 'uploaded', trip: this.scope(auth) },
     });
     if (!doc)
       throw new NotFoundException(apiError('NOT_FOUND', 'Document not found'));
@@ -325,7 +423,7 @@ export class TripsService {
     id: string,
     input: ExpenseCreateInput,
   ): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     // Real profit is frozen once the trip is closed.
     if (trip.status === 'completed' || trip.status === 'cancelled')
       throw this.invalidState(trip);
@@ -340,7 +438,7 @@ export class TripsService {
         createdById: auth.userId,
       },
     });
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   async deleteExpense(
@@ -348,7 +446,7 @@ export class TripsService {
     id: string,
     expenseId: string,
   ): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     if (trip.status === 'completed' || trip.status === 'cancelled')
       throw this.invalidState(trip);
     const res = await this.prisma.tripExpense.deleteMany({
@@ -356,12 +454,12 @@ export class TripsService {
     });
     if (res.count === 0)
       throw new NotFoundException(apiError('NOT_FOUND', 'Expense not found'));
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   /** Closes the trip. Requires delivery + an uploaded POD. */
   async complete(auth: AuthContext, id: string): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     const hasPod = trip.documents.some(
       (d) => d.type === 'pod' && d.status === 'uploaded',
     );
@@ -374,12 +472,12 @@ export class TripsService {
     await this.transition(trip, 'delivered', 'completed', {
       completedAt: new Date(),
     });
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   /** Before loading only. Releases the load back to the marketplace. */
   async cancel(auth: AuthContext, id: string): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     if (!canTripTransition(trip.status, 'cancelled'))
       throw this.invalidState(trip);
     await this.transition(trip, trip.status, 'cancelled', {
@@ -393,7 +491,7 @@ export class TripsService {
       },
       data: { status: 'available' },
     });
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   /** One rating per trip; keeps the broker's average up to date. */
@@ -402,7 +500,7 @@ export class TripsService {
     id: string,
     input: BrokerRatingInput,
   ): Promise<TripDetailDto> {
-    const trip = await this.findOwned(auth.organizationId, id);
+    const trip = await this.findOwned(auth, id);
     if (!['delivered', 'completed'].includes(trip.status))
       throw this.invalidState(trip);
     const brokerId = trip.load.brokerId;
@@ -433,7 +531,7 @@ export class TripsService {
         data: { ratingAvg: avg._avg.stars ?? input.stars },
       });
     });
-    return this.get(auth.organizationId, id);
+    return this.get(auth, id);
   }
 
   // ── Internals ─────────────────────────────────────────────────────────
@@ -453,11 +551,11 @@ export class TripsService {
   }
 
   private async findOwned(
-    organizationId: string,
+    auth: AuthContext,
     id: string,
   ): Promise<TripWithRelations> {
     const trip = await this.prisma.trip.findFirst({
-      where: { id, organizationId },
+      where: { id, ...this.scope(auth) },
       include: TRIP_INCLUDE,
     });
     if (!trip)

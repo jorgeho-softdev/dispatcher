@@ -1,6 +1,15 @@
 import { createApi, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type {
   AdjustOfferInput,
+  AiPerformanceDto,
+  FleetLiveDto,
+  InvitationCreateInput,
+  InvitationDto,
+  MemberDto,
+  MemberUpdateInput,
+  ReportQuery,
+  ReportSummaryDto,
+  TripDriverInput,
   AiSettingsDto,
   AiSettingsUpdateInput,
   BrokerRatingInput,
@@ -33,7 +42,7 @@ import type {
 
 export type DispatcherBaseQuery = BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>;
 
-export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings', 'Negotiation', 'Trip'] as const;
+export const TAGS = ['Me', 'Vehicle', 'Load', 'AiSettings', 'Negotiation', 'Trip', 'Member', 'Invitation'] as const;
 
 /**
  * Builds the RTK Query api used by both clients. Paths are relative to the
@@ -182,6 +191,51 @@ export function createDispatcherApi(baseQuery: DispatcherBaseQuery) {
       rateBroker: build.mutation<TripDetailDto, { id: string } & BrokerRatingInput>({
         query: ({ id, ...body }) => ({ url: `/trips/${id}/broker-rating`, method: 'POST', body }),
         invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }],
+      }),
+
+      assignTripDriver: build.mutation<TripDetailDto, { id: string } & TripDriverInput>({
+        query: ({ id, ...body }) => ({ url: `/trips/${id}/driver`, method: 'POST', body }),
+        invalidatesTags: (_r, _e, { id }) => [{ type: 'Trip', id }, { type: 'Trip', id: 'LIST' }],
+      }),
+      getFleetLive: build.query<FleetLiveDto, void>({
+        query: () => '/fleet/live',
+        providesTags: [{ type: 'Trip', id: 'LIST' }],
+      }),
+
+      // ── Team (Phase 4) ──────────────────────────────────────────────
+      getMembers: build.query<MemberDto[], void>({
+        query: () => '/members',
+        providesTags: ['Member'],
+      }),
+      updateMemberRole: build.mutation<MemberDto[], { id: string } & MemberUpdateInput>({
+        query: ({ id, ...body }) => ({ url: `/members/${id}`, method: 'PATCH', body }),
+        invalidatesTags: ['Member'],
+      }),
+      removeMember: build.mutation<MemberDto[], string>({
+        query: (id) => ({ url: `/members/${id}`, method: 'DELETE' }),
+        invalidatesTags: ['Member'],
+      }),
+      getInvitations: build.query<InvitationDto[], void>({
+        query: () => '/invitations',
+        providesTags: ['Invitation'],
+      }),
+      createInvitation: build.mutation<InvitationDto, InvitationCreateInput>({
+        query: (body) => ({ url: '/invitations', method: 'POST', body }),
+        invalidatesTags: ['Invitation'],
+      }),
+      revokeInvitation: build.mutation<void, string>({
+        query: (id) => ({ url: `/invitations/${id}`, method: 'DELETE' }),
+        invalidatesTags: ['Invitation'],
+      }),
+
+      // ── Reports (Phase 4) ───────────────────────────────────────────
+      getReportSummary: build.query<ReportSummaryDto, ReportQuery>({
+        query: (q) => ({ url: '/reports/summary', params: { ...q, from: q.from.toISOString(), to: q.to.toISOString() } }),
+        providesTags: [{ type: 'Trip', id: 'LIST' }],
+      }),
+      getAiPerformance: build.query<AiPerformanceDto, Pick<ReportQuery, 'from' | 'to'>>({
+        query: (q) => ({ url: '/reports/ai', params: { from: q.from.toISOString(), to: q.to.toISOString() } }),
+        providesTags: [{ type: 'Negotiation', id: 'LIST' }],
       }),
 
       /** Expo push token of this phone (mobile only). */

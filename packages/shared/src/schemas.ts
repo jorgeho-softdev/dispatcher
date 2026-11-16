@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES, LOAD_VIEWS } from './constants';
+import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES, LOAD_VIEWS, ROLES } from './constants';
+import { REPORT_GROUPS } from './reports';
 import { PROVINCES } from './geo';
 import { ALLOWED_UPLOAD_MIME_TYPES, DOCUMENT_TYPES, EXPENSE_CATEGORIES, MAX_UPLOAD_BYTES } from './trips';
 
@@ -206,3 +207,45 @@ export const brokerRatingSchema = z.object({
   comment: z.string().trim().max(500).optional(),
 });
 export type BrokerRatingInput = z.infer<typeof brokerRatingSchema>;
+
+// ── Team & invitations (Phase 4) ───────────────────────────────────────
+/** Roles that can be granted by invitation. Ownership is never handed out by link. */
+export const INVITABLE_ROLES = ROLES.filter((r) => r !== 'owner') as Exclude<(typeof ROLES)[number], 'owner'>[];
+
+export const invitationCreateSchema = z.object({
+  email: z.email().trim().toLowerCase(),
+  role: z.enum(['fleet_manager', 'dispatcher', 'driver']),
+});
+export type InvitationCreateInput = z.infer<typeof invitationCreateSchema>;
+
+export const acceptInvitationSchema = z.object({
+  token: z.string().min(20).max(200),
+  name: z.string().trim().min(2).max(100),
+  password: z.string().min(8).max(128),
+  locale: localeCode.optional(),
+});
+export type AcceptInvitationInput = z.infer<typeof acceptInvitationSchema>;
+
+export const memberUpdateSchema = z.object({
+  role: z.enum(ROLES),
+});
+export type MemberUpdateInput = z.infer<typeof memberUpdateSchema>;
+
+export const tripDriverSchema = z.object({
+  driverId: z.uuid(),
+});
+export type TripDriverInput = z.infer<typeof tripDriverSchema>;
+
+// ── Reports (Phase 4) ──────────────────────────────────────────────────
+export const reportQuerySchema = z
+  .object({
+    from: z.coerce.date(),
+    to: z.coerce.date(),
+    groupBy: z.enum(REPORT_GROUPS).default('month'),
+  })
+  .refine((q) => q.from < q.to, { message: '`from` must be before `to`', path: ['from'] })
+  .refine((q) => q.to.getTime() - q.from.getTime() <= 366 * 86_400_000 * 2, {
+    message: 'Range limited to 2 years',
+    path: ['to'],
+  });
+export type ReportQuery = z.infer<typeof reportQuerySchema>;

@@ -36,6 +36,7 @@ Ver [`.env.example`](./.env.example). Se validan con Zod al arrancar (`src/confi
 | `S3_REGION` / `S3_BUCKET` | Región (`ca-central-1`) y bucket de documentos |
 | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Credenciales S3 (local: `dispatcher` / `dispatcher-secret`) |
 | `S3_FORCE_PATH_STYLE` | `true` para SeaweedFS/MinIO/R2 |
+| `WEB_URL` | URL pública de la web (enlaces de invitación) |
 | `EXPO_ACCESS_TOKEN` | Opcional: solo si Expo Push tiene "enhanced security" |
 
 ## Cómo agregar un módulo

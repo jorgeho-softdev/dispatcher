@@ -162,7 +162,10 @@
     "TRIP_INVALID_STATE": "Este viaje cambió. Actualiza e intenta de nuevo.",
     "POD_REQUIRED": "Sube la prueba de entrega (POD) para cerrar el viaje.",
     "UPLOAD_NOT_FOUND": "El archivo no terminó de subirse. Intenta de nuevo.",
-    "BROKER_ALREADY_RATED": "Ya calificaste a este broker en este viaje."
+    "BROKER_ALREADY_RATED": "Ya calificaste a este broker en este viaje.",
+    "INVITATION_INVALID": "Esta invitación no es válida, expiró o ya se usó.",
+    "LAST_OWNER": "La organización necesita al menos un dueño.",
+    "CANNOT_CHANGE_SELF": "No puedes cambiar ni quitar tu propio acceso."
   },
   "auth": {
     "email": "Correo",
@@ -189,7 +192,10 @@
       "vehicles": "Vehículos",
       "settings": "Preferencias",
       "negotiations": "Negociaciones",
-      "trips": "Viajes"
+      "trips": "Viajes",
+      "team": "Equipo",
+      "map": "Mapa en vivo",
+      "reports": "Reportes"
     },
     "dashboard": {
       "greeting": "Hola, {name}",
@@ -307,7 +313,83 @@
       "back": "← Todos los viajes",
       "progress": "Progreso",
       "financials": "Finanzas",
-      "download": "Descargar"
+      "download": "Descargar",
+      "driver": "Conductor",
+      "assignDriver": "Asignar conductor"
+    },
+    "team": {
+      "title": "Equipo",
+      "subtitle": "Invita a tus despachadores y conductores. Cada rol ve solo lo que necesita.",
+      "members": "Miembros",
+      "you": "Tú",
+      "role": "Rol",
+      "remove": "Quitar",
+      "removeConfirm": "¿Quitar a {name} de la organización? Se cerrará su sesión.",
+      "invite": "Invitar miembro",
+      "email": "Correo",
+      "createLink": "Crear enlace de invitación",
+      "linkReady": "Comparte este enlace con {email}. Funciona una sola vez y expira en 7 días; no se volverá a mostrar.",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "pending": "Invitaciones pendientes",
+      "expires": "Expira {date}",
+      "revoke": "Revocar",
+      "noPending": "No hay invitaciones pendientes.",
+      "emailNote": "El envío por correo llegará después; por ahora copia el enlace y envíalo tú."
+    },
+    "invite": {
+      "title": "Únete a {organization}",
+      "subtitle": "Te invitaron como {role} con {email}.",
+      "name": "Tu nombre",
+      "password": "Crea una contraseña (8+ caracteres)",
+      "accept": "Aceptar y entrar",
+      "driverHint": "Los conductores usan la app móvil. Instálala y entra con este correo.",
+      "invalid": "Esta invitación no es válida, expiró o ya se usó. Pide un nuevo enlace."
+    },
+    "map": {
+      "title": "Mapa en vivo",
+      "subtitle": "Viajes activos y posición de vehículos. Se actualiza cada 30 segundos.",
+      "activeTrips": "{count, plural, one {# viaje activo} other {# viajes activos}}",
+      "vehicles": "Vehículos",
+      "onTrip": "En viaje",
+      "idle": "Disponible",
+      "atHomeBase": "En su base (sin GPS reciente)",
+      "noPositions": "Aún no hay posiciones. Aparecen cuando los conductores abren un viaje en la app.",
+      "list": "Lista"
+    },
+    "reports": {
+      "title": "Reportes",
+      "subtitle": "Ganancia real de los viajes completados y desempeño del dispatcher con IA.",
+      "range": "Periodo",
+      "last30": "Últimos 30 días",
+      "last90": "Últimos 90 días",
+      "last365": "Últimos 12 meses",
+      "groupBy": "Agrupar por",
+      "group": {
+        "month": "Mes",
+        "vehicle": "Vehículo",
+        "driver": "Conductor",
+        "lane": "Ruta (provincias)"
+      },
+      "exportCsv": "Exportar CSV",
+      "trips": "Viajes",
+      "revenue": "Ingresos",
+      "expenses": "Gastos",
+      "profit": "Ganancia real",
+      "margin": "Margen",
+      "revenuePerKm": "Ingreso / km",
+      "profitByMonth": "Ganancia real por mes",
+      "empty": "No hay viajes completados en este periodo.",
+      "aiTitle": "Desempeño del dispatcher con IA",
+      "negotiations": "Negociaciones",
+      "closeRate": "Tasa de cierre",
+      "avgUplift": "Tarifa prom. sobre la publicada",
+      "totalUplift": "Ingreso extra conseguido",
+      "avgRounds": "Rondas prom.",
+      "byStrategy": "Por estrategia",
+      "booked": "Reservadas",
+      "aiEmpty": "No hay negociaciones en este periodo.",
+      "currencyNote": "Montos en {currency}. Se excluyen viajes en otras monedas."
     }
   },
   "mobile": {

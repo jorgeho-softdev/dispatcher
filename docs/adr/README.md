@@ -20,3 +20,5 @@ Cada decisión técnica relevante se documenta aquí (es **obligatorio**; ver [`
 | [0014](./0014-jobs-and-push.md) | BullMQ para el workflow y Expo Push HTTP API | Aceptado |
 | [0015](./0015-document-storage.md) | Documentos en S3 con URLs firmadas (SeaweedFS local) | Aceptado |
 | [0016](./0016-trip-tracking.md) | Seguimiento de viajes en primer plano primero | Aceptado |
+| [0017](./0017-web-maps.md) | MapLibre GL con estilo configurable para el mapa web | Aceptado |
+| [0018](./0018-team-invitations.md) | Invitaciones por enlace, una organización por usuario, alcance del conductor | Aceptado |

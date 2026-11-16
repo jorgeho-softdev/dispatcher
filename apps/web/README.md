@@ -20,6 +20,7 @@ npm run lint
 | Variable | Descripción |
 |---|---|
 | `API_URL` | URL de la API, solo del lado del servidor (default `http://localhost:4000/v1`) |
+| `NEXT_PUBLIC_MAP_STYLE_URL` | Estilo de mapa (proveedor de teselas). Sin definir: OSM raster, solo para desarrollo |
 
 ## Estructura
 
@@ -28,7 +29,10 @@ src/app/[locale]/        Todas las páginas, una versión por idioma (/en, /fr, 
   (dashboard)/           Páginas autenticadas: dashboard, loads (vistas + match), loads/new (carga manual),
                          vehicles (base con selector de ciudad), settings (preferencias + autonomía),
                          negotiations (lista + detalle con auditoría de la IA),
-                         trips (lista + detalle: progreso, finanzas reales, documentos, gastos)
+                         trips (lista + detalle: progreso, finanzas reales, documentos, gastos, conductor),
+                         map (mapa en vivo, MapLibre), reports (finanzas + CSV + desempeño de la IA),
+                         team (miembros, roles, invitaciones)
+  invite/                Aceptar invitación (pública)
   login/                 Login
 src/i18n/                next-intl: routing, navigation (Link/useRouter con idioma), request, params
 src/app/api/             BFF: auth/login, auth/logout, backend/[...path]

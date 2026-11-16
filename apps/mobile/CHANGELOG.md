@@ -11,6 +11,7 @@ actually ships.
 - Changed: state management migrated from Zustand to Redux Toolkit + RTK Query (shared `@dispatcher/api-client`).
 - Added: sign-in screen, secure session (refresh token in Keychain/Keystore, automatic token refresh) and sign-out.
 - Changed: colors and fonts now come from the shared brand tokens (`packages/design-tokens`), so a rebrand is a single-file change.
+- Changed: drivers only see the trips assigned to them (team roles, Phase 4).
 - Added: Trips tab and trip screen — Pickup → En route → Delivery stepper, map, ETA and remaining km (location shared while the screen is open), Navigate, Call broker, documents (Rate Confirmation, POD/BOL/receipt photos) and expenses.
 - Added: trip close-out — "Delivery completed!" with real profit and margin, broker rating, and "Find next load". Booked negotiations link to their trip; Home shows active trips and the next trip.
 - Changed: requires a new dev build (react-native-maps, expo-image-picker; localized camera/photo permission texts).

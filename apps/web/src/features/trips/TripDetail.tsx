@@ -1,11 +1,17 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { TRIP_PROGRESS, formatMoney } from '@dispatcher/shared';
+import { ACTIVE_TRIP_STATUSES, TRIP_PROGRESS, can, formatMoney } from '@dispatcher/shared';
 import { Link } from '@/i18n/navigation';
 import { useIntlLocale } from '@/i18n/use-intl-locale';
-import { useGetDocumentDownloadUrlMutation, useGetTripQuery } from '@/lib/store/api';
-import { Badge, Button, Card, ErrorState, PageHeader } from '@/components/ui';
+import {
+  useAssignTripDriverMutation,
+  useGetDocumentDownloadUrlMutation,
+  useGetMeQuery,
+  useGetMembersQuery,
+  useGetTripQuery,
+} from '@/lib/store/api';
+import { Badge, Button, Card, ErrorState, PageHeader, Select } from '@/components/ui';
 
 const ORDER = ['scheduled', 'at_pickup', 'in_transit', 'delivered', 'completed'];
 
@@ -16,6 +22,10 @@ export function TripDetail({ id }: { id: string }) {
   const intlLocale = useIntlLocale();
   const { data: trip, isLoading, isError } = useGetTripQuery(id, { pollingInterval: 30_000 });
   const [getDownloadUrl, { isLoading: opening }] = useGetDocumentDownloadUrlMutation();
+  const { data: me } = useGetMeQuery();
+  const canManage = can(me?.role, 'trips:manage');
+  const { data: members } = useGetMembersQuery(undefined, { skip: !canManage });
+  const [assignDriver, { isLoading: assigning }] = useAssignTripDriverMutation();
 
   if (isError) return <ErrorState message={t('common.loadError')} />;
   if (isLoading || !trip) return <p className="text-sm text-muted">{t('common.loading')}</p>;
@@ -124,6 +134,26 @@ export function TripDetail({ id }: { id: string }) {
         </div>
 
         <Card className="h-fit space-y-2 text-sm">
+          <div className="mb-4">
+            <p className="text-xs text-muted">{t('web.trips.driver')}</p>
+            {canManage && ACTIVE_TRIP_STATUSES.includes(trip.status) && members ? (
+              <Select
+                aria-label={t('web.trips.assignDriver')}
+                className="mt-1 w-full"
+                value={trip.driver.id}
+                disabled={assigning}
+                onChange={(e) => void assignDriver({ id: trip.id, driverId: e.target.value })}
+              >
+                {members.map((m) => (
+                  <option key={m.userId} value={m.userId}>
+                    {m.name} · {t(`domain.role.${m.role}`)}
+                  </option>
+                ))}
+              </Select>
+            ) : (
+              <p className="font-semibold">{trip.driver.name}</p>
+            )}
+          </div>
           <h2 className="mb-2 font-semibold">{t('web.trips.financials')}</h2>
           <Row label={t('trip.finalRate')} value={money(f.rate)} />
           <Row label={t('trip.actualExpenses')} value={`− ${money(f.actualExpenses)}`} />

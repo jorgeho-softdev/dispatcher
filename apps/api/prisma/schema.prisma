@@ -157,6 +157,7 @@ model Organization {
   aiSettings   AiSettings?
   negotiations Negotiation[]
   trips        Trip[]
+  invitations  Invitation[]
 
   @@map("organizations")
 }
@@ -170,11 +171,12 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  memberships   Membership[]
-  refreshTokens RefreshToken[]
-  devices       DeviceToken[]
-  negotiations  Negotiation[]
-  trips         Trip[]
+  memberships     Membership[]
+  refreshTokens   RefreshToken[]
+  devices         DeviceToken[]
+  negotiations    Negotiation[]
+  trips           Trip[]
+  invitationsSent Invitation[]   @relation("InvitedBy")
 
   @@map("users")
 }
@@ -506,4 +508,25 @@ model BrokerRating {
 
   @@index([brokerId])
   @@map("broker_ratings")
+}
+
+// Team invitation by link (Phase 4). The raw token is only shown once to the
+// inviter; only its SHA-256 is stored. Email delivery arrives in Phase 5.
+model Invitation {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  email          String
+  role           Role
+  tokenHash      String    @unique @map("token_hash")
+  invitedById    String    @map("invited_by_id") @db.Uuid
+  expiresAt      DateTime  @map("expires_at")
+  acceptedAt     DateTime? @map("accepted_at")
+  revokedAt      DateTime? @map("revoked_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation("InvitedBy", fields: [invitedById], references: [id])
+
+  @@index([organizationId])
+  @@map("invitations")
 }

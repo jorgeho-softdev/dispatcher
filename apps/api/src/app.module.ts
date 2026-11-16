@@ -16,6 +16,8 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { BullModule } from '@nestjs/bullmq';
 import { StorageModule } from './modules/storage/storage.module';
 import { TripsModule } from './modules/trips/trips.module';
+import { TeamModule } from './modules/team/team.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -54,6 +56,8 @@ import { TripsModule } from './modules/trips/trips.module';
     NotificationsModule,
     NegotiationsModule,
     TripsModule,
+    TeamModule,
+    ReportsModule,
   ],
   providers: [
     // Order matters: authenticate first, then authorize.

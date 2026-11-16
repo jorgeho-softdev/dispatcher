@@ -162,7 +162,10 @@
     "TRIP_INVALID_STATE": "Ce voyage a changé. Actualisez et réessayez.",
     "POD_REQUIRED": "Téléversez la preuve de livraison (POD) pour fermer le voyage.",
     "UPLOAD_NOT_FOUND": "Le fichier n'a pas fini de se téléverser. Réessayez.",
-    "BROKER_ALREADY_RATED": "Vous avez déjà évalué ce courtier pour ce voyage."
+    "BROKER_ALREADY_RATED": "Vous avez déjà évalué ce courtier pour ce voyage.",
+    "INVITATION_INVALID": "Cette invitation est invalide, expirée ou déjà utilisée.",
+    "LAST_OWNER": "L'organisation doit avoir au moins un propriétaire.",
+    "CANNOT_CHANGE_SELF": "Vous ne pouvez pas modifier ou retirer votre propre accès."
   },
   "auth": {
     "email": "Courriel",
@@ -189,7 +192,10 @@
       "vehicles": "Véhicules",
       "settings": "Préférences",
       "negotiations": "Négociations",
-      "trips": "Voyages"
+      "trips": "Voyages",
+      "team": "Équipe",
+      "map": "Carte en direct",
+      "reports": "Rapports"
     },
     "dashboard": {
       "greeting": "Bonjour, {name}",
@@ -307,7 +313,83 @@
       "back": "← Tous les voyages",
       "progress": "Progression",
       "financials": "Finances",
-      "download": "Télécharger"
+      "download": "Télécharger",
+      "driver": "Chauffeur",
+      "assignDriver": "Assigner un chauffeur"
+    },
+    "team": {
+      "title": "Équipe",
+      "subtitle": "Invitez vos répartiteurs et chauffeurs. Chaque rôle ne voit que ce dont il a besoin.",
+      "members": "Membres",
+      "you": "Vous",
+      "role": "Rôle",
+      "remove": "Retirer",
+      "removeConfirm": "Retirer {name} de l'organisation ? Sa session sera fermée.",
+      "invite": "Inviter un membre",
+      "email": "Courriel",
+      "createLink": "Créer le lien d'invitation",
+      "linkReady": "Partagez ce lien avec {email}. Il fonctionne une seule fois et expire dans 7 jours ; il ne sera plus affiché.",
+      "copy": "Copier",
+      "copied": "Copié",
+      "pending": "Invitations en attente",
+      "expires": "Expire {date}",
+      "revoke": "Révoquer",
+      "noPending": "Aucune invitation en attente.",
+      "emailNote": "L'envoi par courriel arrivera plus tard ; copiez le lien et envoyez-le vous-même."
+    },
+    "invite": {
+      "title": "Rejoindre {organization}",
+      "subtitle": "Vous avez été invité comme {role} avec {email}.",
+      "name": "Votre nom",
+      "password": "Créez un mot de passe (8+ caractères)",
+      "accept": "Accepter et se connecter",
+      "driverHint": "Les chauffeurs utilisent l'app mobile. Installez-la et connectez-vous avec ce courriel.",
+      "invalid": "Cette invitation est invalide, expirée ou déjà utilisée. Demandez un nouveau lien."
+    },
+    "map": {
+      "title": "Carte en direct",
+      "subtitle": "Voyages actifs et position des véhicules. Mise à jour toutes les 30 secondes.",
+      "activeTrips": "{count, plural, one {# voyage actif} other {# voyages actifs}}",
+      "vehicles": "Véhicules",
+      "onTrip": "En voyage",
+      "idle": "Disponible",
+      "atHomeBase": "À la base (pas de GPS récent)",
+      "noPositions": "Aucune position. Elles apparaissent quand les chauffeurs ouvrent un voyage dans l'app.",
+      "list": "Liste"
+    },
+    "reports": {
+      "title": "Rapports",
+      "subtitle": "Profit réel des voyages terminés et performance du répartiteur IA.",
+      "range": "Période",
+      "last30": "30 derniers jours",
+      "last90": "90 derniers jours",
+      "last365": "12 derniers mois",
+      "groupBy": "Regrouper par",
+      "group": {
+        "month": "Mois",
+        "vehicle": "Véhicule",
+        "driver": "Chauffeur",
+        "lane": "Trajet (provinces)"
+      },
+      "exportCsv": "Exporter CSV",
+      "trips": "Voyages",
+      "revenue": "Revenus",
+      "expenses": "Dépenses",
+      "profit": "Profit réel",
+      "margin": "Marge",
+      "revenuePerKm": "Revenu / km",
+      "profitByMonth": "Profit réel par mois",
+      "empty": "Aucun voyage terminé pour cette période.",
+      "aiTitle": "Performance du répartiteur IA",
+      "negotiations": "Négociations",
+      "closeRate": "Taux de conclusion",
+      "avgUplift": "Tarif moy. au-dessus de l'affiché",
+      "totalUplift": "Revenu supplémentaire obtenu",
+      "avgRounds": "Rondes moy.",
+      "byStrategy": "Par stratégie",
+      "booked": "Réservées",
+      "aiEmpty": "Aucune négociation pour cette période.",
+      "currencyNote": "Montants en {currency}. Les voyages en d'autres devises sont exclus."
     }
   },
   "mobile": {

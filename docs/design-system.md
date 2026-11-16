@@ -58,9 +58,9 @@ En mobile, las fuentes se registran con alias genéricos (`Brand-Regular`, `Bran
 tokens.ts ──tsup──► dist/index.(js|mjs)  ─┬─► mobile: tailwind.config.js (clases NativeWind)
                                           ├─► mobile: lib/themes.ts (valores en runtime, vars())
                                           ├─► mobile: app.config.ts (splash, ícono Android, notificaciones)
-          └─scripts/build-css.mjs─► dist/web-theme.css ─► web: globals.css (@theme de Tailwind 4)
+          └─scripts/build-css.mjs─► generated/web-theme.css ─► web: globals.css (@theme de Tailwind 4)
 ```
 
-- `dist/web-theme.css` se **genera**; nunca se edita a mano.
+- `generated/web-theme.css` se **genera**; nunca se edita a mano. Vive fuera de `dist/` a propósito: `tsup --clean` borra `dist/` en cada build, y un `next dev` en marcha no debe ver desaparecer la hoja de estilos (se escribe de forma atómica).
 - La web hoy usa solo el tema `defaultTheme` (dark). La app permite elegir dark o light en Ajustes.
 - La decisión está documentada en [ADR-0010](./adr/0010-design-tokens-single-source.md).

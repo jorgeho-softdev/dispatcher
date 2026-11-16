@@ -15,8 +15,21 @@ import {
 //
 // Only these top-level resources are reachable, so the token can never be
 // sent anywhere else. Add a resource here when the api grows.
-const ALLOWED_RESOURCES = new Set(['me', 'loads', 'vehicles', 'ai-settings', 'negotiations', 'trips', 'documents']);
-const SEGMENT = /^[A-Za-z0-9_-]+$/;
+const ALLOWED_RESOURCES = new Set([
+  'me',
+  'loads',
+  'vehicles',
+  'ai-settings',
+  'negotiations',
+  'trips',
+  'documents',
+  'members',
+  'invitations',
+  'fleet',
+  'reports',
+]);
+// One optional extension (e.g. trips.csv); never "..", slashes or empty segments.
+const SEGMENT = /^[A-Za-z0-9_-]+(\.[a-z0-9]{1,5})?$/;
 
 type Ctx = RouteContext<'/api/backend/[...path]'>;
 
@@ -35,6 +48,7 @@ async function forward(request: NextRequest, ctx: Ctx): Promise<NextResponse> {
       method: request.method,
       headers: {
         ...(body !== undefined && { 'content-type': 'application/json' }),
+        accept: request.headers.get('accept') ?? 'application/json',
         ...(accessToken && { authorization: `Bearer ${accessToken}` }),
       },
       body,
@@ -60,7 +74,13 @@ async function forward(request: NextRequest, ctx: Ctx): Promise<NextResponse> {
 
   const res = new NextResponse(upstream.status === 204 ? null : await upstream.text(), {
     status: upstream.status,
-    headers: { 'content-type': upstream.headers.get('content-type') ?? 'application/json' },
+    headers: {
+      'content-type': upstream.headers.get('content-type') ?? 'application/json',
+      // Downloads (CSV exports) keep their file name.
+      ...(upstream.headers.get('content-disposition') && {
+        'content-disposition': upstream.headers.get('content-disposition')!,
+      }),
+    },
   });
   if (refreshed) setSessionCookies(res, refreshed);
   else if (upstream.status === 401) clearSessionCookies(res);

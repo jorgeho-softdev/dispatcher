@@ -8,3 +8,4 @@ export * from './geo';
 export * from './matching';
 export * from './negotiation';
 export * from './trips';
+export * from './reports';

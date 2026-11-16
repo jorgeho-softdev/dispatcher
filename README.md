@@ -10,6 +10,8 @@ Monorepo con **API** (NestJS + PostgreSQL), **web admin** (Next.js) y **app móv
 | [`docs/conventions.md`](./docs/conventions.md) | Buenas prácticas **obligatorias** y Definition of Done |
 | [`docs/adr/`](./docs/adr/) | Por qué se tomó cada decisión |
 | [`docs/design-system.md`](./docs/design-system.md) | Cómo cambiar colores y fuentes (web + app) |
+| [`docs/team.md`](./docs/team.md) | Roles, invitaciones por enlace y alcance del conductor |
+| [`docs/reports.md`](./docs/reports.md) | Reportes financieros, CSV, desempeño de la IA y mapa en vivo |
 | [`docs/trips.md`](./docs/trips.md) | Viajes: estados, GPS/ETA, documentos (S3), ganancia real |
 | [`docs/ai-agent.md`](./docs/ai-agent.md) | Cómo negocia la IA: estados, Policy Engine, Claude, push |
 | [`docs/matching.md`](./docs/matching.md) | Cómo se calcula el match %, el deadhead y "Cerca de mí" |

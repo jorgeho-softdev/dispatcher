@@ -11,6 +11,7 @@ import type { Prisma, TripDocument } from '../../generated/prisma/client';
 export const TRIP_INCLUDE = {
   load: { include: { broker: true } },
   vehicle: true,
+  driver: true,
   expenses: { orderBy: { incurredAt: 'asc' } },
   documents: { orderBy: { createdAt: 'asc' } },
   brokerRating: true,
@@ -60,6 +61,7 @@ export function toTripDto(t: TripWithRelations): TripDto {
       brokerPhone: t.load.broker?.phone ?? null,
     },
     vehicle: { id: t.vehicle.id, name: t.vehicle.name },
+    driver: { id: t.driver.id, name: t.driver.name },
     plannedKm: t.plannedKm.toNumber(),
     lastPosition:
       t.lastLat !== null && t.lastLng !== null && t.lastAt

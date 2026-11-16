@@ -15,12 +15,14 @@ import {
   expenseCreateSchema,
   tripListQuerySchema,
   tripLocationsSchema,
+  tripDriverSchema,
   tripStatusUpdateSchema,
   uploadRequestSchema,
   type BrokerRatingInput,
   type ExpenseCreateInput,
   type TripListQuery,
   type TripLocationsInput,
+  type TripDriverInput,
   type TripStatusUpdateInput,
   type UploadRequestInput,
 } from '@dispatcher/shared';
@@ -41,13 +43,30 @@ export class TripsController {
     @Auth() auth: AuthContext,
     @Query(new ZodValidationPipe(tripListQuerySchema)) query: TripListQuery,
   ) {
-    return this.trips.list(auth.organizationId, query);
+    return this.trips.list(auth, query);
+  }
+
+  @Get('fleet/live')
+  @RequirePermission('trips:read')
+  liveMap(@Auth() auth: AuthContext) {
+    return this.trips.liveMap(auth);
+  }
+
+  @Post('trips/:id/driver')
+  @HttpCode(200)
+  @RequirePermission('trips:manage')
+  assignDriver(
+    @Auth() auth: AuthContext,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ZodValidationPipe(tripDriverSchema)) body: TripDriverInput,
+  ) {
+    return this.trips.assignDriver(auth, id, body);
   }
 
   @Get('trips/:id')
   @RequirePermission('trips:read')
   get(@Auth() auth: AuthContext, @Param('id', ParseUUIDPipe) id: string) {
-    return this.trips.get(auth.organizationId, id);
+    return this.trips.get(auth, id);
   }
 
   @Post('trips/:id/status')
@@ -100,7 +119,7 @@ export class TripsController {
     @Auth() auth: AuthContext,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    return this.trips.downloadUrl(auth.organizationId, id);
+    return this.trips.downloadUrl(auth, id);
   }
 
   @Post('trips/:id/expenses')

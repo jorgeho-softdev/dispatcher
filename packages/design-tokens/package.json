@@ -2,7 +2,7 @@
   "name": "@dispatcher/design-tokens",
   "version": "0.0.0",
   "private": true,
-  "description": "Brand colors, typography, radii and spacing — the single source of truth for web and mobile. Edit src/tokens.ts.",
+  "description": "Brand colors, typography, radii and spacing \u2014 the single source of truth for web and mobile. Edit src/tokens.ts.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,10 +12,15 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./web-theme.css": "./dist/web-theme.css"
+    "./web-theme.css": "./generated/web-theme.css"
   },
-  "files": ["dist"],
-  "sideEffects": ["*.css"],
+  "files": [
+    "dist",
+    "generated"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --clean && node scripts/build-css.mjs",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch --onSuccess \"node scripts/build-css.mjs\"",

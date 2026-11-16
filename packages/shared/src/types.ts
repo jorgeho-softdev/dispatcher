@@ -16,6 +16,7 @@ import type {
   NegotiationStatus,
 } from './negotiation';
 import type { DocumentType, ExpenseCategory, TripFinancials, TripStatus } from './trips';
+import type { AiPerformance, ReportGroup, ReportGroupRow, ReportTotals } from './reports';
 
 // API response shapes (JSON over the wire: dates are ISO strings, money is a
 // number in the load's currency).
@@ -275,6 +276,7 @@ export interface TripDto {
     brokerPhone: string | null;
   };
   vehicle: { id: string; name: string };
+  driver: { id: string; name: string };
   plannedKm: number;
   lastPosition: { lat: number; lng: number; at: string } | null;
   remainingKm: number | null;
@@ -291,4 +293,75 @@ export interface TripDetailDto extends TripDto {
   documents: TripDocumentDto[];
   expenses: TripExpenseDto[];
   brokerRating: { stars: number; comment: string | null } | null;
+}
+
+// ── Team (Phase 4) ─────────────────────────────────────────────────────
+
+export interface MemberDto {
+  /** Membership id. */
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  role: Role;
+  isSelf: boolean;
+  createdAt: string;
+}
+
+export interface InvitationDto {
+  id: string;
+  email: string;
+  role: Role;
+  expiresAt: string;
+  createdAt: string;
+  /** Only returned once, when the invitation is created (the token is stored hashed). */
+  inviteUrl?: string;
+}
+
+/** Public: what the invite page shows before the person accepts. */
+export interface InvitationPreviewDto {
+  organizationName: string;
+  email: string;
+  role: Role;
+  expiresAt: string;
+}
+
+// ── Live map (Phase 4) ─────────────────────────────────────────────────
+
+export interface FleetLiveDto {
+  trips: {
+    id: string;
+    code: string;
+    status: TripStatus;
+    driverName: string;
+    vehicleName: string;
+    origin: { city: string; lat: number; lng: number };
+    destination: { city: string; lat: number; lng: number };
+    lastPosition: { lat: number; lng: number; at: string } | null;
+    etaAt: string | null;
+    remainingKm: number | null;
+  }[];
+  vehicles: {
+    id: string;
+    name: string;
+    equipment: EquipmentType;
+    position: { lat: number; lng: number; source: 'gps' | 'home_base'; at: string | null } | null;
+    onTrip: boolean;
+  }[];
+}
+
+// ── Reports (Phase 4) ──────────────────────────────────────────────────
+
+export interface ReportSummaryDto {
+  from: string;
+  to: string;
+  currency: Currency;
+  groupBy: ReportGroup;
+  totals: ReportTotals;
+  groups: ReportGroupRow[];
+}
+
+export interface AiPerformanceDto extends AiPerformance {
+  from: string;
+  to: string;
 }

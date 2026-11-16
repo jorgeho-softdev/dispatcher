@@ -39,6 +39,8 @@ export const envSchema = z.object({
   S3_ACCESS_KEY_ID: z.string().min(1),
   S3_SECRET_ACCESS_KEY: z.string().min(1),
   S3_FORCE_PATH_STYLE: z.stringbool().default(true),
+  /** Public URL of the web admin (invitation links). */
+  WEB_URL: z.url().default('http://localhost:3000'),
   CORS_ORIGINS: z
     .string()
     .default('http://localhost:3000')

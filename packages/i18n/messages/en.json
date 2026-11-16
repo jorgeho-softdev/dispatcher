@@ -162,7 +162,10 @@
     "TRIP_INVALID_STATE": "This trip changed. Refresh and try again.",
     "POD_REQUIRED": "Upload the proof of delivery (POD) to close the trip.",
     "UPLOAD_NOT_FOUND": "The file didn't finish uploading. Try again.",
-    "BROKER_ALREADY_RATED": "You already rated this broker for this trip."
+    "BROKER_ALREADY_RATED": "You already rated this broker for this trip.",
+    "INVITATION_INVALID": "This invitation is invalid, expired or already used.",
+    "LAST_OWNER": "The organization needs at least one owner.",
+    "CANNOT_CHANGE_SELF": "You can't change or remove your own access."
   },
   "auth": {
     "email": "Email",
@@ -189,7 +192,10 @@
       "vehicles": "Vehicles",
       "settings": "Preferences",
       "negotiations": "Negotiations",
-      "trips": "Trips"
+      "trips": "Trips",
+      "team": "Team",
+      "map": "Live map",
+      "reports": "Reports"
     },
     "dashboard": {
       "greeting": "Hi, {name}",
@@ -307,7 +313,83 @@
       "back": "← All trips",
       "progress": "Progress",
       "financials": "Financials",
-      "download": "Download"
+      "download": "Download",
+      "driver": "Driver",
+      "assignDriver": "Assign driver"
+    },
+    "team": {
+      "title": "Team",
+      "subtitle": "Invite your dispatchers and drivers. Each role sees only what it needs.",
+      "members": "Members",
+      "you": "You",
+      "role": "Role",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name} from the organization? They will be signed out.",
+      "invite": "Invite member",
+      "email": "Email",
+      "createLink": "Create invitation link",
+      "linkReady": "Share this link with {email}. It works once and expires in 7 days; it won't be shown again.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "pending": "Pending invitations",
+      "expires": "Expires {date}",
+      "revoke": "Revoke",
+      "noPending": "No pending invitations.",
+      "emailNote": "Email delivery arrives later; for now copy the link and send it yourself."
+    },
+    "invite": {
+      "title": "Join {organization}",
+      "subtitle": "You were invited as {role} with {email}.",
+      "name": "Your name",
+      "password": "Create a password (8+ characters)",
+      "accept": "Accept and sign in",
+      "driverHint": "Drivers use the mobile app. Install it and sign in with this email.",
+      "invalid": "This invitation is invalid, expired or already used. Ask for a new link."
+    },
+    "map": {
+      "title": "Live map",
+      "subtitle": "Active trips and vehicle positions. Updates every 30 seconds.",
+      "activeTrips": "{count, plural, one {# active trip} other {# active trips}}",
+      "vehicles": "Vehicles",
+      "onTrip": "On a trip",
+      "idle": "Available",
+      "atHomeBase": "At home base (no recent GPS)",
+      "noPositions": "No positions yet. They appear when drivers open a trip in the app.",
+      "list": "List"
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Real profit of completed trips and how the AI dispatcher performs.",
+      "range": "Period",
+      "last30": "Last 30 days",
+      "last90": "Last 90 days",
+      "last365": "Last 12 months",
+      "groupBy": "Group by",
+      "group": {
+        "month": "Month",
+        "vehicle": "Vehicle",
+        "driver": "Driver",
+        "lane": "Lane (provinces)"
+      },
+      "exportCsv": "Export CSV",
+      "trips": "Trips",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "profit": "Real profit",
+      "margin": "Margin",
+      "revenuePerKm": "Revenue / km",
+      "profitByMonth": "Real profit by month",
+      "empty": "No completed trips in this period.",
+      "aiTitle": "AI dispatcher performance",
+      "negotiations": "Negotiations",
+      "closeRate": "Close rate",
+      "avgUplift": "Avg. rate above posted",
+      "totalUplift": "Extra revenue won",
+      "avgRounds": "Avg. rounds",
+      "byStrategy": "By strategy",
+      "booked": "Booked",
+      "aiEmpty": "No negotiations in this period.",
+      "currencyNote": "Amounts in {currency}. Trips in other currencies are excluded."
     }
   },
   "mobile": {
