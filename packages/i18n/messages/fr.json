@@ -26,6 +26,120 @@
       "fleet_manager": "Gestionnaire de flotte",
       "dispatcher": "Répartiteur",
       "driver": "Chauffeur"
+    },
+    "matchReason": {
+      "equipment_ideal": "Équipement idéal",
+      "high_margin": "Marge élevée",
+      "good_rate": "Bon tarif au km",
+      "short_deadhead": "Peu de km à vide",
+      "pickup_soon": "Ramassage bientôt",
+      "preferred_lane": "Région préférée",
+      "equipment_larger": "Véhicule plus grand que nécessaire",
+      "low_margin": "Marge sous votre minimum",
+      "low_rate": "Tarif sous votre minimum",
+      "long_deadhead": "Beaucoup de km à vide",
+      "deadhead_unknown": "Position du véhicule inconnue",
+      "pickup_far_out": "Ramassage dans plusieurs jours",
+      "equipment_incompatible": "Équipement incompatible",
+      "over_capacity": "Dépasse la capacité du véhicule",
+      "avoided_region": "Région que vous évitez",
+      "pickup_passed": "L'heure de ramassage est passée"
+    },
+    "positionSource": {
+      "request": "votre position actuelle",
+      "vehicle_gps": "le GPS du véhicule",
+      "home_base": "la base du véhicule"
+    },
+    "loadView": {
+      "recommended": "Recommandés",
+      "nearby": "Près de moi",
+      "all": "Tous"
+    },
+    "match": "{score} % compatible",
+    "deadhead": "{km} km à vide",
+    "autonomy": {
+      "assisted": "Assisté",
+      "semi_auto": "Semi-automatique",
+      "auto": "Automatique"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "IA au travail",
+      "awaiting_send_approval": "Requiert votre approbation",
+      "contacting_broker": "En attente du courtier",
+      "awaiting_booking_approval": "Prêt à réserver",
+      "booking_requested": "Réservation demandée",
+      "booked": "Réservé",
+      "rejected": "Pas d'entente",
+      "cancelled": "Annulée",
+      "failed": "Arrêtée"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "L'IA a proposé une offre",
+      "ai_countered": "L'IA a préparé une contre-offre",
+      "ai_accepted": "L'IA a accepté le tarif du courtier",
+      "ai_walked_away": "L'IA a mis fin à la négociation",
+      "policy_adjusted": "Ajustée à vos limites",
+      "policy_blocked": "Bloquée par vos limites",
+      "user_approved_send": "Vous avez approuvé l'offre",
+      "user_adjusted": "Vous avez ajusté l'offre",
+      "user_approved_booking": "Vous avez approuvé la réservation",
+      "user_cancelled": "Vous avez annulé",
+      "offer_sent": "Offre envoyée au courtier",
+      "broker_countered": "Le courtier a fait une contre-offre",
+      "broker_accepted": "Le courtier a accepté",
+      "broker_rejected": "Le courtier a refusé",
+      "booking_requested": "Réservation demandée",
+      "booking_confirmed": "Réservation confirmée",
+      "booking_declined": "Réservation refusée",
+      "load_unavailable": "Chargement plus disponible"
+    },
+    "actor": {
+      "ai": "IA",
+      "user": "Vous",
+      "broker": "Courtier",
+      "system": "Système"
+    },
+    "aiReason": {
+      "target_markup": "Je demande {pct} % au-dessus du tarif affiché : dans vos limites et souvent accepté dans cette région.",
+      "counter_midpoint": "Le courtier a offert {broker} ; je propose de couper la poire en deux depuis nos {last}.",
+      "accept_meets_minimums": "Le tarif du courtier respecte votre marge minimale et votre tarif au km.",
+      "walk_away_below_minimums": "Le tarif du courtier est sous vos minimums, alors j'ai arrêté.",
+      "max_rounds_reached": "Nombre maximal de rondes atteint.",
+      "clamped_to_floor": "Relevée à votre tarif minimum acceptable.",
+      "clamped_to_ceiling": "Abaissée à votre contre-offre maximale.",
+      "unprofitable_at_ceiling": "Même à votre contre-offre maximale, ce chargement n'atteint pas vos minimums."
+    },
+    "strategy": {
+      "claude": "Claude (IA)",
+      "rules": "Par règles"
+    },
+    "tripStatus": {
+      "scheduled": "Planifié",
+      "at_pickup": "Au ramassage",
+      "in_transit": "En route",
+      "delivered": "Livré",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "tripStep": {
+      "at_pickup": "Ramassage",
+      "in_transit": "En route",
+      "delivered": "Livraison"
+    },
+    "documentType": {
+      "rate_confirmation": "Confirmation de tarif",
+      "bol": "Connaissement (BOL)",
+      "pod": "POD (preuve de livraison)",
+      "receipt": "Reçu",
+      "other": "Autre"
+    },
+    "expenseCategory": {
+      "fuel": "Carburant",
+      "tolls": "Péages",
+      "parking": "Stationnement",
+      "maintenance": "Entretien",
+      "lumper": "Lumper / déchargement",
+      "other": "Autre"
     }
   },
   "errors": {
@@ -40,7 +154,18 @@
     "NOT_FOUND": "Nous n'avons pas trouvé ce que vous cherchiez.",
     "API_UNAVAILABLE": "Le serveur n'est pas disponible. Réessayez dans quelques minutes.",
     "NETWORK_ERROR": "Impossible de joindre le serveur. Vérifiez votre connexion.",
-    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer."
+    "INTERNAL_ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+    "VEHICLE_REQUIRED": "Ajoutez un véhicule avant de négocier.",
+    "LOAD_UNAVAILABLE": "Ce chargement n'est plus disponible.",
+    "NEGOTIATION_ALREADY_ACTIVE": "Une négociation est déjà en cours pour ce chargement.",
+    "NEGOTIATION_INVALID_STATE": "Cette négociation a changé. Actualisez et réessayez.",
+    "TRIP_INVALID_STATE": "Ce voyage a changé. Actualisez et réessayez.",
+    "POD_REQUIRED": "Téléversez la preuve de livraison (POD) pour fermer le voyage.",
+    "UPLOAD_NOT_FOUND": "Le fichier n'a pas fini de se téléverser. Réessayez.",
+    "BROKER_ALREADY_RATED": "Vous avez déjà évalué ce courtier pour ce voyage.",
+    "INVITATION_INVALID": "Cette invitation est invalide, expirée ou déjà utilisée.",
+    "LAST_OWNER": "L'organisation doit avoir au moins un propriétaire.",
+    "CANNOT_CHANGE_SELF": "Vous ne pouvez pas modifier ou retirer votre propre accès."
   },
   "auth": {
     "email": "Courriel",
@@ -51,12 +176,12 @@
     "signingIn": "Connexion…",
     "invalidFormat": "Vérifiez votre courriel et votre mot de passe.",
     "signOut": "Se déconnecter",
-    "signOutConfirm": "Se déconnecter d'AI Dispatcher ?"
+    "signOutConfirm": "Se déconnecter de HaulGenius ?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "Panneau d'administration d'AI Dispatcher"
+      "title": "HaulGenius Admin",
+      "description": "Panneau d'administration de HaulGenius"
     },
     "login": {
       "subtitle": "Panneau d'administration"
@@ -64,7 +189,13 @@
     "nav": {
       "dashboard": "Tableau de bord",
       "loads": "Chargements",
-      "vehicles": "Véhicules"
+      "vehicles": "Véhicules",
+      "settings": "Préférences",
+      "negotiations": "Négociations",
+      "trips": "Voyages",
+      "team": "Équipe",
+      "map": "Carte en direct",
+      "reports": "Rapports"
     },
     "dashboard": {
       "greeting": "Bonjour, {name}",
@@ -74,7 +205,8 @@
       "vehicles": "Véhicules",
       "bestProfit": "Meilleur profit est.",
       "addVehicleHint": "Ajoutez un véhicule pour calculer le profit estimé de chaque chargement.",
-      "addVehicleCta": "Ajouter un véhicule →"
+      "addVehicleCta": "Ajouter un véhicule →",
+      "opportunities": "Occasions (≥{threshold} % compatibles)"
     },
     "loads": {
       "title": "Chargements",
@@ -91,7 +223,14 @@
       "empty": "Aucun chargement ne correspond à ces filtres.",
       "noBroker": "Aucun courtier",
       "noVehicle": "Aucun véhicule",
-      "perKm": "{amount}/km"
+      "perKm": "{amount}/km",
+      "colMatch": "Compatibilité",
+      "colDeadhead": "Km à vide",
+      "newLoad": "Nouveau chargement manuel",
+      "matchingFor": "Compatibilité pour {vehicle} · position selon {source}",
+      "noPosition": "Ajoutez une base à votre véhicule pour voir les chargements proches et les km à vide.",
+      "noVehicleMatch": "Ajoutez un véhicule pour voir la compatibilité et le profit estimé.",
+      "loadMore": "Charger plus"
     },
     "vehicles": {
       "title": "Véhicules",
@@ -106,19 +245,164 @@
       "homeBase": "Base",
       "province": "Prov.",
       "saveError": "Impossible d'enregistrer le véhicule.",
-      "submit": "Enregistrer le véhicule"
+      "submit": "Enregistrer le véhicule",
+      "selectCity": "Choisissez une ville",
+      "noHomeBase": "Aucune base"
+    },
+    "loadForm": {
+      "title": "Nouveau chargement manuel",
+      "subtitle": "Un vrai chargement obtenu directement d'un courtier ou expéditeur.",
+      "origin": "Origine",
+      "destination": "Destination",
+      "pickupAt": "Date et heure de ramassage",
+      "weightKg": "Poids (kg)",
+      "equipment": "Équipement",
+      "postedRate": "Tarif (CA$)",
+      "distanceKm": "Distance (km, facultatif)",
+      "distanceHint": "Laissez vide pour l'estimer à partir des villes (~{km} km).",
+      "notes": "Notes",
+      "submit": "Enregistrer le chargement",
+      "cancel": "Annuler",
+      "selectCity": "Choisissez une ville",
+      "sameCity": "L'origine et la destination doivent être différentes."
+    },
+    "settings": {
+      "title": "Préférences",
+      "subtitle": "Vos règles de compatibilité. Le répartiteur IA les suivra aussi.",
+      "profitability": "Rentabilité",
+      "minRatePerKm": "Tarif minimum au km (CA$)",
+      "minMarginPct": "Marge minimale (%)",
+      "maxDeadheadKm": "Maximum de km à vide jusqu'au ramassage",
+      "regions": "Régions",
+      "preferredProvinces": "Provinces préférées",
+      "avoidProvinces": "Provinces à éviter",
+      "regionsHint": "Les préférées augmentent la compatibilité; les évitées ne sont jamais recommandées.",
+      "aiSection": "Répartiteur IA",
+      "autonomy": "Niveau d'autonomie",
+      "maxCounterOfferPct": "Contre-offre max. au-dessus du tarif affiché (%)",
+      "save": "Enregistrer les préférences",
+      "saved": "Préférences enregistrées.",
+      "autonomyHint": "Assisté : vous approuvez chaque message et la réservation. Semi-automatique : l'IA négocie dans vos limites et vous approuvez la réservation. Automatique se comporte comme semi-automatique pour l'instant."
+    },
+    "negotiations": {
+      "title": "Négociations",
+      "subtitle": "Chaque décision de l'IA est enregistrée et vérifiable.",
+      "filterActive": "Actives",
+      "filterNeedsApproval": "À approuver",
+      "filterAll": "Toutes",
+      "empty": "Aucune négociation. Lancez-en une depuis un chargement dans l'app.",
+      "colRoute": "Trajet",
+      "colStatus": "Statut",
+      "colPosted": "Affiché",
+      "colOffer": "Offre",
+      "colAgreed": "Convenu",
+      "colUpdated": "Mise à jour",
+      "back": "← Toutes les négociations",
+      "audit": "Piste d'audit"
+    },
+    "trips": {
+      "title": "Voyages",
+      "subtitle": "Chargements réservés en cours et leur profit réel.",
+      "filterAll": "Tous",
+      "colCode": "Voyage",
+      "colRoute": "Trajet",
+      "colStatus": "Statut",
+      "colEta": "HAE",
+      "colRate": "Tarif",
+      "colProfit": "Profit réel",
+      "back": "← Tous les voyages",
+      "progress": "Progression",
+      "financials": "Finances",
+      "download": "Télécharger",
+      "driver": "Chauffeur",
+      "assignDriver": "Assigner un chauffeur"
+    },
+    "team": {
+      "title": "Équipe",
+      "subtitle": "Invitez vos répartiteurs et chauffeurs. Chaque rôle ne voit que ce dont il a besoin.",
+      "members": "Membres",
+      "you": "Vous",
+      "role": "Rôle",
+      "remove": "Retirer",
+      "removeConfirm": "Retirer {name} de l'organisation ? Sa session sera fermée.",
+      "invite": "Inviter un membre",
+      "email": "Courriel",
+      "createLink": "Créer le lien d'invitation",
+      "linkReady": "Partagez ce lien avec {email}. Il fonctionne une seule fois et expire dans 7 jours ; il ne sera plus affiché.",
+      "copy": "Copier",
+      "copied": "Copié",
+      "pending": "Invitations en attente",
+      "expires": "Expire {date}",
+      "revoke": "Révoquer",
+      "noPending": "Aucune invitation en attente.",
+      "emailNote": "L'envoi par courriel arrivera plus tard ; copiez le lien et envoyez-le vous-même."
+    },
+    "invite": {
+      "title": "Rejoindre {organization}",
+      "subtitle": "Vous avez été invité comme {role} avec {email}.",
+      "name": "Votre nom",
+      "password": "Créez un mot de passe (8+ caractères)",
+      "accept": "Accepter et se connecter",
+      "driverHint": "Les chauffeurs utilisent l'app mobile. Installez-la et connectez-vous avec ce courriel.",
+      "invalid": "Cette invitation est invalide, expirée ou déjà utilisée. Demandez un nouveau lien."
+    },
+    "map": {
+      "title": "Carte en direct",
+      "subtitle": "Voyages actifs et position des véhicules. Mise à jour toutes les 30 secondes.",
+      "activeTrips": "{count, plural, one {# voyage actif} other {# voyages actifs}}",
+      "vehicles": "Véhicules",
+      "onTrip": "En voyage",
+      "idle": "Disponible",
+      "atHomeBase": "À la base (pas de GPS récent)",
+      "noPositions": "Aucune position. Elles apparaissent quand les chauffeurs ouvrent un voyage dans l'app.",
+      "list": "Liste"
+    },
+    "reports": {
+      "title": "Rapports",
+      "subtitle": "Profit réel des voyages terminés et performance du répartiteur IA.",
+      "range": "Période",
+      "last30": "30 derniers jours",
+      "last90": "90 derniers jours",
+      "last365": "12 derniers mois",
+      "groupBy": "Regrouper par",
+      "group": {
+        "month": "Mois",
+        "vehicle": "Véhicule",
+        "driver": "Chauffeur",
+        "lane": "Trajet (provinces)"
+      },
+      "exportCsv": "Exporter CSV",
+      "trips": "Voyages",
+      "revenue": "Revenus",
+      "expenses": "Dépenses",
+      "profit": "Profit réel",
+      "margin": "Marge",
+      "revenuePerKm": "Revenu / km",
+      "profitByMonth": "Profit réel par mois",
+      "empty": "Aucun voyage terminé pour cette période.",
+      "aiTitle": "Performance du répartiteur IA",
+      "negotiations": "Négociations",
+      "closeRate": "Taux de conclusion",
+      "avgUplift": "Tarif moy. au-dessus de l'affiché",
+      "totalUplift": "Revenu supplémentaire obtenu",
+      "avgRounds": "Rondes moy.",
+      "byStrategy": "Par stratégie",
+      "booked": "Réservées",
+      "aiEmpty": "Aucune négociation pour cette période.",
+      "currencyNote": "Montants en {currency}. Les voyages en d'autres devises sont exclus."
     }
   },
   "mobile": {
     "onboarding": {
-      "title": "Bienvenue sur AI Dispatcher",
+      "title": "Bienvenue sur HaulGenius",
       "body": "Configurons tout. Cela ne prend qu'un instant.",
       "cta": "Commencer"
     },
     "tabs": {
       "home": "Accueil",
       "loads": "Chargements",
-      "account": "Compte"
+      "account": "Compte",
+      "trips": "Voyages"
     },
     "login": {
       "subtitle": "Votre répartiteur IA"
@@ -131,13 +415,20 @@
       "opportunities": "{count, plural, one {Occasion} other {Occasions}}",
       "activeTrips": "Voyages actifs",
       "bestProfit": "Meilleur profit est.",
-      "seeLoads": "Voir les chargements"
+      "seeLoads": "Voir les chargements",
+      "bestOpportunity": "Meilleure occasion",
+      "noOpportunities": "Aucune bonne compatibilité pour le moment. Revenez bientôt.",
+      "pendingApprovals": "En attente de votre approbation",
+      "nextTrip": "Prochain voyage"
     },
     "loads": {
       "title": "Chargements disponibles",
       "estProfit": "Profit est.",
       "empty": "Aucun chargement disponible pour le moment.",
-      "error": "Impossible de charger la liste. Tirez pour réessayer."
+      "error": "Impossible de charger la liste. Tirez pour réessayer.",
+      "nearbyNeedsLocation": "Autorisez la localisation pour voir les chargements proches, ou ajoutez une base à votre véhicule sur le web.",
+      "enableLocation": "Utiliser ma position",
+      "noVehicle": "Ajoutez un véhicule sur le web pour voir la compatibilité et le profit."
     },
     "account": {
       "title": "Compte",
@@ -163,9 +454,141 @@
       "section": "Notifications",
       "reminder": "Rappel quotidien",
       "deniedTitle": "Notifications désactivées",
-      "deniedBody": "Activez les notifications d'AI Dispatcher dans les réglages de votre appareil.",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "Activez les notifications de HaulGenius dans les réglages de votre appareil.",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "N'oubliez pas de vérifier vos chargements aujourd'hui !"
+    },
+    "loadDetail": {
+      "title": "Chargement",
+      "pickup": "Ramassage",
+      "weight": "Poids",
+      "equipment": "Équipement",
+      "broker": "Courtier",
+      "postedRate": "Tarif affiché",
+      "ratePerKm": "Tarif au km",
+      "breakdown": "Détail du profit",
+      "loadedKm": "Km chargés",
+      "deadheadKm": "Km à vide jusqu'au ramassage",
+      "costPerKm": "Votre coût au km",
+      "costs": "Coûts estimés",
+      "profit": "Profit estimé",
+      "margin": "Marge",
+      "whyMatch": "Pourquoi cette compatibilité",
+      "positionFrom": "Km à vide mesurés depuis {source}.",
+      "negotiate": "Négocier avec l'IA",
+      "noBreakdown": "Ajoutez un véhicule pour voir le détail du profit."
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "Offre prête à envoyer",
+      "body": "{route} : l'IA propose {amount}. Approuvez pour contacter le courtier."
+    },
+    "bookingApproval": {
+      "title": "Tarif convenu — on réserve ?",
+      "body": "{route} à {amount}. Approuvez pour réserver le chargement."
+    },
+    "booked": {
+      "title": "Chargement réservé !",
+      "body": "{route} confirmé à {amount}."
+    },
+    "rejected": {
+      "title": "Négociation terminée",
+      "body": "{route} : pas d'entente cette fois."
+    },
+    "failed": {
+      "title": "Négociation arrêtée",
+      "body": "{route} : ouvrez l'app pour voir pourquoi."
+    }
+  },
+  "negotiation": {
+    "title": "Négocier et réserver",
+    "start": "Négocier avec l'IA",
+    "viewNegotiation": "Voir la négociation",
+    "aiCardTitle": "Négociation (IA)",
+    "aiThinking": "L'IA analyse le marché et vos limites…",
+    "waitingBroker": "En attente de la réponse du courtier…",
+    "postedRate": "Tarif affiché",
+    "myOffer": "Mon offre (IA)",
+    "brokerOffer": "Offre du courtier",
+    "agreedRate": "Tarif convenu",
+    "estProfit": "Profit est.",
+    "margin": "Marge",
+    "limits": "Vos limites : {floor} – {ceiling}",
+    "round": "Ronde {round} sur {max}",
+    "proposedBy": "Proposé par {strategy}",
+    "stepContact": "Contacter le courtier et négocier",
+    "stepConfirmRate": "Confirmer le tarif convenu",
+    "stepBook": "Réserver le chargement",
+    "stepRateConfirmation": "Générer la confirmation de tarif (prochaine phase)",
+    "approveSend": "Approuver et envoyer l'offre",
+    "adjust": "Ajuster l'offre",
+    "adjustAmount": "Nouvelle offre ({currency})",
+    "adjustHint": "Doit être entre {floor} et {ceiling} ; les valeurs hors limites sont ajustées.",
+    "adjustSave": "Enregistrer l'offre",
+    "approveBooking": "Accepter et réserver",
+    "cancel": "Annuler la négociation",
+    "cancelConfirm": "Annuler cette négociation ?",
+    "activity": "Activité",
+    "messageToBroker": "Message au courtier",
+    "brokerMessage": "Le courtier a dit",
+    "bookedTitle": "Chargement réservé !",
+    "bookedBody": "Réservé à {amount}. Le voyage apparaîtra dans Voyages à la prochaine phase.",
+    "simulatedBroker": "Courtier simulé (DÉMO) : les réponses ne sont pas réelles."
+  },
+  "trip": {
+    "title": "Voyage #{code}",
+    "eta": "HAE estimée",
+    "remaining": "Restant",
+    "navigate": "Naviguer",
+    "callBroker": "Appeler le courtier",
+    "noBrokerPhone": "Le courtier simulé n'a pas de téléphone.",
+    "documents": "Documents",
+    "uploadPod": "Téléverser POD",
+    "uploadDocument": "Téléverser un document",
+    "takePhoto": "Prendre une photo",
+    "chooseFromLibrary": "Choisir dans la galerie",
+    "uploading": "Téléversement…",
+    "cameraDenied": "Autorisez la caméra dans Réglages pour photographier les documents.",
+    "next": {
+      "at_pickup": "Je suis au ramassage",
+      "in_transit": "Chargé — démarrer",
+      "delivered": "Marquer comme livré"
+    },
+    "confirmDelivered": "Confirmer que le chargement a été livré ?",
+    "expenses": "Dépenses",
+    "addExpense": "Ajouter une dépense",
+    "amount": "Montant ({currency})",
+    "note": "Note (facultatif)",
+    "saveExpense": "Enregistrer la dépense",
+    "noExpenses": "Aucune dépense enregistrée.",
+    "finalRate": "Tarif final",
+    "actualExpenses": "Dépenses réelles",
+    "actualProfit": "Profit réel",
+    "finalMargin": "Marge finale",
+    "estimatedProfit": "Estimé à la réservation",
+    "completedTitle": "Livraison terminée !",
+    "completedBody": "Le chargement a été livré et le voyage est fermé.",
+    "closeTrip": "Fermer le voyage",
+    "podMissing": "Téléversez le POD pour fermer le voyage.",
+    "podDone": "POD (livraison)",
+    "docsComplete": "Documents complets",
+    "rateBroker": "Évaluer le courtier",
+    "ratedThanks": "Merci d'avoir évalué {broker}.",
+    "starsLabel": "{stars, plural, one {# étoile} other {# étoiles}}",
+    "findNextLoad": "Trouver le prochain chargement",
+    "tracking": "Position partagée tant que cet écran est ouvert.",
+    "trackingOff": "Position désactivée. Autorisez-la pour mettre à jour l'HAE.",
+    "noTrips": "Aucun voyage. Réservez un chargement pour commencer.",
+    "filterActive": "Actifs",
+    "filterCompleted": "Terminés",
+    "viewTrip": "Voir le voyage",
+    "open": "Ouvrir",
+    "cancelTrip": "Annuler le voyage",
+    "cancelConfirm": "Annuler ce voyage ? Le chargement retourne au marché.",
+    "lastUpdate": "Dernière position {time}",
+    "noPosition": "Pas encore de position",
+    "pickup": "Ramassage",
+    "delivery": "Livraison"
   }
 }

@@ -1,9 +1,11 @@
 import { apiError } from '../../common/api-error';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type {
-  VehicleCreateInput,
-  VehicleDto,
-  VehicleUpdateInput,
+import {
+  findCity,
+  type VehicleCreateInput,
+  type VehicleDto,
+  type VehicleLocationInput,
+  type VehicleUpdateInput,
 } from '@dispatcher/shared';
 import { PrismaService } from '../../prisma/prisma.service';
 import type { Vehicle } from '../../generated/prisma/client';
@@ -18,8 +20,28 @@ export function toVehicleDto(v: Vehicle): VehicleDto {
     costPerKm: v.costPerKm.toNumber(),
     homeBaseCity: v.homeBaseCity,
     homeBaseProvince: v.homeBaseProvince,
+    homeBaseLat: v.homeBaseLat,
+    homeBaseLng: v.homeBaseLng,
+    lastLocationAt: v.lastLocationAt?.toISOString() ?? null,
     createdAt: v.createdAt.toISOString(),
   };
+}
+
+/**
+ * Fills home-base coordinates from the city catalog when the client sends a
+ * known city without coordinates (web/mobile city pickers).
+ */
+function withHomeBaseCoords<T extends VehicleUpdateInput>(input: T): T {
+  if (
+    input.homeBaseLat !== undefined ||
+    !input.homeBaseCity ||
+    !input.homeBaseProvince
+  )
+    return input;
+  const city = findCity(input.homeBaseCity, input.homeBaseProvince);
+  return city
+    ? { ...input, homeBaseLat: city.lat, homeBaseLng: city.lng }
+    : input;
 }
 
 // Every query is scoped by organizationId: a vehicle from another tenant is
@@ -45,7 +67,7 @@ export class VehiclesService {
     input: VehicleCreateInput,
   ): Promise<VehicleDto> {
     const vehicle = await this.prisma.vehicle.create({
-      data: { ...input, organizationId },
+      data: { ...withHomeBaseCoords(input), organizationId },
     });
     return toVehicleDto(vehicle);
   }
@@ -58,9 +80,26 @@ export class VehiclesService {
     await this.findOwned(organizationId, id);
     const vehicle = await this.prisma.vehicle.update({
       where: { id },
-      data: input,
+      data: withHomeBaseCoords(input),
     });
     return toVehicleDto(vehicle);
+  }
+
+  /** Latest GPS fix reported by the driver app (deadhead / "near me"). */
+  async reportLocation(
+    organizationId: string,
+    id: string,
+    input: VehicleLocationInput,
+  ): Promise<void> {
+    await this.findOwned(organizationId, id);
+    await this.prisma.vehicle.update({
+      where: { id },
+      data: {
+        lastLat: input.lat,
+        lastLng: input.lng,
+        lastLocationAt: new Date(),
+      },
+    });
   }
 
   /** Soft delete: trips and reports keep referencing historical vehicles. */

@@ -11,6 +11,8 @@ const intl = createIntlMiddleware(routing);
 
 const REFRESH_COOKIE = 'ad_refresh';
 const PUBLIC_PATHS = ['/login'];
+/** Reachable with or without a session (e.g. accepting an invitation). */
+const OPEN_PATHS = ['/invite'];
 
 export function proxy(request: NextRequest) {
   const [, first, ...rest] = request.nextUrl.pathname.split('/');
@@ -19,6 +21,7 @@ export function proxy(request: NextRequest) {
     const path = `/${rest.join('/')}`;
     const hasSession = request.cookies.has(REFRESH_COOKIE);
     const isPublic = PUBLIC_PATHS.includes(path);
+    if (OPEN_PATHS.includes(path)) return intl(request);
 
     if (!hasSession && !isPublic) {
       return NextResponse.redirect(new URL(`/${first}/login`, request.url));

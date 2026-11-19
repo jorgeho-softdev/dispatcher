@@ -26,6 +26,120 @@
       "fleet_manager": "ਫਲੀਟ ਮੈਨੇਜਰ",
       "dispatcher": "ਡਿਸਪੈਚਰ",
       "driver": "ਡਰਾਈਵਰ"
+    },
+    "matchReason": {
+      "equipment_ideal": "ਢੁਕਵਾਂ ਉਪਕਰਨ",
+      "high_margin": "ਵੱਧ ਮੁਨਾਫ਼ਾ ਮਾਰਜਨ",
+      "good_rate": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਵਧੀਆ ਰੇਟ",
+      "short_deadhead": "ਘੱਟ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "pickup_soon": "ਜਲਦੀ ਪਿਕਅੱਪ",
+      "preferred_lane": "ਪਸੰਦੀਦਾ ਖੇਤਰ",
+      "equipment_larger": "ਲੋੜ ਤੋਂ ਵੱਡਾ ਵਾਹਨ",
+      "low_margin": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਮਾਰਜਨ",
+      "low_rate": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਰੇਟ",
+      "long_deadhead": "ਜ਼ਿਆਦਾ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "deadhead_unknown": "ਵਾਹਨ ਦੀ ਥਾਂ ਪਤਾ ਨਹੀਂ",
+      "pickup_far_out": "ਪਿਕਅੱਪ ਕਈ ਦਿਨਾਂ ਬਾਅਦ ਹੈ",
+      "equipment_incompatible": "ਉਪਕਰਨ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ",
+      "over_capacity": "ਵਾਹਨ ਦੀ ਸਮਰੱਥਾ ਤੋਂ ਵੱਧ",
+      "avoided_region": "ਖੇਤਰ ਜਿਸ ਤੋਂ ਤੁਸੀਂ ਬਚਦੇ ਹੋ",
+      "pickup_passed": "ਪਿਕਅੱਪ ਦਾ ਸਮਾਂ ਲੰਘ ਗਿਆ"
+    },
+    "positionSource": {
+      "request": "ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਥਾਂ",
+      "vehicle_gps": "ਵਾਹਨ ਦਾ GPS",
+      "home_base": "ਵਾਹਨ ਦਾ ਬੇਸ"
+    },
+    "loadView": {
+      "recommended": "ਸਿਫ਼ਾਰਸ਼ੀ",
+      "nearby": "ਮੇਰੇ ਨੇੜੇ",
+      "all": "ਸਾਰੇ"
+    },
+    "match": "{score}% ਮੇਲ",
+    "deadhead": "{km} ਕਿ.ਮੀ. ਖਾਲੀ",
+    "autonomy": {
+      "assisted": "ਸਹਾਇਕ",
+      "semi_auto": "ਅਰਧ-ਆਟੋਮੈਟਿਕ",
+      "auto": "ਆਟੋਮੈਟਿਕ"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "AI ਕੰਮ ਕਰ ਰਿਹਾ ਹੈ",
+      "awaiting_send_approval": "ਤੁਹਾਡੀ ਮਨਜ਼ੂਰੀ ਚਾਹੀਦੀ ਹੈ",
+      "contacting_broker": "ਬ੍ਰੋਕਰ ਦੀ ਉਡੀਕ",
+      "awaiting_booking_approval": "ਬੁੱਕ ਕਰਨ ਲਈ ਤਿਆਰ",
+      "booking_requested": "ਬੁਕਿੰਗ ਦੀ ਬੇਨਤੀ ਕੀਤੀ",
+      "booked": "ਬੁੱਕ ਹੋਇਆ",
+      "rejected": "ਸੌਦਾ ਨਹੀਂ ਹੋਇਆ",
+      "cancelled": "ਰੱਦ",
+      "failed": "ਰੁਕੀ"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "AI ਨੇ ਪੇਸ਼ਕਸ਼ ਦਿੱਤੀ",
+      "ai_countered": "AI ਨੇ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਤਿਆਰ ਕੀਤੀ",
+      "ai_accepted": "AI ਨੇ ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਮੰਨ ਲਿਆ",
+      "ai_walked_away": "AI ਨੇ ਗੱਲਬਾਤ ਖਤਮ ਕੀਤੀ",
+      "policy_adjusted": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅਨੁਸਾਰ ਬਦਲੀ",
+      "policy_blocked": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਕਾਰਨ ਰੋਕੀ",
+      "user_approved_send": "ਤੁਸੀਂ ਪੇਸ਼ਕਸ਼ ਮਨਜ਼ੂਰ ਕੀਤੀ",
+      "user_adjusted": "ਤੁਸੀਂ ਪੇਸ਼ਕਸ਼ ਬਦਲੀ",
+      "user_approved_booking": "ਤੁਸੀਂ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕੀਤੀ",
+      "user_cancelled": "ਤੁਸੀਂ ਰੱਦ ਕੀਤਾ",
+      "offer_sent": "ਬ੍ਰੋਕਰ ਨੂੰ ਪੇਸ਼ਕਸ਼ ਭੇਜੀ",
+      "broker_countered": "ਬ੍ਰੋਕਰ ਨੇ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਦਿੱਤੀ",
+      "broker_accepted": "ਬ੍ਰੋਕਰ ਨੇ ਮੰਨ ਲਿਆ",
+      "broker_rejected": "ਬ੍ਰੋਕਰ ਨੇ ਇਨਕਾਰ ਕੀਤਾ",
+      "booking_requested": "ਬੁਕਿੰਗ ਦੀ ਬੇਨਤੀ ਕੀਤੀ",
+      "booking_confirmed": "ਬੁਕਿੰਗ ਪੱਕੀ",
+      "booking_declined": "ਬੁਕਿੰਗ ਨਾਮਨਜ਼ੂਰ",
+      "load_unavailable": "ਲੋਡ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ"
+    },
+    "actor": {
+      "ai": "AI",
+      "user": "ਤੁਸੀਂ",
+      "broker": "ਬ੍ਰੋਕਰ",
+      "system": "ਸਿਸਟਮ"
+    },
+    "aiReason": {
+      "target_markup": "ਪੋਸਟ ਕੀਤੇ ਰੇਟ ਤੋਂ {pct}% ਵੱਧ ਮੰਗ ਰਿਹਾ ਹਾਂ — ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅੰਦਰ ਅਤੇ ਇਸ ਖੇਤਰ ਵਿੱਚ ਆਮ ਤੌਰ 'ਤੇ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ।",
+      "counter_midpoint": "ਬ੍ਰੋਕਰ ਨੇ {broker} ਦੀ ਪੇਸ਼ਕਸ਼ ਕੀਤੀ; ਮੈਂ ਸਾਡੇ {last} ਤੋਂ ਵਿਚਕਾਰ ਮਿਲਣ ਦਾ ਸੁਝਾਅ ਦਿੰਦਾ ਹਾਂ।",
+      "accept_meets_minimums": "ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਮਾਰਜਨ ਅਤੇ ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਰੇਟ ਨੂੰ ਪੂਰਾ ਕਰਦਾ ਹੈ।",
+      "walk_away_below_minimums": "ਬ੍ਰੋਕਰ ਦਾ ਰੇਟ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਘੱਟ ਹੈ, ਇਸ ਲਈ ਮੈਂ ਰੁਕ ਗਿਆ।",
+      "max_rounds_reached": "ਵੱਧ ਤੋਂ ਵੱਧ ਗੇੜ ਪੂਰੇ ਹੋ ਗਏ।",
+      "clamped_to_floor": "ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਮਨਜ਼ੂਰ ਰੇਟ ਤੱਕ ਵਧਾਇਆ।",
+      "clamped_to_ceiling": "ਤੁਹਾਡੀ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਤੱਕ ਘਟਾਇਆ।",
+      "unprofitable_at_ceiling": "ਤੁਹਾਡੀ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ ਨਾਲ ਵੀ ਇਹ ਲੋਡ ਤੁਹਾਡੇ ਘੱਟੋ-ਘੱਟ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚਦਾ।"
+    },
+    "strategy": {
+      "claude": "Claude (AI)",
+      "rules": "ਨਿਯਮ-ਅਧਾਰਤ"
+    },
+    "tripStatus": {
+      "scheduled": "ਤੈਅ",
+      "at_pickup": "ਪਿਕਅੱਪ 'ਤੇ",
+      "in_transit": "ਰਸਤੇ ਵਿੱਚ",
+      "delivered": "ਡਿਲੀਵਰ ਹੋਇਆ",
+      "completed": "ਪੂਰਾ",
+      "cancelled": "ਰੱਦ"
+    },
+    "tripStep": {
+      "at_pickup": "ਪਿਕਅੱਪ",
+      "in_transit": "ਰਸਤੇ ਵਿੱਚ",
+      "delivered": "ਡਿਲੀਵਰੀ"
+    },
+    "documentType": {
+      "rate_confirmation": "ਰੇਟ ਕਨਫਰਮੇਸ਼ਨ",
+      "bol": "BOL (ਬਿੱਲ ਆਫ਼ ਲੇਡਿੰਗ)",
+      "pod": "POD (ਡਿਲੀਵਰੀ ਦਾ ਸਬੂਤ)",
+      "receipt": "ਰਸੀਦ",
+      "other": "ਹੋਰ"
+    },
+    "expenseCategory": {
+      "fuel": "ਤੇਲ",
+      "tolls": "ਟੋਲ",
+      "parking": "ਪਾਰਕਿੰਗ",
+      "maintenance": "ਮੁਰੰਮਤ",
+      "lumper": "ਲੰਪਰ / ਉਤਾਰਨਾ",
+      "other": "ਹੋਰ"
     }
   },
   "errors": {
@@ -40,7 +154,18 @@
     "NOT_FOUND": "ਜੋ ਤੁਸੀਂ ਲੱਭ ਰਹੇ ਸੀ ਉਹ ਨਹੀਂ ਮਿਲਿਆ।",
     "API_UNAVAILABLE": "ਸਰਵਰ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
     "NETWORK_ERROR": "ਸਰਵਰ ਨਾਲ ਸੰਪਰਕ ਨਹੀਂ ਹੋ ਸਕਿਆ। ਆਪਣਾ ਕਨੈਕਸ਼ਨ ਜਾਂਚੋ।",
-    "INTERNAL_ERROR": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+    "INTERNAL_ERROR": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "VEHICLE_REQUIRED": "ਗੱਲਬਾਤ ਤੋਂ ਪਹਿਲਾਂ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
+    "LOAD_UNAVAILABLE": "ਇਹ ਲੋਡ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+    "NEGOTIATION_ALREADY_ACTIVE": "ਇਸ ਲੋਡ ਲਈ ਗੱਲਬਾਤ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਹੀ ਹੈ।",
+    "NEGOTIATION_INVALID_STATE": "ਇਹ ਗੱਲਬਾਤ ਬਦਲ ਗਈ ਹੈ। ਰਿਫ੍ਰੈਸ਼ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "TRIP_INVALID_STATE": "ਇਹ ਸਫ਼ਰ ਬਦਲ ਗਿਆ ਹੈ। ਰਿਫ੍ਰੈਸ਼ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "POD_REQUIRED": "ਸਫ਼ਰ ਬੰਦ ਕਰਨ ਲਈ ਡਿਲੀਵਰੀ ਦਾ ਸਬੂਤ (POD) ਅੱਪਲੋਡ ਕਰੋ।",
+    "UPLOAD_NOT_FOUND": "ਫ਼ਾਈਲ ਪੂਰੀ ਅੱਪਲੋਡ ਨਹੀਂ ਹੋਈ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+    "BROKER_ALREADY_RATED": "ਤੁਸੀਂ ਇਸ ਸਫ਼ਰ ਲਈ ਇਸ ਬ੍ਰੋਕਰ ਨੂੰ ਪਹਿਲਾਂ ਹੀ ਰੇਟ ਕਰ ਚੁੱਕੇ ਹੋ।",
+    "INVITATION_INVALID": "ਇਹ ਸੱਦਾ ਗਲਤ, ਮਿਆਦ ਪੁੱਗੀ ਜਾਂ ਪਹਿਲਾਂ ਵਰਤਿਆ ਗਿਆ ਹੈ।",
+    "LAST_OWNER": "ਸੰਸਥਾ ਨੂੰ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਮਾਲਕ ਚਾਹੀਦਾ ਹੈ।",
+    "CANNOT_CHANGE_SELF": "ਤੁਸੀਂ ਆਪਣੀ ਪਹੁੰਚ ਬਦਲ ਜਾਂ ਹਟਾ ਨਹੀਂ ਸਕਦੇ।"
   },
   "auth": {
     "email": "ਈਮੇਲ",
@@ -51,12 +176,12 @@
     "signingIn": "ਸਾਈਨ ਇਨ ਹੋ ਰਿਹਾ ਹੈ…",
     "invalidFormat": "ਆਪਣੀ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਜਾਂਚੋ।",
     "signOut": "ਸਾਈਨ ਆਊਟ",
-    "signOutConfirm": "ਕੀ AI Dispatcher ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰਨਾ ਹੈ?"
+    "signOutConfirm": "ਕੀ HaulGenius ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰਨਾ ਹੈ?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "AI Dispatcher ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
+      "title": "HaulGenius Admin",
+      "description": "HaulGenius ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
     },
     "login": {
       "subtitle": "ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
@@ -64,7 +189,13 @@
     "nav": {
       "dashboard": "ਡੈਸ਼ਬੋਰਡ",
       "loads": "ਲੋਡ",
-      "vehicles": "ਵਾਹਨ"
+      "vehicles": "ਵਾਹਨ",
+      "settings": "ਤਰਜੀਹਾਂ",
+      "negotiations": "ਗੱਲਬਾਤਾਂ",
+      "trips": "ਸਫ਼ਰ",
+      "team": "ਟੀਮ",
+      "map": "ਲਾਈਵ ਨਕਸ਼ਾ",
+      "reports": "ਰਿਪੋਰਟਾਂ"
     },
     "dashboard": {
       "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, {name}",
@@ -74,7 +205,8 @@
       "vehicles": "ਵਾਹਨ",
       "bestProfit": "ਸਭ ਤੋਂ ਵੱਧ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
       "addVehicleHint": "ਹਰ ਲੋਡ ਦਾ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ ਗਿਣਨ ਲਈ ਇੱਕ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
-      "addVehicleCta": "ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ →"
+      "addVehicleCta": "ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ →",
+      "opportunities": "ਮੌਕੇ (≥{threshold}% ਮੇਲ)"
     },
     "loads": {
       "title": "ਲੋਡ",
@@ -91,7 +223,14 @@
       "empty": "ਇਹਨਾਂ ਫਿਲਟਰਾਂ ਨਾਲ ਕੋਈ ਲੋਡ ਨਹੀਂ ਮਿਲਿਆ।",
       "noBroker": "ਕੋਈ ਬ੍ਰੋਕਰ ਨਹੀਂ",
       "noVehicle": "ਕੋਈ ਵਾਹਨ ਨਹੀਂ",
-      "perKm": "{amount}/ਕਿ.ਮੀ."
+      "perKm": "{amount}/ਕਿ.ਮੀ.",
+      "colMatch": "ਮੇਲ",
+      "colDeadhead": "ਖਾਲੀ ਕਿ.ਮੀ.",
+      "newLoad": "ਨਵਾਂ ਮੈਨੂਅਲ ਲੋਡ",
+      "matchingFor": "{vehicle} ਲਈ ਮੇਲ · ਥਾਂ: {source}",
+      "noPosition": "ਨੇੜਲੇ ਲੋਡ ਅਤੇ ਖਾਲੀ ਕਿ.ਮੀ. ਵੇਖਣ ਲਈ ਆਪਣੇ ਵਾਹਨ ਦਾ ਬੇਸ ਸ਼ਾਮਲ ਕਰੋ।",
+      "noVehicleMatch": "ਮੇਲ ਅਤੇ ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ ਵੇਖਣ ਲਈ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।",
+      "loadMore": "ਹੋਰ ਲੋਡ ਕਰੋ"
     },
     "vehicles": {
       "title": "ਵਾਹਨ",
@@ -106,19 +245,164 @@
       "homeBase": "ਬੇਸ",
       "province": "ਸੂਬਾ",
       "saveError": "ਵਾਹਨ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕਿਆ।",
-      "submit": "ਵਾਹਨ ਸੇਵ ਕਰੋ"
+      "submit": "ਵਾਹਨ ਸੇਵ ਕਰੋ",
+      "selectCity": "ਸ਼ਹਿਰ ਚੁਣੋ",
+      "noHomeBase": "ਕੋਈ ਬੇਸ ਨਹੀਂ"
+    },
+    "loadForm": {
+      "title": "ਨਵਾਂ ਮੈਨੂਅਲ ਲੋਡ",
+      "subtitle": "ਇੱਕ ਅਸਲ ਲੋਡ ਜੋ ਤੁਹਾਨੂੰ ਸਿੱਧਾ ਬ੍ਰੋਕਰ ਜਾਂ ਸ਼ਿਪਰ ਤੋਂ ਮਿਲਿਆ।",
+      "origin": "ਸ਼ੁਰੂਆਤ",
+      "destination": "ਮੰਜ਼ਿਲ",
+      "pickupAt": "ਪਿਕਅੱਪ ਮਿਤੀ ਅਤੇ ਸਮਾਂ",
+      "weightKg": "ਭਾਰ (ਕਿ.ਗ੍ਰਾ.)",
+      "equipment": "ਉਪਕਰਨ",
+      "postedRate": "ਰੇਟ (CA$)",
+      "distanceKm": "ਦੂਰੀ (ਕਿ.ਮੀ., ਵਿਕਲਪਿਕ)",
+      "distanceHint": "ਸ਼ਹਿਰਾਂ ਤੋਂ ਅਨੁਮਾਨ ਲਈ ਖਾਲੀ ਛੱਡੋ (~{km} ਕਿ.ਮੀ.)।",
+      "notes": "ਨੋਟਸ",
+      "submit": "ਲੋਡ ਸੇਵ ਕਰੋ",
+      "cancel": "ਰੱਦ ਕਰੋ",
+      "selectCity": "ਸ਼ਹਿਰ ਚੁਣੋ",
+      "sameCity": "ਸ਼ੁਰੂਆਤ ਅਤੇ ਮੰਜ਼ਿਲ ਵੱਖਰੇ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ।"
+    },
+    "settings": {
+      "title": "ਤਰਜੀਹਾਂ",
+      "subtitle": "ਲੋਡ ਮੇਲ ਲਈ ਤੁਹਾਡੇ ਨਿਯਮ। AI ਡਿਸਪੈਚਰ ਵੀ ਇਹਨਾਂ ਦੀ ਪਾਲਣਾ ਕਰੇਗਾ।",
+      "profitability": "ਮੁਨਾਫ਼ਾ",
+      "minRatePerKm": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਘੱਟੋ-ਘੱਟ ਰੇਟ (CA$)",
+      "minMarginPct": "ਘੱਟੋ-ਘੱਟ ਮਾਰਜਨ (%)",
+      "maxDeadheadKm": "ਪਿਕਅੱਪ ਤੱਕ ਵੱਧ ਤੋਂ ਵੱਧ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "regions": "ਖੇਤਰ",
+      "preferredProvinces": "ਪਸੰਦੀਦਾ ਸੂਬੇ",
+      "avoidProvinces": "ਬਚਣ ਵਾਲੇ ਸੂਬੇ",
+      "regionsHint": "ਪਸੰਦੀਦਾ ਸੂਬੇ ਮੇਲ ਵਧਾਉਂਦੇ ਹਨ; ਬਚਣ ਵਾਲੇ ਕਦੇ ਸਿਫ਼ਾਰਸ਼ ਨਹੀਂ ਹੁੰਦੇ।",
+      "aiSection": "AI ਡਿਸਪੈਚਰ",
+      "autonomy": "ਖੁਦਮੁਖਤਿਆਰੀ ਪੱਧਰ",
+      "maxCounterOfferPct": "ਪੋਸਟ ਕੀਤੇ ਰੇਟ ਤੋਂ ਵੱਧ ਤੋਂ ਵੱਧ ਜਵਾਬੀ ਪੇਸ਼ਕਸ਼ (%)",
+      "save": "ਤਰਜੀਹਾਂ ਸੇਵ ਕਰੋ",
+      "saved": "ਤਰਜੀਹਾਂ ਸੇਵ ਹੋ ਗਈਆਂ।",
+      "autonomyHint": "ਸਹਾਇਕ: ਤੁਸੀਂ ਹਰ ਸੁਨੇਹਾ ਅਤੇ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕਰਦੇ ਹੋ। ਅਰਧ-ਆਟੋਮੈਟਿਕ: AI ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅੰਦਰ ਗੱਲਬਾਤ ਕਰਦਾ ਹੈ ਅਤੇ ਤੁਸੀਂ ਬੁਕਿੰਗ ਮਨਜ਼ੂਰ ਕਰਦੇ ਹੋ। ਆਟੋਮੈਟਿਕ ਹਾਲੇ ਅਰਧ-ਆਟੋਮੈਟਿਕ ਵਾਂਗ ਕੰਮ ਕਰਦਾ ਹੈ।"
+    },
+    "negotiations": {
+      "title": "ਗੱਲਬਾਤਾਂ",
+      "subtitle": "AI ਦਾ ਹਰ ਫ਼ੈਸਲਾ ਦਰਜ ਹੁੰਦਾ ਹੈ ਅਤੇ ਜਾਂਚਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+      "filterActive": "ਚੱਲ ਰਹੀਆਂ",
+      "filterNeedsApproval": "ਮਨਜ਼ੂਰੀ ਬਾਕੀ",
+      "filterAll": "ਸਾਰੀਆਂ",
+      "empty": "ਅਜੇ ਕੋਈ ਗੱਲਬਾਤ ਨਹੀਂ। ਐਪ ਵਿੱਚ ਕਿਸੇ ਲੋਡ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ।",
+      "colRoute": "ਰੂਟ",
+      "colStatus": "ਸਥਿਤੀ",
+      "colPosted": "ਪੋਸਟ ਕੀਤਾ",
+      "colOffer": "ਪੇਸ਼ਕਸ਼",
+      "colAgreed": "ਤੈਅ",
+      "colUpdated": "ਅੱਪਡੇਟ",
+      "back": "← ਸਾਰੀਆਂ ਗੱਲਬਾਤਾਂ",
+      "audit": "ਆਡਿਟ ਰਿਕਾਰਡ"
+    },
+    "trips": {
+      "title": "ਸਫ਼ਰ",
+      "subtitle": "ਬੁੱਕ ਕੀਤੇ ਚੱਲ ਰਹੇ ਲੋਡ ਅਤੇ ਉਹਨਾਂ ਦਾ ਅਸਲ ਮੁਨਾਫ਼ਾ।",
+      "filterAll": "ਸਾਰੇ",
+      "colCode": "ਸਫ਼ਰ",
+      "colRoute": "ਰੂਟ",
+      "colStatus": "ਸਥਿਤੀ",
+      "colEta": "ETA",
+      "colRate": "ਰੇਟ",
+      "colProfit": "ਅਸਲ ਮੁਨਾਫ਼ਾ",
+      "back": "← ਸਾਰੇ ਸਫ਼ਰ",
+      "progress": "ਪ੍ਰਗਤੀ",
+      "financials": "ਵਿੱਤੀ",
+      "download": "ਡਾਊਨਲੋਡ",
+      "driver": "ਡਰਾਈਵਰ",
+      "assignDriver": "ਡਰਾਈਵਰ ਨਿਯੁਕਤ ਕਰੋ"
+    },
+    "team": {
+      "title": "ਟੀਮ",
+      "subtitle": "ਆਪਣੇ ਡਿਸਪੈਚਰਾਂ ਅਤੇ ਡਰਾਈਵਰਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ। ਹਰ ਭੂਮਿਕਾ ਸਿਰਫ਼ ਲੋੜੀਂਦਾ ਵੇਖਦੀ ਹੈ।",
+      "members": "ਮੈਂਬਰ",
+      "you": "ਤੁਸੀਂ",
+      "role": "ਭੂਮਿਕਾ",
+      "remove": "ਹਟਾਓ",
+      "removeConfirm": "ਕੀ {name} ਨੂੰ ਸੰਸਥਾ ਤੋਂ ਹਟਾਉਣਾ ਹੈ? ਉਹਨਾਂ ਦਾ ਸੈਸ਼ਨ ਬੰਦ ਹੋ ਜਾਵੇਗਾ।",
+      "invite": "ਮੈਂਬਰ ਨੂੰ ਸੱਦਾ ਦਿਓ",
+      "email": "ਈਮੇਲ",
+      "createLink": "ਸੱਦੇ ਦਾ ਲਿੰਕ ਬਣਾਓ",
+      "linkReady": "ਇਹ ਲਿੰਕ {email} ਨਾਲ ਸਾਂਝਾ ਕਰੋ। ਇਹ ਇੱਕ ਵਾਰ ਕੰਮ ਕਰਦਾ ਹੈ ਅਤੇ 7 ਦਿਨਾਂ ਵਿੱਚ ਖਤਮ ਹੁੰਦਾ ਹੈ; ਦੁਬਾਰਾ ਨਹੀਂ ਦਿਖਾਇਆ ਜਾਵੇਗਾ।",
+      "copy": "ਕਾਪੀ ਕਰੋ",
+      "copied": "ਕਾਪੀ ਹੋ ਗਿਆ",
+      "pending": "ਬਾਕੀ ਸੱਦੇ",
+      "expires": "{date} ਨੂੰ ਖਤਮ",
+      "revoke": "ਰੱਦ ਕਰੋ",
+      "noPending": "ਕੋਈ ਬਾਕੀ ਸੱਦਾ ਨਹੀਂ।",
+      "emailNote": "ਈਮੇਲ ਭੇਜਣਾ ਬਾਅਦ ਵਿੱਚ ਆਵੇਗਾ; ਹਾਲੇ ਲਿੰਕ ਕਾਪੀ ਕਰਕੇ ਖੁਦ ਭੇਜੋ।"
+    },
+    "invite": {
+      "title": "{organization} ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ",
+      "subtitle": "ਤੁਹਾਨੂੰ {email} ਨਾਲ {role} ਵਜੋਂ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+      "name": "ਤੁਹਾਡਾ ਨਾਮ",
+      "password": "ਪਾਸਵਰਡ ਬਣਾਓ (8+ ਅੱਖਰ)",
+      "accept": "ਮੰਨੋ ਅਤੇ ਸਾਈਨ ਇਨ ਕਰੋ",
+      "driverHint": "ਡਰਾਈਵਰ ਮੋਬਾਈਲ ਐਪ ਵਰਤਦੇ ਹਨ। ਇਸਨੂੰ ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਇਸ ਈਮੇਲ ਨਾਲ ਸਾਈਨ ਇਨ ਕਰੋ।",
+      "invalid": "ਇਹ ਸੱਦਾ ਗਲਤ, ਮਿਆਦ ਪੁੱਗੀ ਜਾਂ ਵਰਤਿਆ ਗਿਆ ਹੈ। ਨਵਾਂ ਲਿੰਕ ਮੰਗੋ।"
+    },
+    "map": {
+      "title": "ਲਾਈਵ ਨਕਸ਼ਾ",
+      "subtitle": "ਚੱਲ ਰਹੇ ਸਫ਼ਰ ਅਤੇ ਵਾਹਨਾਂ ਦੀ ਥਾਂ। ਹਰ 30 ਸਕਿੰਟ ਅੱਪਡੇਟ।",
+      "activeTrips": "{count, plural, one {# ਚੱਲ ਰਿਹਾ ਸਫ਼ਰ} other {# ਚੱਲ ਰਹੇ ਸਫ਼ਰ}}",
+      "vehicles": "ਵਾਹਨ",
+      "onTrip": "ਸਫ਼ਰ 'ਤੇ",
+      "idle": "ਉਪਲਬਧ",
+      "atHomeBase": "ਬੇਸ 'ਤੇ (ਹਾਲੀਆ GPS ਨਹੀਂ)",
+      "noPositions": "ਅਜੇ ਕੋਈ ਥਾਂ ਨਹੀਂ। ਇਹ ਡਰਾਈਵਰਾਂ ਵੱਲੋਂ ਐਪ ਵਿੱਚ ਸਫ਼ਰ ਖੋਲ੍ਹਣ 'ਤੇ ਦਿਖਦੀਆਂ ਹਨ।",
+      "list": "ਸੂਚੀ"
+    },
+    "reports": {
+      "title": "ਰਿਪੋਰਟਾਂ",
+      "subtitle": "ਪੂਰੇ ਸਫ਼ਰਾਂ ਦਾ ਅਸਲ ਮੁਨਾਫ਼ਾ ਅਤੇ AI ਡਿਸਪੈਚਰ ਦੀ ਕਾਰਗੁਜ਼ਾਰੀ।",
+      "range": "ਸਮਾਂ",
+      "last30": "ਪਿਛਲੇ 30 ਦਿਨ",
+      "last90": "ਪਿਛਲੇ 90 ਦਿਨ",
+      "last365": "ਪਿਛਲੇ 12 ਮਹੀਨੇ",
+      "groupBy": "ਇਸ ਅਨੁਸਾਰ ਸਮੂਹ",
+      "group": {
+        "month": "ਮਹੀਨਾ",
+        "vehicle": "ਵਾਹਨ",
+        "driver": "ਡਰਾਈਵਰ",
+        "lane": "ਰੂਟ (ਸੂਬੇ)"
+      },
+      "exportCsv": "CSV ਨਿਰਯਾਤ ਕਰੋ",
+      "trips": "ਸਫ਼ਰ",
+      "revenue": "ਆਮਦਨ",
+      "expenses": "ਖਰਚੇ",
+      "profit": "ਅਸਲ ਮੁਨਾਫ਼ਾ",
+      "margin": "ਮਾਰਜਨ",
+      "revenuePerKm": "ਆਮਦਨ / ਕਿ.ਮੀ.",
+      "profitByMonth": "ਮਹੀਨੇ ਅਨੁਸਾਰ ਅਸਲ ਮੁਨਾਫ਼ਾ",
+      "empty": "ਇਸ ਸਮੇਂ ਵਿੱਚ ਕੋਈ ਪੂਰਾ ਸਫ਼ਰ ਨਹੀਂ।",
+      "aiTitle": "AI ਡਿਸਪੈਚਰ ਦੀ ਕਾਰਗੁਜ਼ਾਰੀ",
+      "negotiations": "ਗੱਲਬਾਤਾਂ",
+      "closeRate": "ਸੌਦਾ ਦਰ",
+      "avgUplift": "ਪੋਸਟ ਤੋਂ ਔਸਤ ਵੱਧ ਰੇਟ",
+      "totalUplift": "ਵਾਧੂ ਆਮਦਨ ਹਾਸਲ",
+      "avgRounds": "ਔਸਤ ਗੇੜ",
+      "byStrategy": "ਰਣਨੀਤੀ ਅਨੁਸਾਰ",
+      "booked": "ਬੁੱਕ",
+      "aiEmpty": "ਇਸ ਸਮੇਂ ਵਿੱਚ ਕੋਈ ਗੱਲਬਾਤ ਨਹੀਂ।",
+      "currencyNote": "ਰਕਮਾਂ {currency} ਵਿੱਚ। ਹੋਰ ਮੁਦਰਾਵਾਂ ਵਾਲੇ ਸਫ਼ਰ ਸ਼ਾਮਲ ਨਹੀਂ।"
     }
   },
   "mobile": {
     "onboarding": {
-      "title": "AI Dispatcher ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
+      "title": "HaulGenius ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
       "body": "ਆਓ ਸਭ ਕੁਝ ਸੈੱਟ ਕਰੀਏ। ਬੱਸ ਇੱਕ ਪਲ ਲੱਗੇਗਾ।",
       "cta": "ਸ਼ੁਰੂ ਕਰੋ"
     },
     "tabs": {
       "home": "ਹੋਮ",
       "loads": "ਲੋਡ",
-      "account": "ਖਾਤਾ"
+      "account": "ਖਾਤਾ",
+      "trips": "ਸਫ਼ਰ"
     },
     "login": {
       "subtitle": "ਤੁਹਾਡਾ AI ਡਿਸਪੈਚਰ"
@@ -131,13 +415,20 @@
       "opportunities": "{count, plural, one {ਮੌਕਾ} other {ਮੌਕੇ}}",
       "activeTrips": "ਚੱਲ ਰਹੇ ਸਫ਼ਰ",
       "bestProfit": "ਵੱਧ ਤੋਂ ਵੱਧ ਅਨੁ. ਮੁਨਾਫ਼ਾ",
-      "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ"
+      "seeLoads": "ਉਪਲਬਧ ਲੋਡ ਵੇਖੋ",
+      "bestOpportunity": "ਸਭ ਤੋਂ ਵਧੀਆ ਮੌਕਾ",
+      "noOpportunities": "ਇਸ ਵੇਲੇ ਕੋਈ ਵਧੀਆ ਮੇਲ ਨਹੀਂ। ਜਲਦੀ ਵਾਪਸ ਵੇਖੋ।",
+      "pendingApprovals": "ਤੁਹਾਡੀ ਮਨਜ਼ੂਰੀ ਦੀ ਉਡੀਕ",
+      "nextTrip": "ਅਗਲਾ ਸਫ਼ਰ"
     },
     "loads": {
       "title": "ਉਪਲਬਧ ਲੋਡ",
       "estProfit": "ਅਨੁ. ਮੁਨਾਫ਼ਾ",
       "empty": "ਇਸ ਵੇਲੇ ਕੋਈ ਲੋਡ ਉਪਲਬਧ ਨਹੀਂ।",
-      "error": "ਸੂਚੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਲਈ ਹੇਠਾਂ ਖਿੱਚੋ।"
+      "error": "ਸੂਚੀ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਲਈ ਹੇਠਾਂ ਖਿੱਚੋ।",
+      "nearbyNeedsLocation": "ਨੇੜਲੇ ਲੋਡ ਵੇਖਣ ਲਈ ਲੋਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ, ਜਾਂ ਵੈੱਬ 'ਤੇ ਆਪਣੇ ਵਾਹਨ ਦਾ ਬੇਸ ਸ਼ਾਮਲ ਕਰੋ।",
+      "enableLocation": "ਮੇਰੀ ਲੋਕੇਸ਼ਨ ਵਰਤੋ",
+      "noVehicle": "ਮੇਲ ਅਤੇ ਮੁਨਾਫ਼ਾ ਵੇਖਣ ਲਈ ਵੈੱਬ 'ਤੇ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।"
     },
     "account": {
       "title": "ਖਾਤਾ",
@@ -163,9 +454,141 @@
       "section": "ਸੂਚਨਾਵਾਂ",
       "reminder": "ਰੋਜ਼ਾਨਾ ਯਾਦ-ਦਹਾਨੀ",
       "deniedTitle": "ਸੂਚਨਾਵਾਂ ਬੰਦ ਹਨ",
-      "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ AI Dispatcher ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ HaulGenius ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "ਅੱਜ ਆਪਣੇ ਲੋਡ ਵੇਖਣਾ ਨਾ ਭੁੱਲੋ!"
+    },
+    "loadDetail": {
+      "title": "ਲੋਡ",
+      "pickup": "ਪਿਕਅੱਪ",
+      "weight": "ਭਾਰ",
+      "equipment": "ਉਪਕਰਨ",
+      "broker": "ਬ੍ਰੋਕਰ",
+      "postedRate": "ਪੋਸਟ ਕੀਤਾ ਰੇਟ",
+      "ratePerKm": "ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਰੇਟ",
+      "breakdown": "ਮੁਨਾਫ਼ੇ ਦਾ ਵੇਰਵਾ",
+      "loadedKm": "ਲੋਡ ਨਾਲ ਕਿ.ਮੀ.",
+      "deadheadKm": "ਪਿਕਅੱਪ ਤੱਕ ਖਾਲੀ ਕਿ.ਮੀ.",
+      "costPerKm": "ਤੁਹਾਡੀ ਪ੍ਰਤੀ ਕਿ.ਮੀ. ਲਾਗਤ",
+      "costs": "ਅਨੁਮਾਨਿਤ ਲਾਗਤ",
+      "profit": "ਅਨੁਮਾਨਿਤ ਮੁਨਾਫ਼ਾ",
+      "margin": "ਮਾਰਜਨ",
+      "whyMatch": "ਇਹ ਮੇਲ ਕਿਉਂ",
+      "positionFrom": "ਖਾਲੀ ਕਿ.ਮੀ. {source} ਤੋਂ ਮਾਪੇ ਗਏ।",
+      "negotiate": "AI ਨਾਲ ਗੱਲਬਾਤ ਕਰੋ",
+      "noBreakdown": "ਮੁਨਾਫ਼ੇ ਦਾ ਵੇਰਵਾ ਵੇਖਣ ਲਈ ਵਾਹਨ ਸ਼ਾਮਲ ਕਰੋ।"
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "ਪੇਸ਼ਕਸ਼ ਭੇਜਣ ਲਈ ਤਿਆਰ",
+      "body": "{route}: AI {amount} ਦਾ ਸੁਝਾਅ ਦਿੰਦਾ ਹੈ। ਬ੍ਰੋਕਰ ਨਾਲ ਸੰਪਰਕ ਲਈ ਮਨਜ਼ੂਰੀ ਦਿਓ।"
+    },
+    "bookingApproval": {
+      "title": "ਰੇਟ ਤੈਅ — ਬੁੱਕ ਕਰੀਏ?",
+      "body": "{route} {amount} 'ਤੇ। ਲੋਡ ਬੁੱਕ ਕਰਨ ਲਈ ਮਨਜ਼ੂਰੀ ਦਿਓ।"
+    },
+    "booked": {
+      "title": "ਲੋਡ ਬੁੱਕ ਹੋ ਗਿਆ!",
+      "body": "{route} {amount} 'ਤੇ ਪੱਕਾ ਹੋਇਆ।"
+    },
+    "rejected": {
+      "title": "ਗੱਲਬਾਤ ਖਤਮ",
+      "body": "{route}: ਇਸ ਵਾਰ ਸੌਦਾ ਨਹੀਂ ਹੋਇਆ।"
+    },
+    "failed": {
+      "title": "ਗੱਲਬਾਤ ਰੁਕ ਗਈ",
+      "body": "{route}: ਕਾਰਨ ਵੇਖਣ ਲਈ ਐਪ ਖੋਲ੍ਹੋ।"
+    }
+  },
+  "negotiation": {
+    "title": "ਗੱਲਬਾਤ ਅਤੇ ਬੁਕਿੰਗ",
+    "start": "AI ਨਾਲ ਗੱਲਬਾਤ ਕਰੋ",
+    "viewNegotiation": "ਗੱਲਬਾਤ ਵੇਖੋ",
+    "aiCardTitle": "ਗੱਲਬਾਤ (AI)",
+    "aiThinking": "AI ਮਾਰਕੀਟ ਅਤੇ ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ…",
+    "waitingBroker": "ਬ੍ਰੋਕਰ ਦੇ ਜਵਾਬ ਦੀ ਉਡੀਕ…",
+    "postedRate": "ਪੋਸਟ ਕੀਤਾ ਰੇਟ",
+    "myOffer": "ਮੇਰੀ ਪੇਸ਼ਕਸ਼ (AI)",
+    "brokerOffer": "ਬ੍ਰੋਕਰ ਦੀ ਪੇਸ਼ਕਸ਼",
+    "agreedRate": "ਤੈਅ ਰੇਟ",
+    "estProfit": "ਅਨੁ. ਮੁਨਾਫ਼ਾ",
+    "margin": "ਮਾਰਜਨ",
+    "limits": "ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ: {floor} – {ceiling}",
+    "round": "ਗੇੜ {round} / {max}",
+    "proposedBy": "{strategy} ਵੱਲੋਂ ਪ੍ਰਸਤਾਵਿਤ",
+    "stepContact": "ਬ੍ਰੋਕਰ ਨਾਲ ਸੰਪਰਕ ਅਤੇ ਗੱਲਬਾਤ",
+    "stepConfirmRate": "ਤੈਅ ਰੇਟ ਦੀ ਪੁਸ਼ਟੀ",
+    "stepBook": "ਲੋਡ ਬੁੱਕ ਕਰੋ",
+    "stepRateConfirmation": "ਰੇਟ ਕਨਫਰਮੇਸ਼ਨ ਬਣਾਓ (ਅਗਲਾ ਪੜਾਅ)",
+    "approveSend": "ਮਨਜ਼ੂਰ ਕਰੋ ਅਤੇ ਪੇਸ਼ਕਸ਼ ਭੇਜੋ",
+    "adjust": "ਪੇਸ਼ਕਸ਼ ਬਦਲੋ",
+    "adjustAmount": "ਨਵੀਂ ਪੇਸ਼ਕਸ਼ ({currency})",
+    "adjustHint": "{floor} ਅਤੇ {ceiling} ਵਿਚਕਾਰ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ; ਬਾਹਰਲੇ ਮੁੱਲ ਤੁਹਾਡੀਆਂ ਹੱਦਾਂ ਅਨੁਸਾਰ ਬਦਲੇ ਜਾਂਦੇ ਹਨ।",
+    "adjustSave": "ਪੇਸ਼ਕਸ਼ ਸੇਵ ਕਰੋ",
+    "approveBooking": "ਮੰਨੋ ਅਤੇ ਲੋਡ ਬੁੱਕ ਕਰੋ",
+    "cancel": "ਗੱਲਬਾਤ ਰੱਦ ਕਰੋ",
+    "cancelConfirm": "ਕੀ ਇਹ ਗੱਲਬਾਤ ਰੱਦ ਕਰਨੀ ਹੈ?",
+    "activity": "ਗਤੀਵਿਧੀ",
+    "messageToBroker": "ਬ੍ਰੋਕਰ ਨੂੰ ਸੁਨੇਹਾ",
+    "brokerMessage": "ਬ੍ਰੋਕਰ ਨੇ ਕਿਹਾ",
+    "bookedTitle": "ਲੋਡ ਬੁੱਕ ਹੋ ਗਿਆ!",
+    "bookedBody": "{amount} 'ਤੇ ਬੁੱਕ ਹੋਇਆ। ਸਫ਼ਰ ਅਗਲੇ ਪੜਾਅ ਵਿੱਚ ਸਫ਼ਰਾਂ ਵਿੱਚ ਦਿਖੇਗਾ।",
+    "simulatedBroker": "ਸਿਮੂਲੇਟਡ ਬ੍ਰੋਕਰ (ਡੈਮੋ): ਜਵਾਬ ਅਸਲੀ ਨਹੀਂ ਹਨ।"
+  },
+  "trip": {
+    "title": "ਸਫ਼ਰ #{code}",
+    "eta": "ਅਨੁਮਾਨਿਤ ETA",
+    "remaining": "ਬਾਕੀ",
+    "navigate": "ਨੈਵੀਗੇਟ",
+    "callBroker": "ਬ੍ਰੋਕਰ ਨੂੰ ਕਾਲ ਕਰੋ",
+    "noBrokerPhone": "ਸਿਮੂਲੇਟਡ ਬ੍ਰੋਕਰ ਦਾ ਫ਼ੋਨ ਨਹੀਂ ਹੈ।",
+    "documents": "ਦਸਤਾਵੇਜ਼",
+    "uploadPod": "POD ਅੱਪਲੋਡ ਕਰੋ",
+    "uploadDocument": "ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ",
+    "takePhoto": "ਫ਼ੋਟੋ ਖਿੱਚੋ",
+    "chooseFromLibrary": "ਗੈਲਰੀ ਵਿੱਚੋਂ ਚੁਣੋ",
+    "uploading": "ਅੱਪਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    "cameraDenied": "ਦਸਤਾਵੇਜ਼ਾਂ ਦੀ ਫ਼ੋਟੋ ਲਈ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਕੈਮਰੇ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+    "next": {
+      "at_pickup": "ਮੈਂ ਪਿਕਅੱਪ 'ਤੇ ਹਾਂ",
+      "in_transit": "ਲੋਡ ਹੋ ਗਿਆ — ਰਸਤਾ ਸ਼ੁਰੂ",
+      "delivered": "ਡਿਲੀਵਰ ਹੋਇਆ ਮਾਰਕ ਕਰੋ"
+    },
+    "confirmDelivered": "ਕੀ ਪੁਸ਼ਟੀ ਕਰਦੇ ਹੋ ਕਿ ਲੋਡ ਡਿਲੀਵਰ ਹੋ ਗਿਆ?",
+    "expenses": "ਖਰਚੇ",
+    "addExpense": "ਖਰਚਾ ਸ਼ਾਮਲ ਕਰੋ",
+    "amount": "ਰਕਮ ({currency})",
+    "note": "ਨੋਟ (ਵਿਕਲਪਿਕ)",
+    "saveExpense": "ਖਰਚਾ ਸੇਵ ਕਰੋ",
+    "noExpenses": "ਅਜੇ ਕੋਈ ਖਰਚਾ ਦਰਜ ਨਹੀਂ।",
+    "finalRate": "ਅੰਤਿਮ ਰੇਟ",
+    "actualExpenses": "ਅਸਲ ਖਰਚੇ",
+    "actualProfit": "ਅਸਲ ਮੁਨਾਫ਼ਾ",
+    "finalMargin": "ਅੰਤਿਮ ਮਾਰਜਨ",
+    "estimatedProfit": "ਬੁਕਿੰਗ ਵੇਲੇ ਅਨੁਮਾਨ",
+    "completedTitle": "ਡਿਲੀਵਰੀ ਪੂਰੀ ਹੋਈ!",
+    "completedBody": "ਲੋਡ ਡਿਲੀਵਰ ਹੋ ਗਿਆ ਅਤੇ ਸਫ਼ਰ ਬੰਦ ਹੈ।",
+    "closeTrip": "ਸਫ਼ਰ ਬੰਦ ਕਰੋ",
+    "podMissing": "ਸਫ਼ਰ ਬੰਦ ਕਰਨ ਲਈ POD ਅੱਪਲੋਡ ਕਰੋ।",
+    "podDone": "POD (ਡਿਲੀਵਰੀ)",
+    "docsComplete": "ਦਸਤਾਵੇਜ਼ ਪੂਰੇ",
+    "rateBroker": "ਬ੍ਰੋਕਰ ਨੂੰ ਰੇਟ ਕਰੋ",
+    "ratedThanks": "{broker} ਨੂੰ ਰੇਟ ਕਰਨ ਲਈ ਧੰਨਵਾਦ।",
+    "starsLabel": "{stars, plural, one {# ਤਾਰਾ} other {# ਤਾਰੇ}}",
+    "findNextLoad": "ਅਗਲਾ ਲੋਡ ਲੱਭੋ",
+    "tracking": "ਜਦੋਂ ਤੱਕ ਇਹ ਸਕ੍ਰੀਨ ਖੁੱਲ੍ਹੀ ਹੈ ਲੋਕੇਸ਼ਨ ਸਾਂਝੀ ਹੋ ਰਹੀ ਹੈ।",
+    "trackingOff": "ਲੋਕੇਸ਼ਨ ਬੰਦ ਹੈ। ETA ਅੱਪਡੇਟ ਲਈ ਲੋਕੇਸ਼ਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+    "noTrips": "ਅਜੇ ਕੋਈ ਸਫ਼ਰ ਨਹੀਂ। ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਲੋਡ ਬੁੱਕ ਕਰੋ।",
+    "filterActive": "ਚੱਲ ਰਹੇ",
+    "filterCompleted": "ਪੂਰੇ",
+    "viewTrip": "ਸਫ਼ਰ ਵੇਖੋ",
+    "open": "ਖੋਲ੍ਹੋ",
+    "cancelTrip": "ਸਫ਼ਰ ਰੱਦ ਕਰੋ",
+    "cancelConfirm": "ਕੀ ਇਹ ਸਫ਼ਰ ਰੱਦ ਕਰਨਾ ਹੈ? ਲੋਡ ਮਾਰਕੀਟ ਵਿੱਚ ਵਾਪਸ ਜਾਵੇਗਾ।",
+    "lastUpdate": "ਆਖਰੀ ਥਾਂ {time}",
+    "noPosition": "ਅਜੇ ਕੋਈ ਥਾਂ ਨਹੀਂ",
+    "pickup": "ਪਿਕਅੱਪ",
+    "delivery": "ਡਿਲੀਵਰੀ"
   }
 }

@@ -1,4 +1,4 @@
-# AI Dispatcher
+# HaulGenius
 
 iOS + Android app built with Expo, Expo Router, NativeWind and Zustand.
 
@@ -35,8 +35,15 @@ app/                    Expo Router routes
   login.tsx             Sign-in (only reachable while signed out)
   (tabs)/               Inicio, Cargas, Cuenta (only reachable while signed in)
   settings.tsx          Theme, language, notifications, legal links, dev tools
+  loads/[id].tsx        Load detail: match reasons + profit breakdown + "Negotiate with AI"
+  negotiations/[id].tsx Negotiate & book: AI offer, approvals, activity timeline
+  trips/[id].tsx        Trip in progress (stepper, map, ETA, documents, expenses) and close-out
+  (tabs)/trips.tsx      Active / completed trips
 features/
-  loads/                Load list UI (LoadCard)
+  loads/                LoadCard, MatchBadge, LoadViewTabs (recommended / nearby / all)
+  negotiation/          Timeline, explanation hook, PushRegistration
+  trips/                TripStepper, TripMap, useTripTracking (GPS batches), useDocumentUpload (presigned S3)
+locales/                Localized iOS permission strings (en, es, fr, pa)
 components/
   OnboardingScreen.tsx  First-run flow (rendered instead of the navigator)
   ui/                   Reusable themed primitives (Button, Card, Screen, ScreenHeader…)
@@ -47,6 +54,8 @@ lib/
   IntlRoot.tsx          use-intl provider bound to the persisted language
   use-intl-locale.ts    Intl tag for money/number formatting
   app-alert.ts          Themed Alert.alert replacement (callbacks kept outside Redux)
+  push.ts               Expo push token (asked on first negotiation)
+  location.ts           Foreground location on request ("Use my location")
   config.ts             API_URL (EXPO_PUBLIC_API_URL, or Metro host in dev)
   secure-tokens.ts      Refresh token in Keychain/Keystore (expo-secure-store)
   urls.ts               Privacy policy / terms URLs (required by stores)

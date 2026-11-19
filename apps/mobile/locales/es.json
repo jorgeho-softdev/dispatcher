@@ -1,0 +1,5 @@
+{
+  "NSLocationWhenInUseUsageDescription": "HaulGenius usa tu ubicación para encontrar cargas cerca de ti y calcular los kilómetros vacíos hasta la recogida.",
+  "NSCameraUsageDescription": "HaulGenius usa la cámara para fotografiar documentos de entrega (POD, BOL, recibos).",
+  "NSPhotoLibraryUsageDescription": "HaulGenius accede a tus fotos para adjuntar documentos de entrega."
+}

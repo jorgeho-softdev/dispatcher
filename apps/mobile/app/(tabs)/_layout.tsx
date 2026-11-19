@@ -37,6 +37,13 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="trips"
+        options={{
+          title: t('mobile.tabs.trips'),
+          tabBarIcon: ({ color, size }) => <Ionicons name="bus-outline" color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
         name="account"
         options={{
           title: t('mobile.tabs.account'),

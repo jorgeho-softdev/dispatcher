@@ -18,6 +18,7 @@ import { fontAssets } from '@/lib/fonts';
 import { IntlRoot } from '@/lib/IntlRoot';
 import { AppAlertHost } from '@/components/ui/AppAlertHost';
 import { OnboardingScreen } from '@/components/OnboardingScreen';
+import { PushRegistration } from '@/features/negotiation/PushRegistration';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -68,6 +69,9 @@ function RootNavigator() {
             <Stack.Protected guard={signedIn}>
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name="settings" />
+              <Stack.Screen name="loads/[id]" />
+              <Stack.Screen name="negotiations/[id]" />
+              <Stack.Screen name="trips/[id]" />
             </Stack.Protected>
             <Stack.Protected guard={!signedIn}>
               <Stack.Screen name="login" />
@@ -76,6 +80,7 @@ function RootNavigator() {
         ) : (
           <OnboardingScreen />
         )}
+        {signedIn && <PushRegistration />}
         <AppAlertHost />
       </SafeAreaProvider>
     </GestureHandlerRootView>

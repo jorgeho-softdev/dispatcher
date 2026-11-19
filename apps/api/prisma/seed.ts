@@ -2,7 +2,8 @@ import 'dotenv/config';
 import { hash } from '@node-rs/argon2';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
-import { SimulatedLoadProvider } from '../src/modules/loads/providers/simulated.provider';
+import { findCity } from '@dispatcher/shared';
+import { refreshSimulatedMarketplace } from './marketplace';
 
 // Idempotent dev seed: a demo owner-operator + simulated marketplace loads.
 // Safe to re-run; never run against production.
@@ -32,7 +33,7 @@ async function main() {
       const org = await prisma.organization.create({
         data: {
           name: 'Carlos Transport (DEMO)',
-          aiSettings: { create: {} },
+          aiSettings: { create: { preferredProvinces: ['AB'] } },
           vehicles: {
             create: {
               name: 'Box Truck 16ft',
@@ -42,6 +43,8 @@ async function main() {
               costPerKm: 1.7,
               homeBaseCity: 'Calgary',
               homeBaseProvince: 'AB',
+              homeBaseLat: 51.0447,
+              homeBaseLng: -114.0719,
             },
           },
         },
@@ -51,30 +54,24 @@ async function main() {
       });
     }
 
-    const loads = await new SimulatedLoadProvider(42).search({ limit: 40 });
-    for (const { broker, rawPayload: _raw, ...load } of loads) {
-      const brokerRecord = broker
-        ? ((await prisma.broker.findFirst({ where: { name: broker.name } })) ??
-          (await prisma.broker.create({ data: { name: broker.name } })))
-        : null;
-      const data = {
-        ...load,
-        organizationId: null,
-        brokerId: brokerRecord?.id ?? null,
-      };
-      await prisma.load.upsert({
-        where: {
-          source_externalId: {
-            source: load.source,
-            externalId: load.externalId,
-          },
-        },
-        create: data,
-        update: data,
-      });
+    // Backfill home-base coordinates for vehicles created before Phase 1.
+    const vehicles = await prisma.vehicle.findMany({
+      where: { homeBaseLat: null, homeBaseCity: { not: null } },
+    });
+    for (const v of vehicles) {
+      const city = findCity(v.homeBaseCity ?? '', v.homeBaseProvince ?? '');
+      if (city) {
+        await prisma.vehicle.update({
+          where: { id: v.id },
+          data: { homeBaseLat: city.lat, homeBaseLng: city.lng },
+        });
+      }
     }
 
-    console.log(`Seeded ${loads.length} simulated loads.`);
+    const r = await refreshSimulatedMarketplace(prisma);
+    console.log(
+      `Simulated loads: ${r.created} created, ${r.refreshed} refreshed.`,
+    );
     console.log(`Demo login: ${DEMO_EMAIL} / ${DEMO_PASSWORD}`);
   } finally {
     await prisma.$disconnect();

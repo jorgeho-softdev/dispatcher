@@ -1,5 +1,13 @@
 import { z } from 'zod';
-import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES } from './constants';
+import { AUTONOMY_LEVELS, CURRENCIES, EQUIPMENT_TYPES, LOAD_SOURCES, LOAD_STATUSES, LOAD_VIEWS, ROLES } from './constants';
+import { REPORT_GROUPS } from './reports';
+import { PROVINCES } from './geo';
+import { ALLOWED_UPLOAD_MIME_TYPES, DOCUMENT_TYPES, EXPENSE_CATEGORIES, MAX_UPLOAD_BYTES } from './trips';
+
+const lat = z.number().min(-90).max(90);
+const lng = z.number().min(-180).max(180);
+const queryLat = z.coerce.number().min(-90).max(90);
+const queryLng = z.coerce.number().min(-180).max(180);
 
 // Request schemas — validated by the api (ZodValidationPipe) and reused by
 // web/mobile forms so both sides agree on every rule.
@@ -40,14 +48,33 @@ export const vehicleCreateSchema = z.object({
   capacityKg: z.number().int().positive().max(40_000),
   costPerKm: z.number().positive().max(20),
   homeBaseCity: z.string().trim().max(80).optional(),
-  homeBaseProvince: z.string().trim().length(2).optional(),
+  homeBaseProvince: z.enum(PROVINCES).optional(),
+  /** Optional: resolved from the city catalog when omitted. */
+  homeBaseLat: lat.optional(),
+  homeBaseLng: lng.optional(),
 });
 export type VehicleCreateInput = z.infer<typeof vehicleCreateSchema>;
 
 export const vehicleUpdateSchema = vehicleCreateSchema.partial();
 export type VehicleUpdateInput = z.infer<typeof vehicleUpdateSchema>;
 
+export const vehicleLocationSchema = z.object({ lat, lng });
+export type VehicleLocationInput = z.infer<typeof vehicleLocationSchema>;
+
+/** Matching context shared by the list and detail endpoints. */
+const matchContext = {
+  /** Vehicle to match against; defaults to the organization's first vehicle. */
+  vehicleId: z.uuid().optional(),
+  /** Explicit position (e.g. the phone's GPS); overrides the vehicle's. */
+  lat: queryLat.optional(),
+  lng: queryLng.optional(),
+};
+
 export const loadQuerySchema = z.object({
+  view: z.enum(LOAD_VIEWS).default('all'),
+  ...matchContext,
+  /** "nearby" view radius around the position (km, straight line). */
+  radiusKm: z.coerce.number().int().min(10).max(2000).default(250),
   equipment: z.enum(EQUIPMENT_TYPES).optional(),
   originProvince: z.string().length(2).optional(),
   status: z.enum(LOAD_STATUSES).optional(),
@@ -56,18 +83,25 @@ export const loadQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).optional().default(20),
 });
 export type LoadQuery = z.infer<typeof loadQuerySchema>;
+/** What clients send: any subset of the parsed query (booleans are serialized to "true"/"false"). */
+export type LoadQueryInput = Partial<LoadQuery>;
 
+export const loadDetailQuerySchema = z.object(matchContext);
+export type LoadDetailQuery = z.infer<typeof loadDetailQuerySchema>;
+
+// Coordinates and distance are optional for manual loads: the api resolves
+// catalog cities (CANADIAN_CITIES) and estimates road km when omitted.
 export const loadCreateSchema = z.object({
   originCity: z.string().trim().min(1),
-  originProvince: z.string().trim().length(2),
-  originLat: z.number().min(-90).max(90),
-  originLng: z.number().min(-180).max(180),
+  originProvince: z.enum(PROVINCES),
+  originLat: lat.optional(),
+  originLng: lng.optional(),
   destinationCity: z.string().trim().min(1),
-  destinationProvince: z.string().trim().length(2),
-  destinationLat: z.number().min(-90).max(90),
-  destinationLng: z.number().min(-180).max(180),
+  destinationProvince: z.enum(PROVINCES),
+  destinationLat: lat.optional(),
+  destinationLng: lng.optional(),
   pickupAt: z.coerce.date(),
-  distanceKm: z.number().positive(),
+  distanceKm: z.number().positive().optional(),
   weightKg: z.number().int().positive(),
   equipment: z.enum(EQUIPMENT_TYPES),
   postedRate: z.number().positive(),
@@ -79,9 +113,139 @@ export type LoadCreateInput = z.infer<typeof loadCreateSchema>;
 
 export const aiSettingsSchema = z.object({
   autonomyLevel: z.enum(AUTONOMY_LEVELS),
-  minRatePerKm: z.number().positive(),
+  minRatePerKm: z.number().positive().max(20),
   minMarginPct: z.number().min(0).max(100),
   maxCounterOfferPct: z.number().min(0).max(100),
-  maxDeadheadKm: z.number().int().min(0),
+  maxDeadheadKm: z.number().int().min(0).max(2000),
+  preferredProvinces: z.array(z.enum(PROVINCES)).max(PROVINCES.length),
+  avoidProvinces: z.array(z.enum(PROVINCES)).max(PROVINCES.length),
 });
 export type AiSettingsInput = z.infer<typeof aiSettingsSchema>;
+
+export const aiSettingsUpdateSchema = aiSettingsSchema
+  .partial()
+  .refine(
+    (v) => !(v.preferredProvinces ?? []).some((p) => (v.avoidProvinces ?? []).includes(p)),
+    { message: 'A province cannot be both preferred and avoided', path: ['avoidProvinces'] },
+  );
+export type AiSettingsUpdateInput = z.infer<typeof aiSettingsUpdateSchema>;
+
+// ── Negotiations (Phase 2) ─────────────────────────────────────────────
+export const startNegotiationSchema = z.object({
+  loadId: z.uuid(),
+  /** Vehicle to negotiate for; defaults to the organization's first vehicle. */
+  vehicleId: z.uuid().optional(),
+});
+export type StartNegotiationInput = z.infer<typeof startNegotiationSchema>;
+
+export const adjustOfferSchema = z.object({
+  amount: z.number().positive().max(1_000_000),
+});
+export type AdjustOfferInput = z.infer<typeof adjustOfferSchema>;
+
+export const negotiationListQuerySchema = z.object({
+  /** active = not finished; needs_approval = waiting on the user. */
+  filter: z.enum(['active', 'needs_approval', 'all']).default('active'),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+});
+export type NegotiationListQuery = z.infer<typeof negotiationListQuerySchema>;
+
+export const registerDeviceSchema = z.object({
+  /** Expo push token (ExponentPushToken[…]). */
+  token: z.string().regex(/^Expo(nent)?PushToken\[[^\]]+\]$/),
+  platform: z.enum(['ios', 'android']),
+});
+export type RegisterDeviceInput = z.infer<typeof registerDeviceSchema>;
+
+// ── Trips (Phase 3) ────────────────────────────────────────────────────
+export const tripListQuerySchema = z.object({
+  filter: z.enum(['active', 'completed', 'all']).default('active'),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+});
+export type TripListQuery = z.infer<typeof tripListQuerySchema>;
+
+/** Driver progress (the api enforces the lifecycle order). */
+export const tripStatusUpdateSchema = z.object({
+  status: z.enum(['at_pickup', 'in_transit', 'delivered']),
+});
+export type TripStatusUpdateInput = z.infer<typeof tripStatusUpdateSchema>;
+
+export const tripLocationsSchema = z.object({
+  points: z
+    .array(
+      z.object({
+        lat,
+        lng,
+        recordedAt: z.coerce.date(),
+        speedKmh: z.number().min(0).max(250).optional(),
+      }),
+    )
+    .min(1)
+    .max(100),
+});
+export type TripLocationsInput = z.infer<typeof tripLocationsSchema>;
+
+/** Rate confirmations are generated by the system, not uploaded. */
+export const uploadRequestSchema = z.object({
+  type: z.enum(DOCUMENT_TYPES).exclude(['rate_confirmation']),
+  mimeType: z.enum(ALLOWED_UPLOAD_MIME_TYPES),
+  sizeBytes: z.number().int().positive().max(MAX_UPLOAD_BYTES),
+  fileName: z.string().trim().min(1).max(120),
+});
+export type UploadRequestInput = z.infer<typeof uploadRequestSchema>;
+
+export const expenseCreateSchema = z.object({
+  category: z.enum(EXPENSE_CATEGORIES),
+  amount: z.number().positive().max(100_000),
+  note: z.string().trim().max(300).optional(),
+  incurredAt: z.coerce.date().optional(),
+});
+export type ExpenseCreateInput = z.infer<typeof expenseCreateSchema>;
+
+export const brokerRatingSchema = z.object({
+  stars: z.number().int().min(1).max(5),
+  comment: z.string().trim().max(500).optional(),
+});
+export type BrokerRatingInput = z.infer<typeof brokerRatingSchema>;
+
+// ── Team & invitations (Phase 4) ───────────────────────────────────────
+/** Roles that can be granted by invitation. Ownership is never handed out by link. */
+export const INVITABLE_ROLES = ROLES.filter((r) => r !== 'owner') as Exclude<(typeof ROLES)[number], 'owner'>[];
+
+export const invitationCreateSchema = z.object({
+  email: z.email().trim().toLowerCase(),
+  role: z.enum(['fleet_manager', 'dispatcher', 'driver']),
+});
+export type InvitationCreateInput = z.infer<typeof invitationCreateSchema>;
+
+export const acceptInvitationSchema = z.object({
+  token: z.string().min(20).max(200),
+  name: z.string().trim().min(2).max(100),
+  password: z.string().min(8).max(128),
+  locale: localeCode.optional(),
+});
+export type AcceptInvitationInput = z.infer<typeof acceptInvitationSchema>;
+
+export const memberUpdateSchema = z.object({
+  role: z.enum(ROLES),
+});
+export type MemberUpdateInput = z.infer<typeof memberUpdateSchema>;
+
+export const tripDriverSchema = z.object({
+  driverId: z.uuid(),
+});
+export type TripDriverInput = z.infer<typeof tripDriverSchema>;
+
+// ── Reports (Phase 4) ──────────────────────────────────────────────────
+export const reportQuerySchema = z
+  .object({
+    from: z.coerce.date(),
+    to: z.coerce.date(),
+    groupBy: z.enum(REPORT_GROUPS).default('month'),
+  })
+  .refine((q) => q.from < q.to, { message: '`from` must be before `to`', path: ['from'] })
+  .refine((q) => q.to.getTime() - q.from.getTime() <= 366 * 86_400_000 * 2, {
+    message: 'Range limited to 2 years',
+    path: ['to'],
+  });
+export type ReportQuery = z.infer<typeof reportQuerySchema>;

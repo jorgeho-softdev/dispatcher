@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "AI Dispatcher REST API (NestJS + Prisma + PostgreSQL)",
+  "description": "HaulGenius REST API (NestJS + Prisma + PostgreSQL)",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -14,13 +14,15 @@
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest --passWithNoTests",
-    "test:e2e": "NODE_OPTIONS=--experimental-vm-modules jest --config ./test/jest-e2e.json",
+    "test:e2e": "NODE_OPTIONS=--experimental-vm-modules jest --config ./test/jest-e2e.json --runInBand",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed:marketplace": "tsx prisma/seed-marketplace.ts",
+    "release": "prisma migrate deploy && tsx prisma/seed-marketplace.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -38,7 +40,14 @@
     "dotenv": "^17.0.0",
     "helmet": "^8.1.0",
     "zod": "^4.6.7",
-    "@dispatcher/i18n": "*"
+    "@dispatcher/i18n": "*",
+    "@anthropic-ai/sdk": "^1.8.0",
+    "@nestjs/bullmq": "^11.0.5",
+    "bullmq": "^6.7.6",
+    "ioredis": "^5.8.0",
+    "@aws-sdk/client-s3": "^3.1169.0",
+    "@aws-sdk/s3-request-presigner": "^3.1169.0",
+    "pdfkit": "^0.20.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -65,7 +74,8 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8.20.0",
     "prisma": "7.10.1",
-    "tsx": "^4.20.0"
+    "tsx": "^4.20.0",
+    "@types/pdfkit": "^0.17.7"
   },
   "jest": {
     "moduleFileExtensions": [

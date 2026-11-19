@@ -1,0 +1,5 @@
+{
+  "NSLocationWhenInUseUsageDescription": "HaulGenius utilise votre position pour trouver des chargements près de vous et calculer les kilomètres à vide jusqu'au ramassage.",
+  "NSCameraUsageDescription": "HaulGenius utilise la caméra pour photographier les documents de livraison (POD, BOL, reçus).",
+  "NSPhotoLibraryUsageDescription": "HaulGenius accède à vos photos pour joindre les documents de livraison."
+}

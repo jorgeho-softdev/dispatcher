@@ -26,6 +26,120 @@
       "fleet_manager": "Fleet Manager",
       "dispatcher": "Dispatcher",
       "driver": "Driver"
+    },
+    "matchReason": {
+      "equipment_ideal": "Ideal equipment",
+      "high_margin": "High margin",
+      "good_rate": "Good rate per km",
+      "short_deadhead": "Short empty run",
+      "pickup_soon": "Pickup soon",
+      "preferred_lane": "Preferred region",
+      "equipment_larger": "Larger vehicle than needed",
+      "low_margin": "Margin below your minimum",
+      "low_rate": "Rate below your minimum",
+      "long_deadhead": "Long empty run",
+      "deadhead_unknown": "Vehicle location unknown",
+      "pickup_far_out": "Pickup is several days away",
+      "equipment_incompatible": "Equipment not compatible",
+      "over_capacity": "Exceeds vehicle capacity",
+      "avoided_region": "Region you avoid",
+      "pickup_passed": "Pickup time has passed"
+    },
+    "positionSource": {
+      "request": "your current location",
+      "vehicle_gps": "the vehicle's GPS",
+      "home_base": "the vehicle's home base"
+    },
+    "loadView": {
+      "recommended": "Recommended",
+      "nearby": "Near me",
+      "all": "All"
+    },
+    "match": "{score}% Match",
+    "deadhead": "{km} km empty",
+    "autonomy": {
+      "assisted": "Assisted",
+      "semi_auto": "Semi-automatic",
+      "auto": "Automatic"
+    },
+    "negotiationStatus": {
+      "ai_thinking": "AI is working",
+      "awaiting_send_approval": "Needs your approval",
+      "contacting_broker": "Waiting for broker",
+      "awaiting_booking_approval": "Ready to book",
+      "booking_requested": "Booking requested",
+      "booked": "Booked",
+      "rejected": "No deal",
+      "cancelled": "Cancelled",
+      "failed": "Stopped"
+    },
+    "negotiationEvent": {
+      "ai_proposed": "AI proposed an offer",
+      "ai_countered": "AI prepared a counter-offer",
+      "ai_accepted": "AI accepted the broker's rate",
+      "ai_walked_away": "AI ended the negotiation",
+      "policy_adjusted": "Adjusted to your limits",
+      "policy_blocked": "Blocked by your limits",
+      "user_approved_send": "You approved the offer",
+      "user_adjusted": "You adjusted the offer",
+      "user_approved_booking": "You approved the booking",
+      "user_cancelled": "You cancelled",
+      "offer_sent": "Offer sent to the broker",
+      "broker_countered": "Broker countered",
+      "broker_accepted": "Broker accepted",
+      "broker_rejected": "Broker declined",
+      "booking_requested": "Booking requested",
+      "booking_confirmed": "Booking confirmed",
+      "booking_declined": "Booking declined",
+      "load_unavailable": "Load no longer available"
+    },
+    "actor": {
+      "ai": "AI",
+      "user": "You",
+      "broker": "Broker",
+      "system": "System"
+    },
+    "aiReason": {
+      "target_markup": "Asking {pct}% above the posted rate — within your limits and usually accepted in this region.",
+      "counter_midpoint": "The broker offered {broker}; I propose meeting halfway from our {last}.",
+      "accept_meets_minimums": "The broker's rate meets your minimum margin and rate per km.",
+      "walk_away_below_minimums": "The broker's rate is below your minimums, so I stopped.",
+      "max_rounds_reached": "Maximum rounds reached.",
+      "clamped_to_floor": "Raised to your minimum acceptable rate.",
+      "clamped_to_ceiling": "Lowered to your maximum counter-offer.",
+      "unprofitable_at_ceiling": "Even at your maximum counter-offer this load misses your minimums."
+    },
+    "strategy": {
+      "claude": "Claude (AI)",
+      "rules": "Rule-based"
+    },
+    "tripStatus": {
+      "scheduled": "Scheduled",
+      "at_pickup": "At pickup",
+      "in_transit": "En route",
+      "delivered": "Delivered",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "tripStep": {
+      "at_pickup": "Pickup",
+      "in_transit": "En route",
+      "delivered": "Delivery"
+    },
+    "documentType": {
+      "rate_confirmation": "Rate Confirmation",
+      "bol": "BOL (bill of lading)",
+      "pod": "POD (proof of delivery)",
+      "receipt": "Receipt",
+      "other": "Other"
+    },
+    "expenseCategory": {
+      "fuel": "Fuel",
+      "tolls": "Tolls",
+      "parking": "Parking",
+      "maintenance": "Maintenance",
+      "lumper": "Lumper / unloading",
+      "other": "Other"
     }
   },
   "errors": {
@@ -40,7 +154,18 @@
     "NOT_FOUND": "We couldn't find what you were looking for.",
     "API_UNAVAILABLE": "The server is unavailable. Try again in a few minutes.",
     "NETWORK_ERROR": "Can't reach the server. Check your connection.",
-    "INTERNAL_ERROR": "Something went wrong. Please try again."
+    "INTERNAL_ERROR": "Something went wrong. Please try again.",
+    "VEHICLE_REQUIRED": "Add a vehicle before negotiating.",
+    "LOAD_UNAVAILABLE": "This load is no longer available.",
+    "NEGOTIATION_ALREADY_ACTIVE": "There is already a negotiation in progress for this load.",
+    "NEGOTIATION_INVALID_STATE": "This negotiation changed. Refresh and try again.",
+    "TRIP_INVALID_STATE": "This trip changed. Refresh and try again.",
+    "POD_REQUIRED": "Upload the proof of delivery (POD) to close the trip.",
+    "UPLOAD_NOT_FOUND": "The file didn't finish uploading. Try again.",
+    "BROKER_ALREADY_RATED": "You already rated this broker for this trip.",
+    "INVITATION_INVALID": "This invitation is invalid, expired or already used.",
+    "LAST_OWNER": "The organization needs at least one owner.",
+    "CANNOT_CHANGE_SELF": "You can't change or remove your own access."
   },
   "auth": {
     "email": "Email",
@@ -51,12 +176,12 @@
     "signingIn": "Signing in…",
     "invalidFormat": "Check your email and password.",
     "signOut": "Sign out",
-    "signOutConfirm": "Sign out of AI Dispatcher?"
+    "signOutConfirm": "Sign out of HaulGenius?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "AI Dispatcher administration panel"
+      "title": "HaulGenius Admin",
+      "description": "HaulGenius administration panel"
     },
     "login": {
       "subtitle": "Administration panel"
@@ -64,7 +189,13 @@
     "nav": {
       "dashboard": "Dashboard",
       "loads": "Loads",
-      "vehicles": "Vehicles"
+      "vehicles": "Vehicles",
+      "settings": "Preferences",
+      "negotiations": "Negotiations",
+      "trips": "Trips",
+      "team": "Team",
+      "map": "Live map",
+      "reports": "Reports"
     },
     "dashboard": {
       "greeting": "Hi, {name}",
@@ -74,7 +205,8 @@
       "vehicles": "Vehicles",
       "bestProfit": "Best est. profit",
       "addVehicleHint": "Add a vehicle to calculate the estimated profit of each load.",
-      "addVehicleCta": "Add vehicle →"
+      "addVehicleCta": "Add vehicle →",
+      "opportunities": "Opportunities (≥{threshold}% match)"
     },
     "loads": {
       "title": "Loads",
@@ -91,7 +223,14 @@
       "empty": "No loads match these filters.",
       "noBroker": "No broker",
       "noVehicle": "No vehicle",
-      "perKm": "{amount}/km"
+      "perKm": "{amount}/km",
+      "colMatch": "Match",
+      "colDeadhead": "Empty km",
+      "newLoad": "New manual load",
+      "matchingFor": "Matching for {vehicle} · position from {source}",
+      "noPosition": "Add a home base to your vehicle to see nearby loads and empty km.",
+      "noVehicleMatch": "Add a vehicle to see match scores and estimated profit.",
+      "loadMore": "Load more"
     },
     "vehicles": {
       "title": "Vehicles",
@@ -106,19 +245,164 @@
       "homeBase": "Home base",
       "province": "Prov.",
       "saveError": "Couldn't save the vehicle.",
-      "submit": "Save vehicle"
+      "submit": "Save vehicle",
+      "selectCity": "Select a city",
+      "noHomeBase": "No home base"
+    },
+    "loadForm": {
+      "title": "New manual load",
+      "subtitle": "A real load you got directly from a broker or shipper.",
+      "origin": "Origin",
+      "destination": "Destination",
+      "pickupAt": "Pickup date and time",
+      "weightKg": "Weight (kg)",
+      "equipment": "Equipment",
+      "postedRate": "Rate (CA$)",
+      "distanceKm": "Distance (km, optional)",
+      "distanceHint": "Leave empty to estimate it from the cities (~{km} km).",
+      "notes": "Notes",
+      "submit": "Save load",
+      "cancel": "Cancel",
+      "selectCity": "Select a city",
+      "sameCity": "Origin and destination must be different."
+    },
+    "settings": {
+      "title": "Preferences",
+      "subtitle": "Your rules for matching loads. The AI dispatcher will follow them too.",
+      "profitability": "Profitability",
+      "minRatePerKm": "Minimum rate per km (CA$)",
+      "minMarginPct": "Minimum margin (%)",
+      "maxDeadheadKm": "Maximum empty km to pickup",
+      "regions": "Regions",
+      "preferredProvinces": "Preferred provinces",
+      "avoidProvinces": "Provinces to avoid",
+      "regionsHint": "Preferred provinces raise the match; avoided ones are never recommended.",
+      "aiSection": "AI dispatcher",
+      "autonomy": "Autonomy level",
+      "maxCounterOfferPct": "Max. counter-offer above posted rate (%)",
+      "save": "Save preferences",
+      "saved": "Preferences saved.",
+      "autonomyHint": "Assisted: you approve every message and the booking. Semi-automatic: the AI negotiates within your limits and you approve the booking. Automatic behaves like semi-automatic for now."
+    },
+    "negotiations": {
+      "title": "Negotiations",
+      "subtitle": "Every AI decision is recorded and auditable.",
+      "filterActive": "Active",
+      "filterNeedsApproval": "Needs approval",
+      "filterAll": "All",
+      "empty": "No negotiations yet. Start one from a load in the mobile app.",
+      "colRoute": "Route",
+      "colStatus": "Status",
+      "colPosted": "Posted",
+      "colOffer": "Offer",
+      "colAgreed": "Agreed",
+      "colUpdated": "Updated",
+      "back": "← All negotiations",
+      "audit": "Audit trail"
+    },
+    "trips": {
+      "title": "Trips",
+      "subtitle": "Booked loads in progress and their real profit.",
+      "filterAll": "All",
+      "colCode": "Trip",
+      "colRoute": "Route",
+      "colStatus": "Status",
+      "colEta": "ETA",
+      "colRate": "Rate",
+      "colProfit": "Real profit",
+      "back": "← All trips",
+      "progress": "Progress",
+      "financials": "Financials",
+      "download": "Download",
+      "driver": "Driver",
+      "assignDriver": "Assign driver"
+    },
+    "team": {
+      "title": "Team",
+      "subtitle": "Invite your dispatchers and drivers. Each role sees only what it needs.",
+      "members": "Members",
+      "you": "You",
+      "role": "Role",
+      "remove": "Remove",
+      "removeConfirm": "Remove {name} from the organization? They will be signed out.",
+      "invite": "Invite member",
+      "email": "Email",
+      "createLink": "Create invitation link",
+      "linkReady": "Share this link with {email}. It works once and expires in 7 days; it won't be shown again.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "pending": "Pending invitations",
+      "expires": "Expires {date}",
+      "revoke": "Revoke",
+      "noPending": "No pending invitations.",
+      "emailNote": "Email delivery arrives later; for now copy the link and send it yourself."
+    },
+    "invite": {
+      "title": "Join {organization}",
+      "subtitle": "You were invited as {role} with {email}.",
+      "name": "Your name",
+      "password": "Create a password (8+ characters)",
+      "accept": "Accept and sign in",
+      "driverHint": "Drivers use the mobile app. Install it and sign in with this email.",
+      "invalid": "This invitation is invalid, expired or already used. Ask for a new link."
+    },
+    "map": {
+      "title": "Live map",
+      "subtitle": "Active trips and vehicle positions. Updates every 30 seconds.",
+      "activeTrips": "{count, plural, one {# active trip} other {# active trips}}",
+      "vehicles": "Vehicles",
+      "onTrip": "On a trip",
+      "idle": "Available",
+      "atHomeBase": "At home base (no recent GPS)",
+      "noPositions": "No positions yet. They appear when drivers open a trip in the app.",
+      "list": "List"
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Real profit of completed trips and how the AI dispatcher performs.",
+      "range": "Period",
+      "last30": "Last 30 days",
+      "last90": "Last 90 days",
+      "last365": "Last 12 months",
+      "groupBy": "Group by",
+      "group": {
+        "month": "Month",
+        "vehicle": "Vehicle",
+        "driver": "Driver",
+        "lane": "Lane (provinces)"
+      },
+      "exportCsv": "Export CSV",
+      "trips": "Trips",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "profit": "Real profit",
+      "margin": "Margin",
+      "revenuePerKm": "Revenue / km",
+      "profitByMonth": "Real profit by month",
+      "empty": "No completed trips in this period.",
+      "aiTitle": "AI dispatcher performance",
+      "negotiations": "Negotiations",
+      "closeRate": "Close rate",
+      "avgUplift": "Avg. rate above posted",
+      "totalUplift": "Extra revenue won",
+      "avgRounds": "Avg. rounds",
+      "byStrategy": "By strategy",
+      "booked": "Booked",
+      "aiEmpty": "No negotiations in this period.",
+      "currencyNote": "Amounts in {currency}. Trips in other currencies are excluded."
     }
   },
   "mobile": {
     "onboarding": {
-      "title": "Welcome to AI Dispatcher",
+      "title": "Welcome to HaulGenius",
       "body": "Let's get you set up. It only takes a moment.",
       "cta": "Let's start"
     },
     "tabs": {
       "home": "Home",
       "loads": "Loads",
-      "account": "Account"
+      "account": "Account",
+      "trips": "Trips"
     },
     "login": {
       "subtitle": "Your AI dispatcher"
@@ -131,13 +415,20 @@
       "opportunities": "{count, plural, one {Opportunity} other {Opportunities}}",
       "activeTrips": "Active trips",
       "bestProfit": "Best est. profit",
-      "seeLoads": "See available loads"
+      "seeLoads": "See available loads",
+      "bestOpportunity": "Best opportunity",
+      "noOpportunities": "No strong matches right now. Check back soon.",
+      "pendingApprovals": "Waiting for your approval",
+      "nextTrip": "Next trip"
     },
     "loads": {
       "title": "Available loads",
       "estProfit": "Est. profit",
       "empty": "No loads available right now.",
-      "error": "Couldn't load the list. Pull to retry."
+      "error": "Couldn't load the list. Pull to retry.",
+      "nearbyNeedsLocation": "Allow location access to see loads near you, or add a home base to your vehicle on the web.",
+      "enableLocation": "Use my location",
+      "noVehicle": "Add a vehicle on the web to see match scores and profit."
     },
     "account": {
       "title": "Account",
@@ -163,9 +454,141 @@
       "section": "Notifications",
       "reminder": "Daily reminder",
       "deniedTitle": "Notifications are off",
-      "deniedBody": "Enable notifications for AI Dispatcher in your device settings.",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "Enable notifications for HaulGenius in your device settings.",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "Don't forget to check your loads today!"
+    },
+    "loadDetail": {
+      "title": "Load",
+      "pickup": "Pickup",
+      "weight": "Weight",
+      "equipment": "Equipment",
+      "broker": "Broker",
+      "postedRate": "Posted rate",
+      "ratePerKm": "Rate per km",
+      "breakdown": "Profit breakdown",
+      "loadedKm": "Loaded km",
+      "deadheadKm": "Empty km to pickup",
+      "costPerKm": "Your cost per km",
+      "costs": "Estimated costs",
+      "profit": "Estimated profit",
+      "margin": "Margin",
+      "whyMatch": "Why this match",
+      "positionFrom": "Empty km measured from {source}.",
+      "negotiate": "Negotiate with AI",
+      "noBreakdown": "Add a vehicle to see the profit breakdown."
     }
+  },
+  "push": {
+    "sendApproval": {
+      "title": "Offer ready to send",
+      "body": "{route}: the AI suggests {amount}. Approve to contact the broker."
+    },
+    "bookingApproval": {
+      "title": "Rate agreed — book it?",
+      "body": "{route} at {amount}. Approve to book the load."
+    },
+    "booked": {
+      "title": "Load booked!",
+      "body": "{route} confirmed at {amount}."
+    },
+    "rejected": {
+      "title": "Negotiation ended",
+      "body": "{route}: no deal this time."
+    },
+    "failed": {
+      "title": "Negotiation stopped",
+      "body": "{route}: open the app to see why."
+    }
+  },
+  "negotiation": {
+    "title": "Negotiate & book",
+    "start": "Negotiate with AI",
+    "viewNegotiation": "See negotiation",
+    "aiCardTitle": "Negotiation (AI)",
+    "aiThinking": "The AI is analyzing the market and your limits…",
+    "waitingBroker": "Waiting for the broker's reply…",
+    "postedRate": "Posted rate",
+    "myOffer": "My offer (AI)",
+    "brokerOffer": "Broker offer",
+    "agreedRate": "Agreed rate",
+    "estProfit": "Est. profit",
+    "margin": "Margin",
+    "limits": "Your limits: {floor} – {ceiling}",
+    "round": "Round {round} of {max}",
+    "proposedBy": "Proposed by {strategy}",
+    "stepContact": "Contact the broker and negotiate",
+    "stepConfirmRate": "Confirm the agreed rate",
+    "stepBook": "Book the load",
+    "stepRateConfirmation": "Generate Rate Confirmation (next phase)",
+    "approveSend": "Approve and send offer",
+    "adjust": "Adjust offer",
+    "adjustAmount": "New offer ({currency})",
+    "adjustHint": "Must be between {floor} and {ceiling}; outside values are adjusted to your limits.",
+    "adjustSave": "Save offer",
+    "approveBooking": "Accept and book load",
+    "cancel": "Cancel negotiation",
+    "cancelConfirm": "Cancel this negotiation?",
+    "activity": "Activity",
+    "messageToBroker": "Message to broker",
+    "brokerMessage": "Broker said",
+    "bookedTitle": "Load booked!",
+    "bookedBody": "Booked at {amount}. The trip will appear in Trips in the next phase.",
+    "simulatedBroker": "Simulated broker (DEMO): replies are not real."
+  },
+  "trip": {
+    "title": "Trip #{code}",
+    "eta": "Estimated ETA",
+    "remaining": "Remaining",
+    "navigate": "Navigate",
+    "callBroker": "Call broker",
+    "noBrokerPhone": "The simulated broker has no phone.",
+    "documents": "Documents",
+    "uploadPod": "Upload POD",
+    "uploadDocument": "Upload document",
+    "takePhoto": "Take photo",
+    "chooseFromLibrary": "Choose from library",
+    "uploading": "Uploading…",
+    "cameraDenied": "Allow camera access in Settings to photograph documents.",
+    "next": {
+      "at_pickup": "I'm at pickup",
+      "in_transit": "Loaded — start route",
+      "delivered": "Mark as delivered"
+    },
+    "confirmDelivered": "Confirm the load was delivered?",
+    "expenses": "Expenses",
+    "addExpense": "Add expense",
+    "amount": "Amount ({currency})",
+    "note": "Note (optional)",
+    "saveExpense": "Save expense",
+    "noExpenses": "No expenses recorded yet.",
+    "finalRate": "Final rate",
+    "actualExpenses": "Actual expenses",
+    "actualProfit": "Real profit",
+    "finalMargin": "Final margin",
+    "estimatedProfit": "Estimated at booking",
+    "completedTitle": "Delivery completed!",
+    "completedBody": "The load was delivered and the trip is closed.",
+    "closeTrip": "Close trip",
+    "podMissing": "Upload the POD to close the trip.",
+    "podDone": "POD (delivery)",
+    "docsComplete": "Documents complete",
+    "rateBroker": "Rate the broker",
+    "ratedThanks": "Thanks for rating {broker}.",
+    "starsLabel": "{stars, plural, one {# star} other {# stars}}",
+    "findNextLoad": "Find next load",
+    "tracking": "Sharing location while this screen is open.",
+    "trackingOff": "Location sharing is off. Allow location to update the ETA.",
+    "noTrips": "No trips yet. Book a load to start one.",
+    "filterActive": "Active",
+    "filterCompleted": "Completed",
+    "viewTrip": "View trip",
+    "open": "Open",
+    "cancelTrip": "Cancel trip",
+    "cancelConfirm": "Cancel this trip? The load goes back to the marketplace.",
+    "lastUpdate": "Last position {time}",
+    "noPosition": "No position yet",
+    "pickup": "Pickup",
+    "delivery": "Delivery"
   }
 }

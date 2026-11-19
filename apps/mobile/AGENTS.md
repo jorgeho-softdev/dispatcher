@@ -1,4 +1,4 @@
-# AI Dispatcher
+# HaulGenius
 
 Expo SDK app (iOS + Android) generated with expo-kickstart. Read the
 versioned Expo docs for this project's SDK before writing code — APIs change

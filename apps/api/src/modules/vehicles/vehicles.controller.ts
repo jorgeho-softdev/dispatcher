@@ -12,8 +12,10 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
   vehicleCreateSchema,
+  vehicleLocationSchema,
   vehicleUpdateSchema,
   type VehicleCreateInput,
+  type VehicleLocationInput,
   type VehicleUpdateInput,
 } from '@dispatcher/shared';
 import { Auth, RequirePermission } from '../../common/decorators';
@@ -56,6 +58,18 @@ export class VehiclesController {
     @Body(new ZodValidationPipe(vehicleUpdateSchema)) body: VehicleUpdateInput,
   ) {
     return this.vehicles.update(auth.organizationId, id, body);
+  }
+
+  @Post(':id/location')
+  @HttpCode(204)
+  @RequirePermission('vehicles:report_location')
+  async reportLocation(
+    @Auth() auth: AuthContext,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ZodValidationPipe(vehicleLocationSchema))
+    body: VehicleLocationInput,
+  ) {
+    await this.vehicles.reportLocation(auth.organizationId, id, body);
   }
 
   @Delete(':id')

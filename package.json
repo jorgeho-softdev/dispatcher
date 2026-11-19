@@ -22,9 +22,11 @@
     "db:down": "docker compose down",
     "db:migrate": "npm run db:migrate --workspace=api",
     "db:seed": "npm run db:seed --workspace=api",
-    "db:studio": "npm run db:studio --workspace=api"
+    "db:studio": "npm run db:studio --workspace=api",
+    "brand:assets": "node scripts/brand-assets.mjs"
   },
   "devDependencies": {
+    "sharp": "0.35.5",
     "turbo": "^2.11.11",
     "typescript": "5.9.3"
   }

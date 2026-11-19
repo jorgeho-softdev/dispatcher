@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { loginSchema } from '@dispatcher/shared';
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
+import { BrandLogo } from '@/components/brand/BrandLogo';
 import { useTranslations } from 'use-intl';
 import { useAppDispatch } from '@/store/hooks';
 import { signIn } from '@/store/session';
@@ -42,10 +43,10 @@ export default function LoginScreen() {
       style={{ paddingTop: insets.top + 64, paddingBottom: insets.bottom + 24 }}
     >
       <View className="flex-1">
-        <Text className="font-sans-bold text-4xl text-ink">
-          AI <Text className="text-primary">Dispatcher</Text>
-        </Text>
-        <Text className="mt-2 font-sans text-base text-muted">{t('mobile.login.subtitle')}</Text>
+        <View className="items-center">
+          <BrandLogo width={200} />
+        </View>
+        <Text className="mt-4 text-center font-sans text-base text-muted">{t('mobile.login.subtitle')}</Text>
 
         <TextField
           className="mt-10"

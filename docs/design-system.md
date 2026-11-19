@@ -52,15 +52,38 @@ El **nombre** de la familia está en `typography.family` de `tokens.ts`. Los **a
 
 En mobile, las fuentes se registran con alias genéricos (`Brand-Regular`, `Brand-Bold`…, en `typography.mobileAliases`), así que las clases `font-sans`, `font-sans-bold`, etc. siguen funcionando sin tocar componentes.
 
+## Nombre y logo
+
+- **Nombre del producto:** `BRAND_NAME` en `packages/shared/src/constants.ts` (hoy **HaulGenius**). El código lo usa en el título de la web, el nombre nativo de la app (`app.config.ts`), la tarjeta de la IA en el inicio, el PDF de Rate Confirmation y Swagger.
+- **Textos traducidos:** los catálogos de `packages/i18n/messages/` y los textos de permisos de iOS (`apps/mobile/locales/*.json`, `app.json`) escriben el nombre dentro de la frase, porque cada idioma lo coloca distinto. En un rebrand hay que buscar y reemplazar también ahí.
+- **Logo, originales:** en `packages/design-tokens/brand/`, ambos con fondo transparente:
+  - `mark.png`: el símbolo (la H con flecha).
+  - `logotype.png`: símbolo + palabra "HaulGenius" (colores originales, para fondo claro).
+- **Logo, imágenes derivadas:** las genera `npm run brand:assets` (`scripts/brand-assets.mjs`) y se versionan. Si cambias un original, vuelve a correr el script.
+
+  | Archivo generado | Uso |
+  |---|---|
+  | `apps/mobile/assets/splash-icon.png` | Splash de la app (símbolo recortado y centrado, 1024 px) |
+  | `apps/mobile/assets/logo-on-dark.png` / `logo-on-light.png` | Login de la app; `BrandLogo` elige según el tema |
+  | `apps/web/public/brand/logo-on-dark.png` | Login e invitación de la web (`BrandLogo`) |
+  | `apps/web/public/brand/mark.png` | Barra lateral de la web (`BrandMark`: símbolo + nombre) |
+  | `apps/web/src/app/icon.png` | Ícono de la pestaña del navegador |
+  | `apps/mobile/assets/icon.png` | Ícono de la app en iOS: 1024 px, cuadrado completo **sin redondear y sin transparencia** (iOS pone su propia máscara), símbolo al 57% del ancho sobre `surface` |
+  | `apps/mobile/assets/android-icon-foreground.png` | Ícono adaptativo de Android: símbolo al 38%, porque el launcher recorta el ~66% central. El fondo es el color `surface` (en `app.config.ts`) |
+  | `apps/mobile/assets/android-icon-monochrome.png` | Ícono temático de Android 13+: silueta blanca con la flecha recortada |
+
+- **Versión para fondo oscuro:** el script pinta las letras casi negras y sin color ("Haul") con el token `ink` del tema, para que se lean sobre `background`. "Genius" y el símbolo conservan su naranja.
+- **Identificadores:** el bundle ID de iOS y el package de Android son `com.jorgehurtado.haulgenius` (cambiado antes de crear la app en las tiendas; después ya no se puede). El slug de Expo y los paquetes internos `@dispatcher/*` no cambian con la marca.
+
 ## Cómo se consume (para desarrolladores)
 
 ```
 tokens.ts ──tsup──► dist/index.(js|mjs)  ─┬─► mobile: tailwind.config.js (clases NativeWind)
                                           ├─► mobile: lib/themes.ts (valores en runtime, vars())
                                           ├─► mobile: app.config.ts (splash, ícono Android, notificaciones)
-          └─scripts/build-css.mjs─► dist/web-theme.css ─► web: globals.css (@theme de Tailwind 4)
+          └─scripts/build-css.mjs─► generated/web-theme.css ─► web: globals.css (@theme de Tailwind 4)
 ```
 
-- `dist/web-theme.css` se **genera**; nunca se edita a mano.
+- `generated/web-theme.css` se **genera**; nunca se edita a mano. Vive fuera de `dist/` a propósito: `tsup --clean` borra `dist/` en cada build, y un `next dev` en marcha no debe ver desaparecer la hoja de estilos (se escribe de forma atómica).
 - La web hoy usa solo el tema `defaultTheme` (dark). La app permite elegir dark o light en Ajustes.
 - La decisión está documentada en [ADR-0010](./adr/0010-design-tokens-single-source.md).

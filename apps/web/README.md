@@ -1,4 +1,4 @@
-# web: AI Dispatcher Admin
+# web: HaulGenius Admin
 
 Next.js 16 (App Router, Cache Components) + Redux Toolkit / RTK Query + Tailwind 4. La arquitectura está en [`docs/architecture.md#5-web-admin-appsweb`](../../docs/architecture.md) y las decisiones en [ADR-0007](../../docs/adr/0007-web-bff-session.md).
 
@@ -13,6 +13,8 @@ npm run typecheck  # next typegen + tsc (los tipos de rutas como LayoutProps/Rou
 npm run lint
 ```
 
+**Producción:** `output: 'standalone'` (traza desde la raíz del monorepo). Imagen: `apps/web/Dockerfile`; Railway: `apps/web/railway.json`. Ver [`docs/deployment.md`](../../docs/deployment.md).
+
 `apps/web/turbo.json` hace que `build` espere a `typecheck`. Así Turbo no los corre en paralelo, porque ambos escriben `.next/types`.
 
 ## Variables de entorno (`.env.local`)
@@ -20,12 +22,19 @@ npm run lint
 | Variable | Descripción |
 |---|---|
 | `API_URL` | URL de la API, solo del lado del servidor (default `http://localhost:4000/v1`) |
+| `NEXT_PUBLIC_MAP_STYLE_URL` | Estilo de mapa (proveedor de teselas). Sin definir: OSM raster, solo para desarrollo |
 
 ## Estructura
 
 ```
 src/app/[locale]/        Todas las páginas, una versión por idioma (/en, /fr, /es, /pa)
-  (dashboard)/           Páginas autenticadas (shells estáticos)
+  (dashboard)/           Páginas autenticadas: dashboard, loads (vistas + match), loads/new (carga manual),
+                         vehicles (base con selector de ciudad), settings (preferencias + autonomía),
+                         negotiations (lista + detalle con auditoría de la IA),
+                         trips (lista + detalle: progreso, finanzas reales, documentos, gastos, conductor),
+                         map (mapa en vivo, MapLibre), reports (finanzas + CSV + desempeño de la IA),
+                         team (miembros, roles, invitaciones)
+  invite/                Aceptar invitación (pública)
   login/                 Login
 src/i18n/                next-intl: routing, navigation (Link/useRouter con idioma), request, params
 src/app/api/             BFF: auth/login, auth/logout, backend/[...path]

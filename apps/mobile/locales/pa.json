@@ -1,0 +1,5 @@
+{
+  "NSLocationWhenInUseUsageDescription": "HaulGenius ਤੁਹਾਡੇ ਨੇੜੇ ਲੋਡ ਲੱਭਣ ਅਤੇ ਪਿਕਅੱਪ ਤੱਕ ਖਾਲੀ ਕਿਲੋਮੀਟਰ ਗਿਣਨ ਲਈ ਤੁਹਾਡੀ ਲੋਕੇਸ਼ਨ ਵਰਤਦਾ ਹੈ।",
+  "NSCameraUsageDescription": "HaulGenius ਡਿਲੀਵਰੀ ਦਸਤਾਵੇਜ਼ਾਂ (POD, BOL, ਰਸੀਦਾਂ) ਦੀ ਫ਼ੋਟੋ ਲਈ ਕੈਮਰਾ ਵਰਤਦਾ ਹੈ।",
+  "NSPhotoLibraryUsageDescription": "HaulGenius ਡਿਲੀਵਰੀ ਦਸਤਾਵੇਜ਼ ਜੋੜਨ ਲਈ ਤੁਹਾਡੀਆਂ ਫ਼ੋਟੋਆਂ ਤੱਕ ਪਹੁੰਚ ਕਰਦਾ ਹੈ।"
+}

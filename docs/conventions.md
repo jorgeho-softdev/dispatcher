@@ -69,6 +69,9 @@ Un cambio está terminado solo si cumple todo esto:
   - Se crean con `npm run db:migrate -- --name <descripcion>` y nunca se editan una vez integradas.
   - En producción se aplican con `npm run db:deploy`.
 - El seed es idempotente y **se niega a correr en producción**.
+- Lo que Prisma no modela (extensiones, triggers, funciones) va en SQL dentro de la migración, con un comentario que lo explique. Después se verifica que no haya drift con `prisma migrate dev --create-only` (debe salir una migración vacía, que se borra).
+- El SQL crudo se escribe **solo** con `Prisma.sql` parametrizado (nunca interpolando strings) y únicamente donde Prisma no alcanza (p. ej. consultas PostGIS).
+- Prisma 7 no regenera el cliente al migrar: después de cambiar el esquema, corre `npm run db:generate --workspace=api`.
 
 ## 5. Gestión de estado (web y mobile)
 
@@ -122,7 +125,14 @@ Sigue [`docs/i18n.md`](./i18n.md):
 - **Cabeceras y CORS:** `helmet` activo y CORS con lista explícita de orígenes.
 - **Validación:** todo input externo pasa por Zod (body, query, env, respuestas de proveedores externos).
 - **Datos simulados:** siempre marcados (`isSimulated`, sufijo "(DEMO)") y nunca mezclados sin etiqueta con datos reales.
-- **IA (Fase 2):** toda acción con efectos externos pasa por el Policy Engine determinista y queda auditada.
+- **IA:** el LLM solo **propone**. Toda acción con efectos externos pasa por el Policy Engine determinista (`packages/shared/src/negotiation.ts`) y queda auditada en `negotiation_events`. Reservar siempre requiere aprobación humana. El sistema debe funcionar sin LLM (`AI_STRATEGY=rules`) y los tests no deben llamar al LLM.
+- **Datos por rol:** el alcance (p. ej. Driver → solo sus viajes) se aplica **en la consulta de la API** con un helper `scope(auth)`, nunca solo en la UI. Lo que está fuera de alcance responde 404.
+- **Exportaciones CSV:** siempre con `csvCell` (escape RFC 4180 y neutralización de fórmulas).
+- **Contenido de datos en el DOM fuera de React** (mapas, popups): solo con `textContent`, nunca con `innerHTML`.
+- **Hora en componentes con Cache Components:** "ahora" se obtiene en el servidor con `connection()` dentro de `<Suspense>`, nunca con `new Date()` durante el prerender.
+- **Archivos:** nunca pasan por la API. Se suben y bajan con URLs firmadas de vida corta, la API verifica en S3 (`HEAD`) antes de confiar en una subida, y en la base solo van metadatos (ver ADR-0015).
+- **Ubicación del usuario:** solo con permiso explícito y en primer plano mientras no exista un consentimiento específico para el segundo plano (ADR-0016).
+- **Jobs:** los handlers de BullMQ son idempotentes (verifican el estado y hacen transiciones atómicas con `updateMany where status = …`). Los efectos secundarios no críticos (push) nunca lanzan excepciones.
 
 ## 9. Testing
 

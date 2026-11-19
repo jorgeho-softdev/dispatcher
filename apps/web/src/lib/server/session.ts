@@ -34,7 +34,20 @@ export function isSameOrigin(request: Request): boolean {
   if (['GET', 'HEAD', 'OPTIONS'].includes(request.method)) return true;
   const origin = request.headers.get('origin');
   if (!origin) return false;
-  return origin === new URL(request.url).origin;
+  return origin === publicOrigin(request);
+}
+
+/**
+ * The origin the BROWSER used. Behind a proxy (Railway, any load balancer)
+ * `request.url` is the container's internal address (http://0.0.0.0:3000),
+ * so the public host and scheme come from the forwarded headers.
+ */
+function publicOrigin(request: Request): string {
+  const url = new URL(request.url);
+  const first = (v: string | null) => v?.split(',')[0]?.trim() || null;
+  const host = first(request.headers.get('x-forwarded-host')) ?? request.headers.get('host') ?? url.host;
+  const proto = first(request.headers.get('x-forwarded-proto')) ?? url.protocol.replace(/:$/, '');
+  return `${proto}://${host}`;
 }
 
 /**

@@ -1,7 +1,7 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { formatMoney } from '@dispatcher/shared';
+import { BRAND_NAME, OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
 import { Screen } from '@/components/ui/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -10,7 +10,9 @@ import { useIntlLocale } from '@/lib/use-intl-locale';
 import { useColors } from '@/lib/theme';
 import { useAppSelector } from '@/store/hooks';
 import { selectMe } from '@/store/auth-slice';
-import { useGetLoadsQuery } from '@/store/api';
+import { useGetLoadsQuery, useGetNegotiationsQuery, useGetTripsQuery } from '@/store/api';
+import { LoadCard } from '@/features/loads/LoadCard';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 
 export default function HomeScreen() {
   const t = useTranslations();
@@ -18,15 +20,20 @@ export default function HomeScreen() {
   const colors = useColors();
   const router = useRouter();
   const me = useAppSelector(selectMe);
-  const { data } = useGetLoadsQuery({ limit: 100 });
+  // Same ranking as the "Recommended" tab; only strong matches count.
+  const { data } = useGetLoadsQuery({ view: 'recommended', limit: 100 });
 
   const loads = data?.items ?? [];
-  const opportunities = loads.filter((l) => (l.estimatedProfit ?? 0) > 0);
+  const opportunities = loads.filter((l) => (l.match?.score ?? 0) >= OPPORTUNITY_THRESHOLD);
+  const best = opportunities[0];
+  const { data: activeTrips } = useGetTripsQuery({ filter: 'active' });
+  const nextTrip = activeTrips?.[0];
+  const { data: pending } = useGetNegotiationsQuery({ filter: 'needs_approval' }, { pollingInterval: 15000 });
   const bestProfit = Math.max(0, ...opportunities.map((l) => l.estimatedProfit ?? 0));
 
   const stats = [
     { icon: 'clipboard-outline' as const, value: opportunities.length.toLocaleString(intlLocale), label: t('mobile.home.opportunities', { count: opportunities.length }) },
-    { icon: 'bus-outline' as const, value: (0).toLocaleString(intlLocale), label: t('mobile.home.activeTrips') },
+    { icon: 'bus-outline' as const, value: (activeTrips?.length ?? 0).toLocaleString(intlLocale), label: t('mobile.home.activeTrips') },
     { icon: 'stats-chart' as const, value: formatMoney(bestProfit, 'CAD', intlLocale), label: t('mobile.home.bestProfit') },
   ];
 
@@ -42,7 +49,7 @@ export default function HomeScreen() {
           <Ionicons name="hardware-chip-outline" size={26} color={colors.primary} />
         </View>
         <View className="flex-1">
-          <Text className="font-sans-bold text-base text-ink">AI Dispatcher</Text>
+          <Text className="font-sans-bold text-base text-ink">{BRAND_NAME}</Text>
           <Text className="font-sans text-xs text-muted">{t('mobile.home.aiAnalyzing')}</Text>
         </View>
         <View className="flex-row items-center" style={{ gap: 6 }}>
@@ -63,7 +70,70 @@ export default function HomeScreen() {
         ))}
       </View>
 
+      {pending && pending.length > 0 && (
+        <>
+          <SectionTitle title={t('mobile.home.pendingApprovals')} />
+          {pending.map((n) => (
+            <Pressable
+              key={n.id}
+              accessibilityRole="button"
+              onPress={() => router.push({ pathname: '/negotiations/[id]', params: { id: n.id } })}
+            >
+              <Card className="mb-2 flex-row items-center border-primary" style={{ gap: 12 }}>
+                <Ionicons name="notifications-outline" size={22} color={colors.primary} />
+                <View className="flex-1">
+                  <Text className="font-sans-semibold text-sm text-ink" numberOfLines={1}>
+                    {n.load.originCity} → {n.load.destinationCity}
+                  </Text>
+                  <Text className="font-sans text-xs text-primary">{t(`domain.negotiationStatus.${n.status}`)}</Text>
+                </View>
+                <Text className="font-sans-bold text-base text-ink">
+                  {formatMoney(n.agreedRate ?? n.currentOffer ?? n.postedRate, n.currency, intlLocale)}
+                </Text>
+              </Card>
+            </Pressable>
+          ))}
+        </>
+      )}
+
       <Button className="mt-5" title={t('mobile.home.seeLoads')} onPress={() => router.navigate('/loads')} />
+
+      {nextTrip && (
+        <>
+          <SectionTitle title={t('mobile.home.nextTrip')} />
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push({ pathname: '/trips/[id]', params: { id: nextTrip.id } })}
+          >
+            <Card className="flex-row items-center" style={{ gap: 12 }}>
+              <View className="h-11 w-11 items-center justify-center rounded-2xl bg-primary-light">
+                <Ionicons name="bus" size={22} color={colors.primary} />
+              </View>
+              <View className="flex-1">
+                <Text className="font-sans-bold text-sm text-ink" numberOfLines={1}>
+                  {nextTrip.load.originCity}, {nextTrip.load.originProvince} → {nextTrip.load.destinationCity},{' '}
+                  {nextTrip.load.destinationProvince}
+                </Text>
+                <Text className="font-sans text-xs text-muted">
+                  #{nextTrip.code} · {t(`domain.tripStatus.${nextTrip.status}`)}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.muted} />
+            </Card>
+          </Pressable>
+        </>
+      )}
+
+      <SectionTitle title={t('mobile.home.bestOpportunity')} />
+      {best ? (
+        <LoadCard load={best} />
+      ) : (
+        data && (
+          <Card>
+            <Text className="font-sans text-sm text-muted">{t('mobile.home.noOpportunities')}</Text>
+          </Card>
+        )
+      )}
     </Screen>
   );
 }

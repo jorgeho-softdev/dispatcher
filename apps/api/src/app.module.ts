@@ -10,6 +10,14 @@ import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { LoadsModule } from './modules/loads/loads.module';
+import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
+import { NegotiationsModule } from './modules/negotiations/negotiations.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { BullModule } from '@nestjs/bullmq';
+import { StorageModule } from './modules/storage/storage.module';
+import { TripsModule } from './modules/trips/trips.module';
+import { TeamModule } from './modules/team/team.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -21,11 +29,37 @@ import { LoadsModule } from './modules/loads/loads.module';
         secret: config.get('JWT_ACCESS_SECRET', { infer: true }),
       }),
     }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => {
+        const url = new URL(config.get('REDIS_URL', { infer: true }));
+        return {
+          prefix: config.get('QUEUE_PREFIX', { infer: true }),
+          connection: {
+            host: url.hostname,
+            port: Number(url.port || 6379),
+            // 0 = resolve IPv4 and IPv6: Railway's private network is IPv6-only.
+            family: 0,
+            ...(url.password && { password: decodeURIComponent(url.password) }),
+            ...(url.pathname.length > 1 && {
+              db: Number(url.pathname.slice(1)),
+            }),
+          },
+        };
+      },
+    }),
     PrismaModule,
+    StorageModule,
     HealthModule,
     AuthModule,
     VehiclesModule,
     LoadsModule,
+    AiSettingsModule,
+    NotificationsModule,
+    NegotiationsModule,
+    TripsModule,
+    TeamModule,
+    ReportsModule,
   ],
   providers: [
     // Order matters: authenticate first, then authorize.

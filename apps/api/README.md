@@ -1,4 +1,4 @@
-# api: AI Dispatcher REST API
+# api: HaulGenius REST API
 
 NestJS 11 + Prisma 7 + PostgreSQL. La arquitectura está en [`docs/architecture.md#4-backend-appsapi`](../../docs/architecture.md) y las reglas en [`docs/conventions.md`](../../docs/conventions.md).
 
@@ -12,6 +12,8 @@ npm run test:e2e       # e2e contra la DB local (requiere db:up + db:seed)
 npm run db:migrate     # nueva migración en dev: npm run db:migrate -- --name <descripcion>
 npm run db:deploy      # aplica migraciones (CI/producción)
 npm run db:seed        # usuario demo + cargas simuladas (idempotente, nunca en prod)
+npm run db:seed:marketplace  # solo cargas simuladas DEMO (en prod requiere SIMULATED_MARKETPLACE=true)
+npm run release        # pre-deploy de producción: migraciones + marketplace DEMO
 npm run db:studio      # Prisma Studio
 ```
 
@@ -26,6 +28,23 @@ Ver [`.env.example`](./.env.example). Se validan con Zod al arrancar (`src/confi
 | `JWT_ACCESS_TTL_SECONDS` | Vida del access token (900) |
 | `REFRESH_TOKEN_TTL_DAYS` | Vida del refresh token (30) |
 | `CORS_ORIGINS` | Orígenes permitidos, separados por comas |
+| `REDIS_URL` | Redis para BullMQ (default `redis://localhost:6380`) |
+| `AI_STRATEGY` | `auto` (Claude si hay `ANTHROPIC_API_KEY`), `claude` o `rules` |
+| `ANTHROPIC_API_KEY` | Credencial de Claude (opcional; sin ella se usan reglas) |
+| `AI_MODEL` / `AI_EFFORT` | Modelo (`claude-opus-5-5`) y esfuerzo (`medium`) |
+| `BROKER_SIM_DELAY_MS` | Retardo de respuesta del broker simulado (4000; 0 en tests) |
+| `QUEUE_PREFIX` | Prefijo de colas BullMQ (`bull`; los e2e usan `bull-e2e`) |
+| `S3_ENDPOINT` / `S3_PUBLIC_ENDPOINT` | S3 para el servidor / host para URLs firmadas que usan los clientes |
+| `S3_REGION` / `S3_BUCKET` | Región (`ca-central-1`) y bucket de documentos |
+| `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Credenciales S3 (local: `dispatcher` / `dispatcher-secret`) |
+| `S3_FORCE_PATH_STYLE` | `true` para SeaweedFS/MinIO/R2 |
+| `WEB_URL` | URL pública de la web (enlaces de invitación) |
+| `SIMULATED_MARKETPLACE` | `true` para cargar el marketplace DEMO en producción/beta (`npm run release`) |
+| `EXPO_ACCESS_TOKEN` | Opcional: solo si Expo Push tiene "enhanced security" |
+
+## Producción
+
+Imagen: `apps/api/Dockerfile` (se construye desde la raíz del repo). Railway: `apps/api/railway.json`. En producción la API exige `WEB_URL` y `CORS_ORIGINS` con HTTPS público y oculta Swagger. Guía completa: [`docs/deployment.md`](../../docs/deployment.md).
 
 ## Cómo agregar un módulo
 

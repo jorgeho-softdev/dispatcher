@@ -1,5 +1,6 @@
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 import { themes, defaultTheme } from '@dispatcher/design-tokens';
+import { BRAND_NAME } from '@dispatcher/shared';
 
 // Extends app.json with values that must come from the brand tokens
 // (packages/design-tokens/src/tokens.ts): native splash background, Android
@@ -23,13 +24,18 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   plugins = withPluginOptions(plugins, 'expo-splash-screen', { backgroundColor: brand.background });
   plugins = withPluginOptions(plugins, 'expo-notifications', { color: brand.primary.DEFAULT });
 
+  // Android maps need a Google Maps SDK key (iOS uses Apple Maps, no key).
+  // Set GOOGLE_MAPS_ANDROID_API_KEY in .env / EAS env; never commit it.
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_ANDROID_API_KEY;
+
   return {
     ...config,
-    name: config.name ?? 'AI Dispatcher',
+    name: config.name ?? BRAND_NAME,
     slug: config.slug ?? 'mobile',
     android: {
       ...config.android,
-      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: brand.background },
+      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: brand.surface },
+      ...(googleMapsApiKey && { config: { ...config.android?.config, googleMaps: { apiKey: googleMapsApiKey } } }),
     },
     plugins,
   };

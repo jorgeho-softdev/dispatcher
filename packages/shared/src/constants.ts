@@ -1,6 +1,9 @@
 // Single source of truth for every enum-like value in the domain.
 // The Prisma schema mirrors these values; web and mobile render them.
 
+/** Product name shown to users (app, web, PDFs, API docs). Single source: change it here. */
+export const BRAND_NAME = 'HaulGenius';
+
 export const ROLES = ['owner', 'fleet_manager', 'dispatcher', 'driver'] as const;
 export type Role = (typeof ROLES)[number];
 
@@ -24,6 +27,10 @@ export const LOAD_SOURCES = [
   'broker_direct',
 ] as const;
 export type LoadSource = (typeof LOAD_SOURCES)[number];
+
+/** Load list views (tabs in the mockup: Recomendadas / Cerca de mí / Todas). */
+export const LOAD_VIEWS = ['recommended', 'nearby', 'all'] as const;
+export type LoadView = (typeof LOAD_VIEWS)[number];
 
 export const LOAD_STATUSES = ['available', 'negotiating', 'booked', 'expired', 'cancelled'] as const;
 export type LoadStatus = (typeof LOAD_STATUSES)[number];
@@ -61,6 +68,17 @@ export const ERROR_CODES = [
   'AUTH_REFRESH_REUSED',
   'FORBIDDEN',
   'NOT_FOUND',
+  'VEHICLE_REQUIRED',
+  'LOAD_UNAVAILABLE',
+  'NEGOTIATION_ALREADY_ACTIVE',
+  'NEGOTIATION_INVALID_STATE',
+  'TRIP_INVALID_STATE',
+  'POD_REQUIRED',
+  'UPLOAD_NOT_FOUND',
+  'BROKER_ALREADY_RATED',
+  'INVITATION_INVALID',
+  'LAST_OWNER',
+  'CANNOT_CHANGE_SELF',
   'API_UNAVAILABLE',
   'NETWORK_ERROR',
   'INTERNAL_ERROR',

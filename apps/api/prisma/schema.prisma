@@ -1,4 +1,4 @@
-// AI Dispatcher — database schema (Fase 0).
+// HaulGenius — database schema (Fase 0).
 // Conventions (docs/conventions.md#database):
 //  - Tables/columns are snake_case via @@map/@map; Prisma models are PascalCase.
 //  - Every business table is scoped by organization_id (multi-tenant).
@@ -60,6 +60,89 @@ enum AutonomyLevel {
   auto
 }
 
+// Mirrors NEGOTIATION_STATUSES in packages/shared/src/negotiation.ts.
+enum NegotiationStatus {
+  ai_thinking
+  awaiting_send_approval
+  contacting_broker
+  awaiting_booking_approval
+  booking_requested
+  booked
+  rejected
+  cancelled
+  failed
+}
+
+enum NegotiationEventType {
+  ai_proposed
+  ai_countered
+  ai_accepted
+  ai_walked_away
+  policy_adjusted
+  policy_blocked
+  user_approved_send
+  user_adjusted
+  user_approved_booking
+  user_cancelled
+  offer_sent
+  broker_countered
+  broker_accepted
+  broker_rejected
+  booking_requested
+  booking_confirmed
+  booking_declined
+  load_unavailable
+}
+
+enum NegotiationActor {
+  ai
+  user
+  broker
+  system
+}
+
+enum NegotiationStrategy {
+  claude
+  rules
+}
+
+enum DevicePlatform {
+  ios
+  android
+}
+
+// Mirrors TRIP_STATUSES in packages/shared/src/trips.ts.
+enum TripStatus {
+  scheduled
+  at_pickup
+  in_transit
+  delivered
+  completed
+  cancelled
+}
+
+enum DocumentType {
+  rate_confirmation
+  bol
+  pod
+  receipt
+  other
+}
+
+enum DocumentStatus {
+  pending
+  uploaded
+}
+
+enum ExpenseCategory {
+  fuel
+  tolls
+  parking
+  maintenance
+  lumper
+  other
+}
+
 model Organization {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
@@ -68,10 +151,13 @@ model Organization {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  memberships Membership[]
-  vehicles    Vehicle[]
-  loads       Load[]
-  aiSettings  AiSettings?
+  memberships  Membership[]
+  vehicles     Vehicle[]
+  loads        Load[]
+  aiSettings   AiSettings?
+  negotiations Negotiation[]
+  trips        Trip[]
+  invitations  Invitation[]
 
   @@map("organizations")
 }
@@ -85,8 +171,12 @@ model User {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  memberships   Membership[]
-  refreshTokens RefreshToken[]
+  memberships     Membership[]
+  refreshTokens   RefreshToken[]
+  devices         DeviceToken[]
+  negotiations    Negotiation[]
+  trips           Trip[]
+  invitationsSent Invitation[]   @relation("InvitedBy")
 
   @@map("users")
 }
@@ -135,11 +225,19 @@ model Vehicle {
   costPerKm        Decimal       @map("cost_per_km") @db.Decimal(6, 2)
   homeBaseCity     String?       @map("home_base_city")
   homeBaseProvince String?       @map("home_base_province") @db.Char(2)
+  homeBaseLat      Float?        @map("home_base_lat")
+  homeBaseLng      Float?        @map("home_base_lng")
+  // Last reported GPS position (driver app). Used for deadhead / "near me".
+  lastLat          Float?        @map("last_lat")
+  lastLng          Float?        @map("last_lng")
+  lastLocationAt   DateTime?     @map("last_location_at")
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")
   deletedAt        DateTime?     @map("deleted_at")
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  negotiations Negotiation[]
+  trips        Trip[]
 
   @@index([organizationId])
   @@map("vehicles")
@@ -154,7 +252,8 @@ model Broker {
   ratingAvg Decimal? @map("rating_avg") @db.Decimal(3, 2)
   createdAt DateTime @default(now()) @map("created_at")
 
-  loads Load[]
+  loads   Load[]
+  ratings BrokerRating[]
 
   @@map("brokers")
 }
@@ -163,39 +262,45 @@ model Broker {
 // the organization that created them. Simulated loads are ALWAYS flagged and
 // must never be presented as real opportunities.
 model Load {
-  id                  String        @id @default(uuid()) @db.Uuid
-  organizationId      String?       @map("organization_id") @db.Uuid
+  id                  String                                 @id @default(uuid()) @db.Uuid
+  organizationId      String?                                @map("organization_id") @db.Uuid
   source              LoadSource
-  externalId          String?       @map("external_id")
-  isSimulated         Boolean       @default(false) @map("is_simulated")
-  status              LoadStatus    @default(available)
-  originCity          String        @map("origin_city")
-  originProvince      String        @map("origin_province") @db.Char(2)
-  originLat           Float         @map("origin_lat")
-  originLng           Float         @map("origin_lng")
-  destinationCity     String        @map("destination_city")
-  destinationProvince String        @map("destination_province") @db.Char(2)
-  destinationLat      Float         @map("destination_lat")
-  destinationLng      Float         @map("destination_lng")
-  pickupAt            DateTime      @map("pickup_at")
-  distanceKm          Decimal       @map("distance_km") @db.Decimal(8, 1)
-  weightKg            Int           @map("weight_kg")
+  externalId          String?                                @map("external_id")
+  isSimulated         Boolean                                @default(false) @map("is_simulated")
+  status              LoadStatus                             @default(available)
+  originCity          String                                 @map("origin_city")
+  originProvince      String                                 @map("origin_province") @db.Char(2)
+  originLat           Float                                  @map("origin_lat")
+  originLng           Float                                  @map("origin_lng")
+  destinationCity     String                                 @map("destination_city")
+  destinationProvince String                                 @map("destination_province") @db.Char(2)
+  destinationLat      Float                                  @map("destination_lat")
+  destinationLng      Float                                  @map("destination_lng")
+  pickupAt            DateTime                               @map("pickup_at")
+  distanceKm          Decimal                                @map("distance_km") @db.Decimal(8, 1)
+  weightKg            Int                                    @map("weight_kg")
   equipment           EquipmentType
-  postedRate          Decimal       @map("posted_rate") @db.Decimal(12, 2)
-  currency            Currency      @default(CAD)
-  brokerId            String?       @map("broker_id") @db.Uuid
+  postedRate          Decimal                                @map("posted_rate") @db.Decimal(12, 2)
+  currency            Currency                               @default(CAD)
+  brokerId            String?                                @map("broker_id") @db.Uuid
   notes               String?
-  rawPayload          Json?         @map("raw_payload")
-  createdAt           DateTime      @default(now()) @map("created_at")
-  updatedAt           DateTime      @updatedAt @map("updated_at")
+  rawPayload          Json?                                  @map("raw_payload")
+  // PostGIS point of the pickup, kept in sync with origin_lat/origin_lng by a
+  // database trigger (see migration "phase1_geo"). Queried with $queryRaw.
+  originGeo           Unsupported("geography(Point, 4326)")? @map("origin_geo")
+  createdAt           DateTime                               @default(now()) @map("created_at")
+  updatedAt           DateTime                               @updatedAt @map("updated_at")
 
   organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   broker       Broker?       @relation(fields: [brokerId], references: [id])
+  negotiations Negotiation[]
+  trips        Trip[]
 
   @@unique([source, externalId])
   @@index([status, pickupAt])
   @@index([equipment, status])
   @@index([organizationId])
+  @@index([originGeo], type: Gist)
   @@map("loads")
 }
 
@@ -207,9 +312,221 @@ model AiSettings {
   minMarginPct       Decimal       @default(30) @map("min_margin_pct") @db.Decimal(5, 2)
   maxCounterOfferPct Decimal       @default(15) @map("max_counter_offer_pct") @db.Decimal(5, 2)
   maxDeadheadKm      Int           @default(150) @map("max_deadhead_km")
+  /// Provinces the carrier prefers (origin or destination). Boosts match %.
+  preferredProvinces String[]      @default([]) @map("preferred_provinces")
+  /// Provinces the carrier never wants to go to/from. Excluded from matches.
+  avoidProvinces     String[]      @default([]) @map("avoid_provinces")
   updatedAt          DateTime      @updatedAt @map("updated_at")
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@map("ai_settings")
+}
+
+// One AI-assisted negotiation of a load for an organization. Every state
+// change is recorded in negotiation_events (the audit trail of the AI).
+// Limits are snapshotted at start so later preference edits don't change
+// a negotiation in flight. See docs/ai-agent.md.
+model Negotiation {
+  id             String              @id @default(uuid()) @db.Uuid
+  organizationId String              @map("organization_id") @db.Uuid
+  loadId         String              @map("load_id") @db.Uuid
+  vehicleId      String              @map("vehicle_id") @db.Uuid
+  createdById    String              @map("created_by_id") @db.Uuid
+  status         NegotiationStatus
+  autonomyLevel  AutonomyLevel       @map("autonomy_level")
+  strategy       NegotiationStrategy
+  currency       Currency
+  postedRate     Decimal             @map("posted_rate") @db.Decimal(12, 2)
+  floorRate      Decimal             @map("floor_rate") @db.Decimal(12, 2)
+  ceilingRate    Decimal             @map("ceiling_rate") @db.Decimal(12, 2)
+  deadheadKm     Decimal             @map("deadhead_km") @db.Decimal(8, 1)
+  costPerKm      Decimal             @map("cost_per_km") @db.Decimal(6, 2)
+  minRatePerKm   Decimal             @map("min_rate_per_km") @db.Decimal(6, 2)
+  minMarginPct   Decimal             @map("min_margin_pct") @db.Decimal(5, 2)
+  maxCounterPct  Decimal             @map("max_counter_pct") @db.Decimal(5, 2)
+  currentOffer   Decimal?            @map("current_offer") @db.Decimal(12, 2)
+  brokerOffer    Decimal?            @map("broker_offer") @db.Decimal(12, 2)
+  agreedRate     Decimal?            @map("agreed_rate") @db.Decimal(12, 2)
+  round          Int                 @default(0)
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  load         Load               @relation(fields: [loadId], references: [id], onDelete: Cascade)
+  vehicle      Vehicle            @relation(fields: [vehicleId], references: [id])
+  createdBy    User               @relation(fields: [createdById], references: [id])
+  events       NegotiationEvent[]
+  trip         Trip?
+
+  @@index([organizationId, status])
+  @@index([loadId])
+  @@map("negotiations")
+}
+
+model NegotiationEvent {
+  id            String               @id @default(uuid()) @db.Uuid
+  negotiationId String               @map("negotiation_id") @db.Uuid
+  type          NegotiationEventType
+  actor         NegotiationActor
+  amount        Decimal?             @db.Decimal(12, 2)
+  reasonCode    String?              @map("reason_code")
+  reasonParams  Json?                @map("reason_params")
+  rationale     String?
+  brokerMessage String?              @map("broker_message")
+  /// Raw strategy/policy data for audits (model, effort, policy decision…).
+  payload       Json?
+  createdAt     DateTime             @default(now()) @map("created_at")
+
+  negotiation Negotiation @relation(fields: [negotiationId], references: [id], onDelete: Cascade)
+
+  @@index([negotiationId, createdAt])
+  @@map("negotiation_events")
+}
+
+// Expo push tokens per user/device (approval requests reach the phone).
+model DeviceToken {
+  id         String         @id @default(uuid()) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  token      String         @unique
+  platform   DevicePlatform
+  createdAt  DateTime       @default(now()) @map("created_at")
+  lastSeenAt DateTime       @default(now()) @map("last_seen_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("device_tokens")
+}
+
+// A booked load being hauled. Created when a negotiation is booked.
+// See docs/trips.md.
+model Trip {
+  id             String     @id @default(uuid()) @db.Uuid
+  /// Human code TR-<sequence>; the sequence starts at 1001 (migration).
+  sequence       Int        @unique @default(autoincrement())
+  organizationId String     @map("organization_id") @db.Uuid
+  negotiationId  String?    @unique @map("negotiation_id") @db.Uuid
+  loadId         String     @map("load_id") @db.Uuid
+  vehicleId      String     @map("vehicle_id") @db.Uuid
+  driverId       String     @map("driver_id") @db.Uuid
+  status         TripStatus @default(scheduled)
+  currency       Currency
+  rate           Decimal    @db.Decimal(12, 2)
+  /// Loaded + deadhead km planned at booking (for the estimate).
+  plannedKm      Decimal    @map("planned_km") @db.Decimal(8, 1)
+  costPerKm      Decimal    @map("cost_per_km") @db.Decimal(6, 2)
+  lastLat        Float?     @map("last_lat")
+  lastLng        Float?     @map("last_lng")
+  lastSpeedKmh   Float?     @map("last_speed_kmh")
+  lastAt         DateTime?  @map("last_at")
+  remainingKm    Decimal?   @map("remaining_km") @db.Decimal(8, 1)
+  etaAt          DateTime?  @map("eta_at")
+  pickedUpAt     DateTime?  @map("picked_up_at")
+  deliveredAt    DateTime?  @map("delivered_at")
+  completedAt    DateTime?  @map("completed_at")
+  cancelledAt    DateTime?  @map("cancelled_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  organization Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  negotiation  Negotiation?   @relation(fields: [negotiationId], references: [id], onDelete: SetNull)
+  load         Load           @relation(fields: [loadId], references: [id])
+  vehicle      Vehicle        @relation(fields: [vehicleId], references: [id])
+  driver       User           @relation(fields: [driverId], references: [id])
+  locations    TripLocation[]
+  documents    TripDocument[]
+  expenses     TripExpense[]
+  brokerRating BrokerRating?
+
+  @@index([organizationId, status])
+  @@map("trips")
+}
+
+model TripLocation {
+  id         String   @id @default(uuid()) @db.Uuid
+  tripId     String   @map("trip_id") @db.Uuid
+  lat        Float
+  lng        Float
+  speedKmh   Float?   @map("speed_kmh")
+  recordedAt DateTime @map("recorded_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId, recordedAt])
+  @@map("trip_locations")
+}
+
+/// Files live in S3-compatible storage; only metadata is stored here.
+model TripDocument {
+  id           String         @id @default(uuid()) @db.Uuid
+  tripId       String         @map("trip_id") @db.Uuid
+  type         DocumentType
+  status       DocumentStatus @default(pending)
+  storageKey   String         @unique @map("storage_key")
+  fileName     String         @map("file_name")
+  mimeType     String         @map("mime_type")
+  sizeBytes    Int            @map("size_bytes")
+  uploadedById String?        @map("uploaded_by_id") @db.Uuid
+  createdAt    DateTime       @default(now()) @map("created_at")
+  uploadedAt   DateTime?      @map("uploaded_at")
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId, type])
+  @@map("trip_documents")
+}
+
+model TripExpense {
+  id          String          @id @default(uuid()) @db.Uuid
+  tripId      String          @map("trip_id") @db.Uuid
+  category    ExpenseCategory
+  amount      Decimal         @db.Decimal(12, 2)
+  currency    Currency
+  note        String?
+  incurredAt  DateTime        @map("incurred_at")
+  createdById String          @map("created_by_id") @db.Uuid
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId])
+  @@map("trip_expenses")
+}
+
+model BrokerRating {
+  id        String   @id @default(uuid()) @db.Uuid
+  tripId    String   @unique @map("trip_id") @db.Uuid
+  brokerId  String   @map("broker_id") @db.Uuid
+  stars     Int
+  comment   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  broker Broker @relation(fields: [brokerId], references: [id])
+
+  @@index([brokerId])
+  @@map("broker_ratings")
+}
+
+// Team invitation by link (Phase 4). The raw token is only shown once to the
+// inviter; only its SHA-256 is stored. Email delivery arrives in Phase 5.
+model Invitation {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  email          String
+  role           Role
+  tokenHash      String    @unique @map("token_hash")
+  invitedById    String    @map("invited_by_id") @db.Uuid
+  expiresAt      DateTime  @map("expires_at")
+  acceptedAt     DateTime? @map("accepted_at")
+  revokedAt      DateTime? @map("revoked_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation("InvitedBy", fields: [invitedById], references: [id])
+
+  @@index([organizationId])
+  @@map("invitations")
 }

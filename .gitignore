@@ -24,3 +24,4 @@ android/
 
 # generated
 apps/api/src/generated/
+packages/design-tokens/generated/

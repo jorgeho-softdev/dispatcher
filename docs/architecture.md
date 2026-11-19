@@ -1,10 +1,10 @@
-# Arquitectura de AI Dispatcher
+# Arquitectura de HaulGenius
 
 > Documento vivo. **Cualquier cambio de arquitectura debe actualizar este archivo en el mismo cambio** y, si es una decisión relevante, agregar un ADR en [`docs/adr/`](./adr/). Ver [`conventions.md`](./conventions.md).
 
 ## 1. Visión del producto
 
-AI Dispatcher es un **despachador con IA para owner-operators** (cargo van, Sprinter, box truck) y flotas pequeñas. La IA busca cargas, analiza la rentabilidad, prepara negociaciones con brokers y acompaña cada viaje hasta el cierre financiero. El lanzamiento es **Canadá primero** (Alberta / BC), con la arquitectura lista para EE.UU. ([ADR-0009](./adr/0009-canada-first-defaults.md)).
+HaulGenius es un **despachador con IA para owner-operators** (cargo van, Sprinter, box truck) y flotas pequeñas. La IA busca cargas, analiza la rentabilidad, prepara negociaciones con brokers y acompaña cada viaje hasta el cierre financiero. El lanzamiento es **Canadá primero** (Alberta / BC), con la arquitectura lista para EE.UU. ([ADR-0009](./adr/0009-canada-first-defaults.md)).
 
 ## 2. Vista general del sistema
 
@@ -19,9 +19,9 @@ AI Dispatcher es un **despachador con IA para owner-operators** (cargo van, Spri
            └──────────────┬─────────────────┘
                  ┌────────▼─────────┐
                  │ apps/api         │
-                 │ NestJS 11        │──► Redis (colas BullMQ — Fase 2)
-                 │ Prisma 7         │──► S3 (documentos — Fase 3)
-                 └────────┬─────────┘──► LLM / Mapas / Load boards (Fases 2+)
+                 │ NestJS 11        │──► Redis (colas BullMQ: workflow de negociación)
+                 │ Prisma 7         │──► S3 (documentos de viaje; SeaweedFS en local)
+                 └────────┬─────────┘──► Claude API · Expo Push · (Mapas / Load boards: fases siguientes)
                  ┌────────▼─────────┐
                  │ PostgreSQL 17    │
                  │ + PostGIS        │
@@ -86,8 +86,18 @@ src/
 └── modules/
     ├── health/             GET /v1/health (liveness + DB)
     ├── auth/               register, login, refresh, logout, me
-    ├── vehicles/           CRUD con soft delete
-    └── loads/              listado paginado, detalle, alta manual
+    ├── vehicles/           CRUD con soft delete + reporte de GPS
+    ├── ai-settings/        Preferencias del transportista
+    ├── negotiations/       Agente de IA: máquina de estados, estrategias (Claude/reglas),
+    │                       broker simulado, worker BullMQ (ver ai-agent.md)
+    ├── notifications/      Tokens de dispositivo + Expo Push (textos i18n)
+    ├── storage/            S3 (URLs firmadas; SeaweedFS en local)
+    ├── trips/              Viajes: ciclo de vida, GPS/ETA, documentos, gastos, Rate Confirmation PDF,
+    │                       asignación de conductor, mapa en vivo (alcance por rol)
+    ├── team/               Miembros, roles e invitaciones por enlace
+    ├── reports/            Reportes financieros, CSV y desempeño de la IA
+    └── loads/              vistas (recommended/nearby/all), detalle, alta manual
+        ├── matching-context.service.ts  vehículo + posición + preferencias (reutilizable por el agente)
         └── providers/      LoadProvider (contrato) + SimulatedLoadProvider
 ```
 
@@ -103,10 +113,27 @@ src/
 | GET | `/v1/me` | autenticado | Usuario (con `locale`), organización y rol |
 | PATCH | `/v1/me` | autenticado | Cambia el idioma preferido (`{ locale }`) |
 | GET | `/v1/vehicles` | `vehicles:read` | Vehículos de la organización |
-| POST/PATCH/DELETE | `/v1/vehicles[/:id]` | `vehicles:manage` | Alta / edición / baja lógica |
-| GET | `/v1/loads` | `loads:read` | Paginado por cursor; filtros `equipment`, `originProvince`, `status`, `includeSimulated` |
-| GET | `/v1/loads/:id` | `loads:read` | Detalle con ganancia estimada |
-| POST | `/v1/loads` | `loads:create` | Carga manual (privada de la organización) |
+| POST/PATCH/DELETE | `/v1/vehicles[/:id]` | `vehicles:manage` | Alta / edición / baja lógica. La base (`homeBaseCity/Province`) se geolocaliza con el catálogo de ciudades |
+| POST | `/v1/vehicles/:id/location` | `vehicles:report_location` | Último GPS del vehículo (app del conductor) |
+| GET | `/v1/loads` | `loads:read` | `view=recommended\|nearby\|all`, match %, deadhead, ganancia; `vehicleId`, `lat/lng`, `radiusKm`, filtros; cursor opaco. Ver [`matching.md`](./matching.md) |
+| GET | `/v1/loads/:id` | `loads:read` | Detalle con match, razones y desglose de ganancia |
+| POST | `/v1/loads` | `loads:create` | Carga manual (privada de la organización); coordenadas y distancia se resuelven desde el catálogo de ciudades |
+| GET | `/v1/ai-settings` | `loads:read` | Preferencias del transportista (match y, en la Fase 2, límites de la IA) |
+| PATCH | `/v1/ai-settings` | `ai_settings:manage` | Editar preferencias y autonomía |
+| POST | `/v1/negotiations` | `loads:book` | Inicia una negociación con IA (asíncrona). Ver [`ai-agent.md`](./ai-agent.md) |
+| GET | `/v1/negotiations[/:id]` | `loads:read` | Lista (`filter=active\|needs_approval\|all`) y detalle con auditoría |
+| POST | `/v1/negotiations/:id/{approve-send,adjust,approve-booking,cancel}` | `loads:book` | Acciones humanas del flujo |
+| POST/DELETE | `/v1/devices` | autenticado | Token de Expo Push del teléfono |
+| GET | `/v1/trips[/:id]` | `trips:read` | Viajes (`filter=active\|completed\|all`) y detalle con documentos, gastos y finanzas. Ver [`trips.md`](./trips.md) |
+| POST | `/v1/trips/:id/{status,locations,documents/upload-url,documents/:docId/complete,expenses}` | `trips:progress` | Progreso del conductor, GPS, documentos (URL firmada) y gastos |
+| POST | `/v1/trips/:id/{complete,cancel,broker-rating}` | `trips:manage` | Cierre (requiere POD), cancelación y calificación del broker |
+| GET | `/v1/documents/:id/download-url` | `trips:read` | URL firmada de descarga (5 min) |
+| POST | `/v1/trips/:id/driver` | `trips:manage` | Asignar conductor |
+| GET | `/v1/fleet/live` | `trips:read` | Mapa en vivo: viajes activos + posición de vehículos |
+| GET / PATCH / DELETE | `/v1/members[/:id]` | `vehicles:read` / `members:manage` | Equipo y roles. Ver [`team.md`](./team.md) |
+| GET / POST / DELETE | `/v1/invitations[/:id]` | `members:manage` | Invitaciones por enlace |
+| GET / POST | `/v1/invitations/{preview,accept}` | público | Ver y aceptar una invitación |
+| GET | `/v1/reports/{summary,trips.csv,ai}` | `finances:read` | Reportes financieros, CSV y desempeño de la IA. Ver [`reports.md`](./reports.md) |
 
 La documentación OpenAPI interactiva está en `http://localhost:4000/docs`.
 
@@ -130,12 +157,16 @@ Todas las respuestas de error tienen la forma `ApiErrorDto { statusCode, code, m
 ### 4.5 Modelo de datos (Fase 0)
 
 ```
-organizations 1─┬─< memberships >─1 users 1─< refresh_tokens
+organizations 1─┬─< memberships >─1 users 1─< refresh_tokens, device_tokens
+                ├─< negotiations >─1 loads, vehicles · negotiations 1─< negotiation_events
+                ├─< invitations (token hasheado)
+                ├─< trips (1─1 negotiation) ─< trip_locations, trip_documents, trip_expenses · trips 1─1 broker_ratings
                 ├─< vehicles
                 ├─< loads (manuales)        loads (marketplace: organization_id NULL)
                 └─1 ai_settings             loads >─1 brokers
 ```
 
+- **Geografía:** `loads.origin_geo` (PostGIS, índice GiST) se mantiene con un trigger desde `origin_lat/lng`. Los vehículos tienen base (`home_base_lat/lng`) y último GPS (`last_lat/lng/location_at`). `ai_settings` incluye las provincias preferidas y las que se evitan. Ver [ADR-0012](./adr/0012-matching-and-geo.md).
 - Las cargas del marketplace son globales (`organization_id NULL`) y las manuales pertenecen a una organización.
 - `is_simulated` es obligatorio: las cargas simuladas **nunca** se presentan como reales. La API siempre lo devuelve, la web muestra el badge "Demo" y los brokers simulados llevan el sufijo "(DEMO)".
 - El dinero se guarda en `Decimal(12,2)` + `currency` (CAD/USD) y las distancias en km. La conversión a mi es solo de presentación.
@@ -144,9 +175,9 @@ organizations 1─┬─< memberships >─1 users 1─< refresh_tokens
 
 `LoadProvider` es el contrato común (`search(criteria) → NormalizedLoad[]`). Hoy existen `SimulatedLoadProvider` (rutas reales de AB/BC/SK con un PRNG determinista) y la carga manual. Loadlink, DAT, Truckstop y 123Loadboard serán nuevos adaptadores, sin tocar el resto del sistema.
 
-### 4.7 Ganancia estimada
+### 4.7 Ganancia estimada y match
 
-`estimateProfit()` en `@dispatcher/shared` es **determinista** y tiene tests. La IA razona sobre estos números, pero nunca los inventa. En la Fase 0 usa el `costPerKm` del primer vehículo con el mismo equipo; el deadhead (distancia hasta la recogida) llega en la Fase 1.
+`estimateProfit()` y `scoreMatch()` en `@dispatcher/shared` son **deterministas** y tienen tests. La ganancia descuenta los km con carga y los km vacíos (deadhead = haversine × 1.25) al costo/km del vehículo. El match (0–100) combina margen, tarifa/km, deadhead, recogida y región, con razones traducibles. La IA razona sobre estos números, pero nunca los inventa. Detalle en [`matching.md`](./matching.md).
 
 ## 5. Web admin: `apps/web` ([ADR-0007](./adr/0007-web-bff-session.md))
 
@@ -205,10 +236,11 @@ app/_layout.tsx
 | Fase | Alcance | Estado |
 |---|---|---|
 | 0. Fundaciones | Monorepo, organizaciones/RBAC, auth, vehículos, cargas simuladas, design system, CI | ✅ |
-| 1. Cargas | PostGIS ("cerca de mí"), deadhead, scoring/match %, detalle de carga en mobile | ⏳ |
-| 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ⏳ |
-| 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ⏳ |
-| 4. Web completa | Flota, reportes, configuración y auditoría de la IA | ⏳ |
+| 1. Cargas | PostGIS ("cerca de mí"), deadhead, match %, vistas, detalle de carga en mobile, preferencias y cargas manuales en web | ✅ |
+| 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ✅ |
+| 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ✅ (rastreo en segundo plano: siguiente iteración) |
+| 4. Web completa | Equipo/roles/invitaciones, asignación de conductores, mapa en vivo, reportes + CSV, desempeño de la IA | ✅ (PDF de reportes y emails: pendientes) |
+| Producción | Imágenes Docker, Railway (web, API, PostGIS, Redis) + R2, migraciones en pre-deploy, marketplace DEMO en la beta. Ver [`deployment.md`](./deployment.md) y [ADR-0019](./adr/0019-hosting-railway.md) | ✅ (listo para desplegar) |
 | 5. Integraciones | Load boards autorizados, canal de email, modo semiautomático | ⏳ |
 
-Diseño del agente de IA (Fase 2): el LLM decide con *tool calling*, pero toda acción con efectos externos pasa por un **Policy Engine determinista**, que aplica los límites de `ai_settings` y el nivel de autonomía. Todas las transiciones de una negociación quedan auditadas.
+Agente de IA (Fase 2): un **workflow** orquestado por código (máquina de estados + BullMQ). Claude propone montos y explicaciones con salida estructurada, y un **Policy Engine determinista** aplica los límites de `ai_settings` y el nivel de autonomía antes de cualquier acción externa. Todo queda auditado en `negotiation_events`. Detalle en [`ai-agent.md`](./ai-agent.md) y [ADR-0013](./adr/0013-ai-agent-architecture.md).

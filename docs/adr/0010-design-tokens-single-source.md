@@ -21,6 +21,6 @@ La marca (colores y fuentes) puede cambiar, por ejemplo hacia una identidad más
 
 ## Consecuencias
 - Un rebrand de colores se hace en un archivo y un comando de build.
-- `dist/web-theme.css` es generado: los cambios se hacen siempre en `tokens.ts`.
+- `generated/web-theme.css` es generado: los cambios se hacen siempre en `tokens.ts`. Está fuera de `dist/` para que los builds no lo borren mientras corre el servidor de desarrollo.
 - Los cambios de color nativos (splash/notificaciones) requieren un nuevo dev build de la app.
 - La clase web `primary-soft` pasó a llamarse `primary-light`, para usar el mismo nombre de rol que mobile.

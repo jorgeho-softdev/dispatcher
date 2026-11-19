@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AI Dispatcher",
+    "name": "HaulGenius",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,18 +9,18 @@
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jorgehurtado.aidispatcher",
+      "bundleIdentifier": "com.jorgehurtado.haulgenius",
       "buildNumber": "1",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleAllowMixedLocalizations": true
       }
     },
     "android": {
-      "package": "com.jorgehurtado.aidispatcher",
+      "package": "com.jorgehurtado.haulgenius",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -50,13 +50,35 @@
           "toolsButton": false
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "HaulGenius uses your location to find loads near you and calculate empty kilometres to pickup.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "HaulGenius uses the camera to photograph delivery documents (POD, BOL, receipts).",
+          "photosPermission": "HaulGenius accesses your photos so you can attach delivery documents.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "router": {}
+    },
+    "locales": {
+      "en": "./locales/en.json",
+      "es": "./locales/es.json",
+      "fr": "./locales/fr.json",
+      "pa": "./locales/pa.json"
     }
   }
 }
