@@ -68,10 +68,12 @@ En mobile, las fuentes se registran con alias genéricos (`Brand-Regular`, `Bran
   | `apps/web/public/brand/logo-on-dark.png` | Login e invitación de la web (`BrandLogo`) |
   | `apps/web/public/brand/mark.png` | Barra lateral de la web (`BrandMark`: símbolo + nombre) |
   | `apps/web/src/app/icon.png` | Ícono de la pestaña del navegador |
+  | `apps/mobile/assets/icon.png` | Ícono de la app en iOS: 1024 px, cuadrado completo **sin redondear y sin transparencia** (iOS pone su propia máscara), símbolo al 57% del ancho sobre `surface` |
+  | `apps/mobile/assets/android-icon-foreground.png` | Ícono adaptativo de Android: símbolo al 38%, porque el launcher recorta el ~66% central. El fondo es el color `surface` (en `app.config.ts`) |
+  | `apps/mobile/assets/android-icon-monochrome.png` | Ícono temático de Android 13+: silueta blanca con la flecha recortada |
 
 - **Versión para fondo oscuro:** el script pinta las letras casi negras y sin color ("Haul") con el token `ink` del tema, para que se lean sobre `background`. "Genius" y el símbolo conservan su naranja.
-- **No cambian con el nombre:** el bundle ID (`com.jorgehurtado.aidispatcher`), el slug de Expo ni los paquetes internos `@dispatcher/*`. El bundle ID se puede cambiar sin costo solo antes de crear la app en App Store Connect.
-- **Ícono de la app:** todavía es el provisional (`assets/icon.png`). iOS exige un ícono **sin transparencia** de 1024 px, así que hay que componer el logo sobre un fondo sólido.
+- **Identificadores:** el bundle ID de iOS y el package de Android son `com.jorgehurtado.haulgenius` (cambiado antes de crear la app en las tiendas; después ya no se puede). El slug de Expo y los paquetes internos `@dispatcher/*` no cambian con la marca.
 
 ## Cómo se consume (para desarrolladores)
 

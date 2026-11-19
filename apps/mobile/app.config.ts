@@ -34,7 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     slug: config.slug ?? 'mobile',
     android: {
       ...config.android,
-      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: brand.background },
+      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: brand.surface },
       ...(googleMapsApiKey && { config: { ...config.android?.config, googleMaps: { apiKey: googleMapsApiKey } } }),
     },
     plugins,

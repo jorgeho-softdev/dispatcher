@@ -70,7 +70,7 @@ Cuando esté listo, presiona `i`: abre la app conectada al puerto correcto. Si s
 ```bash
 cd apps/mobile
 npx expo prebuild --clean --platform ios           # regenera ios/ desde app.json
-xcrun simctl uninstall booted com.jorgehurtado.aidispatcher   # borra la app y su caché del simulador
+xcrun simctl uninstall booted com.jorgehurtado.haulgenius   # borra la app y su caché del simulador
 npm run ios                                        # compila e instala de nuevo
 ```
 

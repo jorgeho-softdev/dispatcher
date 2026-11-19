@@ -12,7 +12,7 @@ import sharp from 'sharp';
 
 const require = createRequire(import.meta.url);
 const { themes, defaultTheme } = require('@dispatcher/design-tokens');
-const ink = themes[defaultTheme].colors.ink;
+const { ink, surface } = themes[defaultTheme].colors;
 
 const SRC = 'packages/design-tokens/brand';
 const out = (p) => {
@@ -67,4 +67,32 @@ await sharp(logoLight).resize({ width: 960 }).toFile(out('apps/mobile/assets/log
 await sharp(logoDark).resize({ width: 960 }).toFile(out('apps/web/public/brand/logo-on-dark.png'));
 await sharp(mark).resize(256, 256).toFile(out('apps/web/public/brand/mark.png'));
 await sharp(mark).resize(512, 512).toFile(out('apps/web/src/app/icon.png'));
-console.log('brand: splash, logos and web icon regenerated');
+
+// ── App icons ──────────────────────────────────────────────────────────
+// iOS: full-bleed square (iOS applies its own rounded mask; never pre-round
+// it, never transparent), 1024 px, symbol at 57% of the width on `surface`.
+const ICON = 1024;
+const fit = async (fraction) => {
+  const side = Math.round(ICON * fraction);
+  const symbol = await sharp(await trimmed(`${SRC}/mark.png`, { pad: 0, square: true })).resize(side, side).toBuffer();
+  return { input: symbol, left: Math.round((ICON - side) / 2), top: Math.round((ICON - side) / 2) };
+};
+const canvas = (background) => sharp({ create: { width: ICON, height: ICON, channels: 4, background } });
+await canvas(surface).composite([await fit(0.57)]).flatten({ background: surface }).removeAlpha().png()
+  .toFile(out('apps/mobile/assets/icon.png'));
+// Android adaptive icon: the launcher crops to the central ~66%, so the
+// symbol is smaller on the foreground layer; the background is a solid color
+// set in app.config.ts (`surface`). Monochrome = white silhouette (Android 13+ themed icons).
+const transparent = { r: 0, g: 0, b: 0, alpha: 0 };
+const foreground = await fit(0.38);
+await canvas(transparent).composite([foreground]).png().toFile(out('apps/mobile/assets/android-icon-foreground.png'));
+const { data: fg, info: fgInfo } = await sharp(foreground.input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+for (let i = 0; i < fg.length; i += 4) {
+  const arrow = fg[i] > 200 && fg[i + 1] > 200 && fg[i + 2] > 170; // the cream arrow becomes a cut-out
+  fg[i] = fg[i + 1] = fg[i + 2] = 255;
+  if (arrow) fg[i + 3] = 0;
+}
+const white = await sharp(fg, { raw: fgInfo }).png().toBuffer();
+await canvas(transparent).composite([{ ...foreground, input: white }]).png().toFile(out('apps/mobile/assets/android-icon-monochrome.png'));
+
+console.log('brand: splash, logos, app icons and web icon regenerated');
