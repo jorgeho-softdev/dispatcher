@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 // Environment is validated once at boot: the api refuses to start with a
 // missing or malformed variable instead of failing later at runtime.
-export const envSchema = z.object({
+const isLocal = (url: string) =>
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(url);
+
+const baseEnvSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
@@ -50,6 +53,24 @@ export const envSchema = z.object({
         .map((s) => s.trim())
         .filter(Boolean),
     ),
+});
+
+// Production must never fall back to the localhost defaults: invitation links
+// and CORS would silently point at a developer machine.
+export const envSchema = baseEnvSchema.superRefine((env, ctx) => {
+  if (env.NODE_ENV !== 'production') return;
+  if (isLocal(env.WEB_URL) || !env.WEB_URL.startsWith('https://'))
+    ctx.addIssue({
+      code: 'custom',
+      path: ['WEB_URL'],
+      message: 'must be the public https URL in production',
+    });
+  if (env.CORS_ORIGINS.some((o) => isLocal(o) || !o.startsWith('https://')))
+    ctx.addIssue({
+      code: 'custom',
+      path: ['CORS_ORIGINS'],
+      message: 'must list only public https origins in production',
+    });
 });
 
 export type Env = z.infer<typeof envSchema>;

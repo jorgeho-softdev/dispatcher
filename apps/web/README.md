@@ -13,6 +13,8 @@ npm run typecheck  # next typegen + tsc (los tipos de rutas como LayoutProps/Rou
 npm run lint
 ```
 
+**Producción:** `output: 'standalone'` (traza desde la raíz del monorepo). Imagen: `apps/web/Dockerfile`; Railway: `apps/web/railway.json`. Ver [`docs/deployment.md`](../../docs/deployment.md).
+
 `apps/web/turbo.json` hace que `build` espere a `typecheck`. Así Turbo no los corre en paralelo, porque ambos escriben `.next/types`.
 
 ## Variables de entorno (`.env.local`)

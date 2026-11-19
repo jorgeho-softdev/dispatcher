@@ -20,7 +20,9 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed:marketplace": "tsx prisma/seed-marketplace.ts",
+    "release": "prisma migrate deploy && tsx prisma/seed-marketplace.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

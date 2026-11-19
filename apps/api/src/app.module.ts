@@ -38,6 +38,8 @@ import { ReportsModule } from './modules/reports/reports.module';
           connection: {
             host: url.hostname,
             port: Number(url.port || 6379),
+            // 0 = resolve IPv4 and IPv6: Railway's private network is IPv6-only.
+            family: 0,
             ...(url.password && { password: decodeURIComponent(url.password) }),
             ...(url.pathname.length > 1 && {
               db: Number(url.pathname.slice(1)),

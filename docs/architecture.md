@@ -240,6 +240,7 @@ app/_layout.tsx
 | 2. Agente IA (modo asistido) | Orchestrator + Policy Engine, negociaciones, aprobaciones con push, BullMQ | ✅ |
 | 3. Viajes | Estados, GPS, ETA, documentos/POD (S3), gastos, ganancia real | ✅ (rastreo en segundo plano: siguiente iteración) |
 | 4. Web completa | Equipo/roles/invitaciones, asignación de conductores, mapa en vivo, reportes + CSV, desempeño de la IA | ✅ (PDF de reportes y emails: pendientes) |
+| Producción | Imágenes Docker, Railway (web, API, PostGIS, Redis) + R2, migraciones en pre-deploy, marketplace DEMO en la beta. Ver [`deployment.md`](./deployment.md) y [ADR-0019](./adr/0019-hosting-railway.md) | ✅ (listo para desplegar) |
 | 5. Integraciones | Load boards autorizados, canal de email, modo semiautomático | ⏳ |
 
 Agente de IA (Fase 2): un **workflow** orquestado por código (máquina de estados + BullMQ). Claude propone montos y explicaciones con salida estructurada, y un **Policy Engine determinista** aplica los límites de `ai_settings` y el nivel de autonomía antes de cualquier acción externa. Todo queda auditado en `negotiation_events`. Detalle en [`ai-agent.md`](./ai-agent.md) y [ADR-0013](./adr/0013-ai-agent-architecture.md).

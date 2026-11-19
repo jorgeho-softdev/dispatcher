@@ -62,3 +62,15 @@ jobs:
           npm run db:deploy --workspace=api
           npm run db:seed --workspace=api
           npm run test:e2e --workspace=api
+
+  # The production images must keep building (Railway builds these Dockerfiles).
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      matrix:
+        app: [api, web]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ${{ matrix.app }} image
+        run: docker build -f apps/${{ matrix.app }}/Dockerfile -t haulgenius-${{ matrix.app }}:ci .

@@ -9,6 +9,7 @@ Monorepo con **API** (NestJS + PostgreSQL), **web admin** (Next.js) y **app móv
 | [`docs/architecture.md`](./docs/architecture.md) | Cómo está construido el sistema |
 | [`docs/conventions.md`](./docs/conventions.md) | Buenas prácticas **obligatorias** y Definition of Done |
 | [`docs/adr/`](./docs/adr/) | Por qué se tomó cada decisión |
+| [`docs/deployment.md`](./docs/deployment.md) | **Despliegue en producción (Railway)**: servicios, variables, dominio, TestFlight |
 | [`docs/troubleshooting.md`](./docs/troubleshooting.md) | **Errores comunes en desarrollo y cómo resolverlos** (p. ej. la web atascada: `rm -rf apps/web/.next && npm run dev`) |
 | [`docs/design-system.md`](./docs/design-system.md) | Cómo cambiar colores y fuentes (web + app) |
 | [`docs/team.md`](./docs/team.md) | Roles, invitaciones por enlace y alcance del conductor |

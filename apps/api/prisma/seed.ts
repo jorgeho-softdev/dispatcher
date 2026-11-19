@@ -3,7 +3,7 @@ import { hash } from '@node-rs/argon2';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { findCity } from '@dispatcher/shared';
-import { SimulatedLoadProvider } from '../src/modules/loads/providers/simulated.provider';
+import { refreshSimulatedMarketplace } from './marketplace';
 
 // Idempotent dev seed: a demo owner-operator + simulated marketplace loads.
 // Safe to re-run; never run against production.
@@ -68,30 +68,10 @@ async function main() {
       }
     }
 
-    const loads = await new SimulatedLoadProvider(42).search({ limit: 40 });
-    for (const { broker, rawPayload: _raw, ...load } of loads) {
-      const brokerRecord = broker
-        ? ((await prisma.broker.findFirst({ where: { name: broker.name } })) ??
-          (await prisma.broker.create({ data: { name: broker.name } })))
-        : null;
-      const data = {
-        ...load,
-        organizationId: null,
-        brokerId: brokerRecord?.id ?? null,
-      };
-      await prisma.load.upsert({
-        where: {
-          source_externalId: {
-            source: load.source,
-            externalId: load.externalId,
-          },
-        },
-        create: data,
-        update: data,
-      });
-    }
-
-    console.log(`Seeded ${loads.length} simulated loads.`);
+    const r = await refreshSimulatedMarketplace(prisma);
+    console.log(
+      `Simulated loads: ${r.created} created, ${r.refreshed} refreshed.`,
+    );
     console.log(`Demo login: ${DEMO_EMAIL} / ${DEMO_PASSWORD}`);
   } finally {
     await prisma.$disconnect();
