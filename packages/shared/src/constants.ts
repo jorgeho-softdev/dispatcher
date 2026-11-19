@@ -1,6 +1,9 @@
 // Single source of truth for every enum-like value in the domain.
 // The Prisma schema mirrors these values; web and mobile render them.
 
+/** Product name shown to users (app, web, PDFs, API docs). Single source: change it here. */
+export const BRAND_NAME = 'HaulGenius';
+
 export const ROLES = ['owner', 'fleet_manager', 'dispatcher', 'driver'] as const;
 export type Role = (typeof ROLES)[number];
 

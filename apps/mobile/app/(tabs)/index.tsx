@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
+import { BRAND_NAME, OPPORTUNITY_THRESHOLD, formatMoney } from '@dispatcher/shared';
 import { Screen } from '@/components/ui/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -49,7 +49,7 @@ export default function HomeScreen() {
           <Ionicons name="hardware-chip-outline" size={26} color={colors.primary} />
         </View>
         <View className="flex-1">
-          <Text className="font-sans-bold text-base text-ink">AI Dispatcher</Text>
+          <Text className="font-sans-bold text-base text-ink">{BRAND_NAME}</Text>
           <Text className="font-sans text-xs text-muted">{t('mobile.home.aiAnalyzing')}</Text>
         </View>
         <View className="flex-row items-center" style={{ gap: 6 }}>

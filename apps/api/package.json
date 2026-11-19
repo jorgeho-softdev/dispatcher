@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "AI Dispatcher REST API (NestJS + Prisma + PostgreSQL)",
+  "description": "HaulGenius REST API (NestJS + Prisma + PostgreSQL)",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

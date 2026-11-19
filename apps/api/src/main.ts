@@ -1,3 +1,4 @@
+import { BRAND_NAME } from '@dispatcher/shared';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -20,7 +21,7 @@ async function bootstrap() {
 
   if (config.get('NODE_ENV', { infer: true }) !== 'production') {
     const doc = new DocumentBuilder()
-      .setTitle('AI Dispatcher API')
+      .setTitle(`${BRAND_NAME} API`)
       .setVersion('v1')
       .addBearerAuth()
       .build();

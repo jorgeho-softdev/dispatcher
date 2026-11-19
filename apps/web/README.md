@@ -1,4 +1,4 @@
-# web: AI Dispatcher Admin
+# web: HaulGenius Admin
 
 Next.js 16 (App Router, Cache Components) + Redux Toolkit / RTK Query + Tailwind 4. La arquitectura está en [`docs/architecture.md#5-web-admin-appsweb`](../../docs/architecture.md) y las decisiones en [ADR-0007](../../docs/adr/0007-web-bff-session.md).
 

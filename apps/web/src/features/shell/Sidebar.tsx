@@ -1,4 +1,5 @@
 'use client';
+import { BrandMark } from './BrandLogo';
 
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -27,8 +28,8 @@ export function SidebarView({ pathname }: { pathname: string | null }) {
   return (
     <aside className="border-b border-border bg-surface md:w-60 md:shrink-0 md:border-e md:border-b-0">
       <div className="flex h-16 items-center px-5">
-        <Link href="/" className="text-lg font-extrabold italic">
-          AI <span className="text-primary">Dispatcher</span>
+        <Link href="/">
+          <BrandMark />
         </Link>
       </div>
       <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:pb-0">

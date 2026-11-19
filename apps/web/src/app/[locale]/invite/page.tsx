@@ -6,6 +6,7 @@ import { resolveLocale } from '@/i18n/params';
 import { callApi } from '@/lib/server/session';
 import { Card } from '@/components/ui';
 import { AcceptInviteForm } from '@/features/team/AcceptInviteForm';
+import { BrandLogo } from '@/features/shell/BrandLogo';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/invite'>): Promise<Metadata> {
   const locale = await resolveLocale(params);
@@ -19,9 +20,9 @@ export default async function InvitePage({ params, searchParams }: PageProps<'/[
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
-        <p className="mb-8 text-center text-3xl font-extrabold italic">
-          AI <span className="text-primary">Dispatcher</span>
-        </p>
+        <div className="mb-8">
+          <BrandLogo width={200} priority />
+        </div>
         <Suspense fallback={<Card className="text-sm text-muted">…</Card>}>
           <Invitation params={params} searchParams={searchParams} />
         </Suspense>

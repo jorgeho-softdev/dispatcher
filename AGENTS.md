@@ -1,4 +1,4 @@
-# AI Dispatcher: instrucciones para agentes
+# HaulGenius: instrucciones para agentes
 
 Monorepo (npm workspaces + Turborepo): `apps/api` (NestJS + Prisma), `apps/web` (Next.js 16), `apps/mobile` (Expo), `packages/*` (shared, api-client, design-tokens).
 

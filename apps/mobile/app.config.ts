@@ -1,5 +1,6 @@
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 import { themes, defaultTheme } from '@dispatcher/design-tokens';
+import { BRAND_NAME } from '@dispatcher/shared';
 
 // Extends app.json with values that must come from the brand tokens
 // (packages/design-tokens/src/tokens.ts): native splash background, Android
@@ -29,7 +30,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...config,
-    name: config.name ?? 'AI Dispatcher',
+    name: config.name ?? BRAND_NAME,
     slug: config.slug ?? 'mobile',
     android: {
       ...config.android,

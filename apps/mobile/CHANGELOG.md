@@ -7,6 +7,7 @@ actually ships.
 
 ## Unreleased (pending next build)
 
+- Changed: the app is now called **HaulGenius** (home screen name, permission prompts, notifications) the launch screen shows the new H-arrow logo, and the sign-in screen shows the full HaulGenius logo (light and dark theme variants).
 - Added: initial project scaffold (expo-kickstart, 2026-11-14).
 - Changed: state management migrated from Zustand to Redux Toolkit + RTK Query (shared `@dispatcher/api-client`).
 - Added: sign-in screen, secure session (refresh token in Keychain/Keystore, automatic token refresh) and sign-out.

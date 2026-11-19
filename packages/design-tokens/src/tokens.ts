@@ -1,5 +1,5 @@
 // ════════════════════════════════════════════════════════════════════════
-//  AI Dispatcher — BRAND TOKENS (single source of truth)
+//  HaulGenius — BRAND TOKENS (single source of truth)
 //
 //  Every color and font used by apps/web and apps/mobile comes from this
 //  file. To rebrand, edit ONLY the values below, then run:

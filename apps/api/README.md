@@ -1,4 +1,4 @@
-# api: AI Dispatcher REST API
+# api: HaulGenius REST API
 
 NestJS 11 + Prisma 7 + PostgreSQL. La arquitectura está en [`docs/architecture.md#4-backend-appsapi`](../../docs/architecture.md) y las reglas en [`docs/conventions.md`](../../docs/conventions.md).
 

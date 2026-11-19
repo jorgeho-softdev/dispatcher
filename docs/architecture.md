@@ -1,10 +1,10 @@
-# Arquitectura de AI Dispatcher
+# Arquitectura de HaulGenius
 
 > Documento vivo. **Cualquier cambio de arquitectura debe actualizar este archivo en el mismo cambio** y, si es una decisión relevante, agregar un ADR en [`docs/adr/`](./adr/). Ver [`conventions.md`](./conventions.md).
 
 ## 1. Visión del producto
 
-AI Dispatcher es un **despachador con IA para owner-operators** (cargo van, Sprinter, box truck) y flotas pequeñas. La IA busca cargas, analiza la rentabilidad, prepara negociaciones con brokers y acompaña cada viaje hasta el cierre financiero. El lanzamiento es **Canadá primero** (Alberta / BC), con la arquitectura lista para EE.UU. ([ADR-0009](./adr/0009-canada-first-defaults.md)).
+HaulGenius es un **despachador con IA para owner-operators** (cargo van, Sprinter, box truck) y flotas pequeñas. La IA busca cargas, analiza la rentabilidad, prepara negociaciones con brokers y acompaña cada viaje hasta el cierre financiero. El lanzamiento es **Canadá primero** (Alberta / BC), con la arquitectura lista para EE.UU. ([ADR-0009](./adr/0009-canada-first-defaults.md)).
 
 ## 2. Vista general del sistema
 

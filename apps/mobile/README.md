@@ -1,4 +1,4 @@
-# AI Dispatcher
+# HaulGenius
 
 iOS + Android app built with Expo, Expo Router, NativeWind and Zustand.
 

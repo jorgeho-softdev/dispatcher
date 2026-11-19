@@ -176,12 +176,12 @@
     "signingIn": "Entrando…",
     "invalidFormat": "Revisa tu correo y contraseña.",
     "signOut": "Cerrar sesión",
-    "signOutConfirm": "¿Cerrar sesión en AI Dispatcher?"
+    "signOutConfirm": "¿Cerrar sesión en HaulGenius?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "Panel de administración de AI Dispatcher"
+      "title": "HaulGenius Admin",
+      "description": "Panel de administración de HaulGenius"
     },
     "login": {
       "subtitle": "Panel de administración"
@@ -394,7 +394,7 @@
   },
   "mobile": {
     "onboarding": {
-      "title": "Bienvenido a AI Dispatcher",
+      "title": "Bienvenido a HaulGenius",
       "body": "Vamos a configurarlo todo. Solo toma un momento.",
       "cta": "Empezar"
     },
@@ -454,8 +454,8 @@
       "section": "Notificaciones",
       "reminder": "Recordatorio diario",
       "deniedTitle": "Notificaciones desactivadas",
-      "deniedBody": "Activa las notificaciones de AI Dispatcher en los ajustes del dispositivo.",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "Activa las notificaciones de HaulGenius en los ajustes del dispositivo.",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "¡No olvides revisar tus cargas hoy!"
     },
     "loadDetail": {

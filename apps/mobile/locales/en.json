@@ -1,5 +1,5 @@
 {
-  "NSLocationWhenInUseUsageDescription": "AI Dispatcher uses your location to find loads near you and calculate empty kilometres to pickup.",
-  "NSCameraUsageDescription": "AI Dispatcher uses the camera to photograph delivery documents (POD, BOL, receipts).",
-  "NSPhotoLibraryUsageDescription": "AI Dispatcher accesses your photos so you can attach delivery documents."
+  "NSLocationWhenInUseUsageDescription": "HaulGenius uses your location to find loads near you and calculate empty kilometres to pickup.",
+  "NSCameraUsageDescription": "HaulGenius uses the camera to photograph delivery documents (POD, BOL, receipts).",
+  "NSPhotoLibraryUsageDescription": "HaulGenius accesses your photos so you can attach delivery documents."
 }

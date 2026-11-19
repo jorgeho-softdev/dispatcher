@@ -176,12 +176,12 @@
     "signingIn": "ਸਾਈਨ ਇਨ ਹੋ ਰਿਹਾ ਹੈ…",
     "invalidFormat": "ਆਪਣੀ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਜਾਂਚੋ।",
     "signOut": "ਸਾਈਨ ਆਊਟ",
-    "signOutConfirm": "ਕੀ AI Dispatcher ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰਨਾ ਹੈ?"
+    "signOutConfirm": "ਕੀ HaulGenius ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰਨਾ ਹੈ?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "AI Dispatcher ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
+      "title": "HaulGenius Admin",
+      "description": "HaulGenius ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
     },
     "login": {
       "subtitle": "ਪ੍ਰਬੰਧਨ ਪੈਨਲ"
@@ -394,7 +394,7 @@
   },
   "mobile": {
     "onboarding": {
-      "title": "AI Dispatcher ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
+      "title": "HaulGenius ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ",
       "body": "ਆਓ ਸਭ ਕੁਝ ਸੈੱਟ ਕਰੀਏ। ਬੱਸ ਇੱਕ ਪਲ ਲੱਗੇਗਾ।",
       "cta": "ਸ਼ੁਰੂ ਕਰੋ"
     },
@@ -454,8 +454,8 @@
       "section": "ਸੂਚਨਾਵਾਂ",
       "reminder": "ਰੋਜ਼ਾਨਾ ਯਾਦ-ਦਹਾਨੀ",
       "deniedTitle": "ਸੂਚਨਾਵਾਂ ਬੰਦ ਹਨ",
-      "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ AI Dispatcher ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "ਆਪਣੇ ਡਿਵਾਈਸ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ HaulGenius ਲਈ ਸੂਚਨਾਵਾਂ ਚਾਲੂ ਕਰੋ।",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "ਅੱਜ ਆਪਣੇ ਲੋਡ ਵੇਖਣਾ ਨਾ ਭੁੱਲੋ!"
     },
     "loadDetail": {

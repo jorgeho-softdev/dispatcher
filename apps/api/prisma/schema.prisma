@@ -1,4 +1,4 @@
-// AI Dispatcher — database schema (Fase 0).
+// HaulGenius — database schema (Fase 0).
 // Conventions (docs/conventions.md#database):
 //  - Tables/columns are snake_case via @@map/@map; Prisma models are PascalCase.
 //  - Every business table is scoped by organization_id (multi-tenant).

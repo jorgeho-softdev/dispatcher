@@ -1,6 +1,6 @@
 # Agente de IA: negociación asistida (Fase 2)
 
-El AI Dispatcher negocia tarifas con brokers en nombre del transportista. El principio central:
+El agente de IA de HaulGenius negocia tarifas con brokers en nombre del transportista. El principio central:
 
 > **La IA propone; el código decide qué está permitido; el humano aprueba lo que compromete.**
 

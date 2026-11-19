@@ -176,12 +176,12 @@
     "signingIn": "Signing in…",
     "invalidFormat": "Check your email and password.",
     "signOut": "Sign out",
-    "signOutConfirm": "Sign out of AI Dispatcher?"
+    "signOutConfirm": "Sign out of HaulGenius?"
   },
   "web": {
     "meta": {
-      "title": "AI Dispatcher Admin",
-      "description": "AI Dispatcher administration panel"
+      "title": "HaulGenius Admin",
+      "description": "HaulGenius administration panel"
     },
     "login": {
       "subtitle": "Administration panel"
@@ -394,7 +394,7 @@
   },
   "mobile": {
     "onboarding": {
-      "title": "Welcome to AI Dispatcher",
+      "title": "Welcome to HaulGenius",
       "body": "Let's get you set up. It only takes a moment.",
       "cta": "Let's start"
     },
@@ -454,8 +454,8 @@
       "section": "Notifications",
       "reminder": "Daily reminder",
       "deniedTitle": "Notifications are off",
-      "deniedBody": "Enable notifications for AI Dispatcher in your device settings.",
-      "reminderTitle": "AI Dispatcher",
+      "deniedBody": "Enable notifications for HaulGenius in your device settings.",
+      "reminderTitle": "HaulGenius",
       "reminderBody": "Don't forget to check your loads today!"
     },
     "loadDetail": {

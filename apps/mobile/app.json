@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AI Dispatcher",
+    "name": "HaulGenius",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -55,7 +55,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "AI Dispatcher uses your location to find loads near you and calculate empty kilometres to pickup.",
+          "locationWhenInUsePermission": "HaulGenius uses your location to find loads near you and calculate empty kilometres to pickup.",
           "isIosBackgroundLocationEnabled": false,
           "isAndroidBackgroundLocationEnabled": false
         }
@@ -63,8 +63,8 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "AI Dispatcher uses the camera to photograph delivery documents (POD, BOL, receipts).",
-          "photosPermission": "AI Dispatcher accesses your photos so you can attach delivery documents.",
+          "cameraPermission": "HaulGenius uses the camera to photograph delivery documents (POD, BOL, receipts).",
+          "photosPermission": "HaulGenius accesses your photos so you can attach delivery documents.",
           "microphonePermission": false
         }
       ]
