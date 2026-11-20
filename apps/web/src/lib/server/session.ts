@@ -57,14 +57,15 @@ function publicOrigin(request: Request): string {
  */
 /**
  * The browser's IP, forwarded to the api so its per-IP auth rate limit sees
- * each user instead of the web server. Only the LAST X-Forwarded-For entry is
- * used: it is the one appended by the platform's edge proxy, so a client
- * cannot spoof it by sending its own header.
+ * each user instead of the web server. Railway's edge puts the real client IP
+ * in X-Real-IP (overwriting anything the client sent); without it, the last
+ * X-Forwarded-For entry (added by the nearest proxy) is used. The api reads
+ * it through CLIENT_IP_HEADER=x-real-ip.
  */
 export function clientIpHeaders(request: Request): Record<string, string> {
   const forwarded = request.headers.get('x-forwarded-for')?.split(',').map((s) => s.trim()).filter(Boolean);
-  const ip = forwarded?.at(-1) ?? request.headers.get('x-real-ip');
-  return ip ? { 'x-forwarded-for': ip } : {};
+  const ip = request.headers.get('x-real-ip')?.trim() || forwarded?.at(-1);
+  return ip ? { 'x-real-ip': ip, 'x-forwarded-for': ip } : {};
 }
 
 export async function callApi(path: string, init: RequestInit = {}): Promise<Response> {

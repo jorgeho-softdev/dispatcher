@@ -48,6 +48,12 @@ const baseEnvSchema = z.object({
    * spam. Raised in e2e, where every request comes from one IP.
    */
   AUTH_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(10),
+  /**
+   * Header with the real client IP set by the platform's edge (Railway:
+   * `x-real-ip`). Only set it when the edge overwrites client-sent values;
+   * unset = socket/proxy IP (src/common/client-ip.ts).
+   */
+  CLIENT_IP_HEADER: z.string().trim().min(1).optional(),
   /** Public URL of the web admin (invitation links). */
   WEB_URL: z.url().default('http://localhost:3000'),
   CORS_ORIGINS: z

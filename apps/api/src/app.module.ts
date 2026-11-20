@@ -15,6 +15,7 @@ import { NegotiationsModule } from './modules/negotiations/negotiations.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { BullModule } from '@nestjs/bullmq';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { resolveClientIp } from './common/client-ip';
 import { StorageModule } from './modules/storage/storage.module';
 import { TripsModule } from './modules/trips/trips.module';
 import { TeamModule } from './modules/team/team.module';
@@ -28,12 +29,18 @@ import { ReportsModule } from './modules/reports/reports.module';
     // scaling the api horizontally (docs/deployment.md).
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService<Env, true>) => [
-        {
-          ttl: 60_000,
-          limit: config.get('AUTH_RATE_LIMIT_PER_MINUTE', { infer: true }),
-        },
-      ],
+      useFactory: (config: ConfigService<Env, true>) => {
+        const header = config.get('CLIENT_IP_HEADER', { infer: true });
+        return {
+          throttlers: [
+            {
+              ttl: 60_000,
+              limit: config.get('AUTH_RATE_LIMIT_PER_MINUTE', { infer: true }),
+            },
+          ],
+          getTracker: (req) => resolveClientIp(req, header),
+        };
+      },
     }),
     JwtModule.registerAsync({
       global: true,
