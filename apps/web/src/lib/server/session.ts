@@ -55,6 +55,18 @@ function publicOrigin(request: Request): string {
  * a 503 JSON response instead of an unhandled exception, so every BFF route
  * degrades gracefully and the UI can show "server unavailable".
  */
+/**
+ * The browser's IP, forwarded to the api so its per-IP auth rate limit sees
+ * each user instead of the web server. Only the LAST X-Forwarded-For entry is
+ * used: it is the one appended by the platform's edge proxy, so a client
+ * cannot spoof it by sending its own header.
+ */
+export function clientIpHeaders(request: Request): Record<string, string> {
+  const forwarded = request.headers.get('x-forwarded-for')?.split(',').map((s) => s.trim()).filter(Boolean);
+  const ip = forwarded?.at(-1) ?? request.headers.get('x-real-ip');
+  return ip ? { 'x-forwarded-for': ip } : {};
+}
+
 export async function callApi(path: string, init: RequestInit = {}): Promise<Response> {
   try {
     return await fetch(`${API_URL}${path}`, { ...init, redirect: 'error', cache: 'no-store' });

@@ -165,7 +165,8 @@
     "BROKER_ALREADY_RATED": "Ya calificaste a este broker en este viaje.",
     "INVITATION_INVALID": "Esta invitación no es válida, expiró o ya se usó.",
     "LAST_OWNER": "La organización necesita al menos un dueño.",
-    "CANNOT_CHANGE_SELF": "No puedes cambiar ni quitar tu propio acceso."
+    "CANNOT_CHANGE_SELF": "No puedes cambiar ni quitar tu propio acceso.",
+    "RATE_LIMITED": "Demasiados intentos. Espera un minuto y vuelve a intentarlo."
   },
   "auth": {
     "email": "Correo",
@@ -176,7 +177,17 @@
     "signingIn": "Entrando…",
     "invalidFormat": "Revisa tu correo y contraseña.",
     "signOut": "Cerrar sesión",
-    "signOutConfirm": "¿Cerrar sesión en HaulGenius?"
+    "signOutConfirm": "¿Cerrar sesión en HaulGenius?",
+    "name": "Tu nombre",
+    "companyName": "Nombre de tu empresa",
+    "companyHint": "¿Trabajas solo? Pon tu nombre o el de tu camión.",
+    "passwordHint": "Mínimo 8 caracteres.",
+    "createAccount": "Crear cuenta",
+    "creatingAccount": "Creando cuenta…",
+    "signupSubtitle": "Tu dispatcher con IA, listo en un minuto.",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "signupInvalid": "Revisa tus datos: nombre y empresa de al menos 2 letras, un correo válido y una contraseña de 8 o más caracteres."
   },
   "web": {
     "meta": {

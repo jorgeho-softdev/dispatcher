@@ -39,6 +39,7 @@ Ver [`.env.example`](./.env.example). Se validan con Zod al arrancar (`src/confi
 | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Credenciales S3 (local: `dispatcher` / `dispatcher-secret`) |
 | `S3_FORCE_PATH_STYLE` | `true` para SeaweedFS/MinIO/R2 |
 | `WEB_URL` | URL pública de la web (enlaces de invitación) |
+| `AUTH_RATE_LIMIT_PER_MINUTE` | Intentos por IP y minuto en registro, login y aceptar invitación (10). Ver ADR-0020 |
 | `SIMULATED_MARKETPLACE` | `true` para cargar el marketplace DEMO en producción/beta (`npm run release`) |
 | `EXPO_ACCESS_TOKEN` | Opcional: solo si Expo Push tiene "enhanced security" |
 

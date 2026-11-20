@@ -11,6 +11,7 @@ import {
   type UpdateMeInput,
 } from '@dispatcher/shared';
 import { Auth, Public } from '../../common/decorators';
+import { AuthRateLimit } from '../../common/auth-rate-limit';
 import { ZodValidationPipe } from '../../common/zod-validation.pipe';
 import type { AuthContext } from '../../common/auth-context';
 import { AuthService } from './auth.service';
@@ -21,12 +22,14 @@ export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   @Public()
+  @AuthRateLimit()
   @Post('auth/register')
   register(@Body(new ZodValidationPipe(registerSchema)) body: RegisterInput) {
     return this.auth.register(body);
   }
 
   @Public()
+  @AuthRateLimit()
   @Post('auth/login')
   @HttpCode(200)
   login(@Body(new ZodValidationPipe(loginSchema)) body: LoginInput) {

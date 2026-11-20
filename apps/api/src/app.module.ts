@@ -14,6 +14,7 @@ import { AiSettingsModule } from './modules/ai-settings/ai-settings.module';
 import { NegotiationsModule } from './modules/negotiations/negotiations.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { BullModule } from '@nestjs/bullmq';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { StorageModule } from './modules/storage/storage.module';
 import { TripsModule } from './modules/trips/trips.module';
 import { TeamModule } from './modules/team/team.module';
@@ -22,6 +23,18 @@ import { ReportsModule } from './modules/reports/reports.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
+    // Rate limit for the public credential endpoints only (@AuthRateLimit).
+    // In-memory store: correct for one replica; use a Redis store before
+    // scaling the api horizontally (docs/deployment.md).
+    ThrottlerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => [
+        {
+          ttl: 60_000,
+          limit: config.get('AUTH_RATE_LIMIT_PER_MINUTE', { infer: true }),
+        },
+      ],
+    }),
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],

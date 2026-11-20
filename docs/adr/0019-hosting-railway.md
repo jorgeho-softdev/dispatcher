@@ -7,7 +7,7 @@
 Para la beta en TestFlight la app necesita una API pública con HTTPS. La API necesita procesos que sigan corriendo (la cola BullMQ de la IA), Postgres con PostGIS y Redis. El presupuesto inicial es bajo y no hay nadie dedicado a operar servidores.
 
 ## Decisión
-- **Railway** para todo: `web`, `api`, PostGIS y Redis en un solo proyecto, con red privada entre servicios. Los archivos van a **Cloudflare R2** (compatible con S3, sin costo de salida).
+- **Railway** para todo: `web`, `api`, PostGIS y Redis en un solo proyecto, con red privada entre servicios. Los archivos van al **Bucket de Railway** (compatible con S3, en la misma región). Se decidió así en el despliegue real (2026-11-19) porque Railway ya lo ofrece y evita otra cuenta; R2 sigue siendo una alternativa directa, solo cambian las variables `S3_*`.
 - **Imágenes Docker** construidas desde la raíz del repo (necesitan `packages/*`), con un Dockerfile por app. Cada imagen instala **solo los workspaces que usa** (`npm ci -w …`): la imagen de la API no trae Expo ni Next.
 - **Web en modo `standalone`** (`outputFileTracingRoot` en la raíz del monorepo).
 - **Migraciones en el pre-deploy** (`npm run release`): si fallan, la versión nueva no recibe tráfico.
@@ -22,6 +22,7 @@ Para la beta en TestFlight la app necesita una API pública con HTTPS. La API ne
 - **Imagen única con API + web:** más barata, pero acopla despliegues y escalado.
 
 ## Consecuencias
+- Railway no tiene región en Canadá: los datos quedan en EE. UU. (US West). Ver [`privacy.md`](../privacy.md).
 - Costo estimado de US$10–20/mes en la beta, que crece con el uso (Railway cobra por recursos).
 - La imagen de la API (~1 GB) incluye las dependencias de desarrollo, porque el pre-deploy usa `prisma` y `tsx`. Se puede reducir más adelante compilando el script del marketplace.
 - Hay que configurar un proveedor de teselas de mapa antes del lanzamiento público (las de OSM son solo para pruebas).

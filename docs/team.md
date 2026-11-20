@@ -23,6 +23,10 @@ La matriz vive en `packages/shared/src/permissions.ts` (`ROLE_PERMISSIONS`). La 
 - **Quitar a un miembro cierra su sesión:** se revocan todos sus refresh tokens. Los access tokens que ya tenga caducan en ≤ 15 min.
 - **Cambio de rol:** se aplica en el siguiente refresh del token (≤ 15 min).
 
+## Registro propio
+
+Cualquier persona puede crear su cuenta en la web (`/signup`) o en la app (pantalla "Crear cuenta"). Queda como **Owner** de una organización nueva; el resto del equipo entra por invitación. Los intentos de registro y login tienen un límite por IP. Ver [ADR-0020](./adr/0020-signup-and-auth-rate-limit.md). Login con Google y Apple: pendiente para antes del lanzamiento público.
+
 ## Invitaciones por enlace
 
 ```

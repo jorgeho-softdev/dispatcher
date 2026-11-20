@@ -165,7 +165,8 @@
     "BROKER_ALREADY_RATED": "Vous avez déjà évalué ce courtier pour ce voyage.",
     "INVITATION_INVALID": "Cette invitation est invalide, expirée ou déjà utilisée.",
     "LAST_OWNER": "L'organisation doit avoir au moins un propriétaire.",
-    "CANNOT_CHANGE_SELF": "Vous ne pouvez pas modifier ou retirer votre propre accès."
+    "CANNOT_CHANGE_SELF": "Vous ne pouvez pas modifier ou retirer votre propre accès.",
+    "RATE_LIMITED": "Trop de tentatives. Attendez une minute et réessayez."
   },
   "auth": {
     "email": "Courriel",
@@ -176,7 +177,17 @@
     "signingIn": "Connexion…",
     "invalidFormat": "Vérifiez votre courriel et votre mot de passe.",
     "signOut": "Se déconnecter",
-    "signOutConfirm": "Se déconnecter de HaulGenius ?"
+    "signOutConfirm": "Se déconnecter de HaulGenius ?",
+    "name": "Votre nom",
+    "companyName": "Nom de l'entreprise",
+    "companyHint": "Vous roulez seul ? Indiquez votre nom ou celui de votre camion.",
+    "passwordHint": "Au moins 8 caractères.",
+    "createAccount": "Créer un compte",
+    "creatingAccount": "Création du compte…",
+    "signupSubtitle": "Votre répartiteur IA, prêt en une minute.",
+    "noAccount": "Pas encore de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signupInvalid": "Vérifiez vos informations : nom et entreprise d'au moins 2 lettres, un e-mail valide et un mot de passe de 8 caractères ou plus."
   },
   "web": {
     "meta": {

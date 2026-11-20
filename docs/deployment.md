@@ -8,7 +8,7 @@ Proyecto Railway "haulgenius"
 ├─ api       NestJS + cola de la IA (apps/api/Dockerfile) → https://api.<dominio>
 ├─ PostGIS   Postgres con PostGIS (plantilla)   → solo red privada
 ├─ Redis     plantilla oficial                  → solo red privada
-└─ archivos  Cloudflare R2 (compatible con S3)  → fuera de Railway
+└─ documents Bucket de Railway (compatible con S3) → privado
 ```
 
 - La **web** habla con la **API** por la red privada de Railway (`api.railway.internal`); el navegador nunca ve la API ni los tokens.
@@ -30,29 +30,38 @@ La configuración vive en el repo: `apps/api/railway.json` y `apps/web/railway.j
 
 ### 1. Proyecto y bases de datos
 1. En Railway: **New → Empty project**. Nómbralo `haulgenius`.
-2. **+ Create → Template**, busca **PostGIS** y agrégalo. La plantilla normal de Postgres no trae PostGIS, y la migración `phase1_geo` lo necesita.
-3. **+ Create → Database → Redis**.
+2. **+ Add → Template**, busca **PostGIS** y elige la de **Railway Templates**. La plantilla normal de Postgres no trae PostGIS, y la migración `phase1_geo` lo necesita.
+   - Cambia **Settings → Source Image** de `postgis/postgis:16-master` (compilación de desarrollo) a **`postgis/postgis:16-3.5`** (estable). Mantén la versión mayor (16): el volumen ya está inicializado con ella.
+   - **Borra el TCP Proxy** público (Settings → Networking → 🗑️). La API usa la red privada.
+3. **+ Add → Database → Redis**. No actives "Add Public Access".
+4. **+ Add → Bucket** (`documents`), en la **misma región** que los servicios (US West). La región no se puede cambiar después. Sus credenciales están en la pestaña **Credentials**.
+
+Todo debe estar en el **mismo proyecto**: la red privada no cruza proyectos. Ojo: el botón **"+ New"** de la lista de proyectos crea un proyecto aparte; dentro del proyecto, el botón es **"+ Add"**.
 
 ### 2. Servicio `api`
 1. **+ Create → GitHub Repo →** `jorgeho-softdev/dispatcher`. Renombra el servicio a **`api`** (el nombre se usa en las variables de la web).
-2. **Settings → Source:** deja el *Root Directory* vacío (la imagen necesita `packages/`). En **Config-as-code** escribe `/apps/api/railway.json`.
-3. **Settings → Source → Branch:** `main`.
+2. **Settings → Source:** deja el *Root Directory* vacío (la imagen necesita `packages/`). Rama `main`. Activa **Wait for CI** (requiere aceptar los permisos actualizados de la GitHub App de Railway; dale acceso **solo** a este repositorio).
+3. **Cómo construir.** Lo ideal es **Config-as-code** → `/apps/api/railway.json`. Si no aparece o no se aplica (Railway usa entonces *Railpack* y falla con "Railpack failed to prepare the build"), configúralo a mano:
+   - Variable `RAILWAY_DOCKERFILE_PATH` = `apps/api/Dockerfile`
+   - **Settings → Deploy → Add pre-deploy step:** `npm run release` (migraciones; sin esto la API arranca con la base vacía)
 4. **Variables** (usa el nombre real de tus servicios en `${{…}}`):
 
    | Variable | Valor |
    |---|---|
    | `NODE_ENV` | `production` |
    | `PORT` | `4000` |
-   | `DATABASE_URL` | `${{PostGIS.DATABASE_URL}}` |
+   | `DATABASE_URL` | `${{PostGIS.DATABASE_PRIVATE_URL}}`. **No** `DATABASE_URL` de PostGIS: esa usa el proxy público, y sin él queda con host vacío |
    | `REDIS_URL` | `${{Redis.REDIS_URL}}` |
-   | `JWT_ACCESS_SECRET` | 64 caracteres aleatorios: `openssl rand -hex 32` |
-   | `WEB_URL` | `https://app.<dominio>` (o el dominio `*.up.railway.app` de la web) |
+   | `JWT_ACCESS_SECRET` | debe tener **64 caracteres** (`openssl rand -hex 32`); con menos de 32 la API no arranca |
+   | `WEB_URL` | `https://${{web.RAILWAY_PUBLIC_DOMAIN}}` (o tu dominio `https://app.<dominio>`) |
    | `CORS_ORIGINS` | igual que `WEB_URL` |
-   | `S3_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` |
+   | `S3_ENDPOINT` | el **Endpoint URL** de las Credentials del bucket (`https://t3.storageapi.dev`) |
    | `S3_REGION` | `auto` |
-   | `S3_BUCKET` | `haulgenius-documents` |
-   | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | token de API de R2 con permiso de lectura y escritura en ese bucket |
+   | `S3_BUCKET` | el **Bucket Name** de las Credentials (lleva un sufijo aleatorio) |
+   | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | las llaves de las Credentials del bucket |
+   | `S3_FORCE_PATH_STYLE` | `false` (el bucket de Railway usa URLs por subdominio) |
    | `AI_STRATEGY` | `rules` (o `auto` + `ANTHROPIC_API_KEY` para usar Claude) |
+   | `AUTH_RATE_LIMIT_PER_MINUTE` | opcional, intentos de registro y login por IP y minuto (10). El contador vive en memoria: con más de una réplica de la API, cambiar a un almacenamiento en Redis |
    | `SIMULATED_MARKETPLACE` | `true` durante la beta (cargas DEMO) |
    | `EXPO_ACCESS_TOKEN` | opcional, para push |
 
@@ -60,7 +69,8 @@ La configuración vive en el repo: `apps/api/railway.json` y `apps/web/railway.j
 5. **Settings → Networking → Generate Domain** (o tu dominio: `api.<dominio>`).
 
 ### 3. Servicio `web`
-1. **+ Create → GitHub Repo →** el mismo repo. Renombra el servicio a **`web`**. Config-as-code: `/apps/web/railway.json`.
+1. **+ Add → GitHub Repository →** el mismo repo. Renombra el servicio a **`web`**. Wait for CI activado. Config-as-code `/apps/web/railway.json`, o si no aplica, la variable `RAILWAY_DOCKERFILE_PATH` = `apps/web/Dockerfile`.
+   Crea `web` **antes** de desplegar la API: la API referencia su dominio. Si la API arrancó antes de que existiera, haz **Redeploy** (no *Restart*, que reutiliza las variables viejas).
 2. **Variables:**
 
    | Variable | Valor |
@@ -69,10 +79,8 @@ La configuración vive en el repo: `apps/api/railway.json` y `apps/web/railway.j
    | `NEXT_PUBLIC_MAP_STYLE_URL` | estilo de un proveedor de mapas (MapTiler, Stadia…). Sin definir usa OSM, **solo para pruebas** |
 3. **Networking → Generate Domain** (o `app.<dominio>`). Vuelve a la API y pon ese dominio en `WEB_URL` y `CORS_ORIGINS`.
 
-### 4. Archivos (Cloudflare R2)
-1. En Cloudflare: **R2 → Create bucket** `haulgenius-documents` (ubicación: Norteamérica).
-2. **Manage API tokens → Create token** con *Object Read & Write* limitado a ese bucket. Copia el Access Key ID, el Secret y el endpoint S3 a las variables de la API.
-3. Crea el bucket antes del primer despliegue: un token limitado a un bucket no puede crearlo.
+### 4. Archivos
+Se usa el **Bucket de Railway** del paso 1 (privado; los clientes suben y descargan con URLs firmadas de 5 min). Cloudflare R2 sirve igual: solo cambian las variables `S3_*`.
 
 ### 5. Dominio propio (opcional, Hostinger)
 En Railway: **Settings → Networking → Custom Domain** en `web` y en `api`. Railway muestra un registro **CNAME** para cada uno; agrégalo en **hPanel → Dominios → DNS**. El HTTPS se emite solo.
@@ -88,6 +96,10 @@ npx eas-cli env:create --environment production --name EXPO_PUBLIC_API_URL \
 
 Un build de release **no arranca** sin esa variable (`lib/config.ts`).
 
+## Producción actual (2026-11-19)
+- Web: `https://web-production-4932e3d0.up.railway.app`
+- API: `https://api-production-dcade756.up.railway.app/v1`
+
 ## Verificar después de desplegar
 ```bash
 curl https://api.<dominio>/v1/health      # {"status":"ok","database":"up"}
@@ -101,6 +113,9 @@ docker build -f apps/api/Dockerfile -t haulgenius-api .
 docker build -f apps/web/Dockerfile -t haulgenius-web .
 ```
 El CI construye las dos imágenes en cada PR (job `docker`).
+
+## Privacidad
+Railway no tiene región en Canadá: la base de datos, Redis y el bucket están en **US West (California)**. Lo que esto implica para la política de privacidad está en [`privacy.md`](./privacy.md).
 
 ## Seguridad en producción
 - Swagger (`/docs`) está desactivado.
