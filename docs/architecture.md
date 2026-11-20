@@ -106,8 +106,8 @@ src/
 | Método | Ruta | Permiso | Descripción |
 |---|---|---|---|
 | GET | `/v1/health` | público | Estado de la API y la DB |
-| POST | `/v1/auth/register` | público | Crea usuario + organización (owner) + ajustes IA |
-| POST | `/v1/auth/login` | público | Devuelve access + refresh + `me` |
+| POST | `/v1/auth/register` | público, límite por IP | Crea usuario + organización (owner) + ajustes IA. Pantallas: web `/signup`, app `signup` ([ADR-0020](./adr/0020-signup-and-auth-rate-limit.md)) |
+| POST | `/v1/auth/login` | público, límite por IP | Devuelve access + refresh + `me` |
 | POST | `/v1/auth/refresh` | público | Rota el refresh token |
 | POST | `/v1/auth/logout` | público | Revoca la familia del refresh token |
 | GET | `/v1/me` | autenticado | Usuario (con `locale`), organización y rol |
@@ -185,6 +185,7 @@ organizations 1─┬─< memberships >─1 users 1─< refresh_tokens, device_t
 Navegador ──(cookies httpOnly)──► Next.js
    │                               ├─ proxy.ts             redirección optimista sin sesión → /login
    │                               ├─ /api/auth/login      llama a /v1/auth/login y fija las cookies
+   │                               ├─ /api/auth/register   registro propio (owner de una organización nueva)
    │                               ├─ /api/auth/logout     revoca en la API y borra las cookies
    │                               └─ /api/backend/[...]   inyecta el Bearer, refresca si hay 401 (1 reintento)
    └─ RTK Query (baseUrl /api/backend)

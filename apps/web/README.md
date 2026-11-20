@@ -35,6 +35,7 @@ src/app/[locale]/        Todas las páginas, una versión por idioma (/en, /fr, 
                          map (mapa en vivo, MapLibre), reports (finanzas + CSV + desempeño de la IA),
                          team (miembros, roles, invitaciones)
   invite/                Aceptar invitación (pública)
+  signup/                Crear cuenta (pública; el usuario queda como owner)
   login/                 Login
 src/i18n/                next-intl: routing, navigation (Link/useRouter con idioma), request, params
 src/app/api/             BFF: auth/login, auth/logout, backend/[...path]

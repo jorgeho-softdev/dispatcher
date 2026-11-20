@@ -61,6 +61,7 @@ Todo debe estar en el **mismo proyecto**: la red privada no cruza proyectos. Ojo
    | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | las llaves de las Credentials del bucket |
    | `S3_FORCE_PATH_STYLE` | `false` (el bucket de Railway usa URLs por subdominio) |
    | `AI_STRATEGY` | `rules` (o `auto` + `ANTHROPIC_API_KEY` para usar Claude) |
+   | `AUTH_RATE_LIMIT_PER_MINUTE` | opcional, intentos de registro y login por IP y minuto (10). El contador vive en memoria: con más de una réplica de la API, cambiar a un almacenamiento en Redis |
    | `SIMULATED_MARKETPLACE` | `true` durante la beta (cargas DEMO) |
    | `EXPO_ACCESS_TOKEN` | opcional, para push |
 

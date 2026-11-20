@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { acceptInvitationSchema, type AuthResponseDto } from '@dispatcher/shared';
-import { callApi, isSameOrigin, setSessionCookies } from '@/lib/server/session';
+import { callApi, clientIpHeaders, isSameOrigin, setSessionCookies } from '@/lib/server/session';
 
 /** Accepts an invitation, then signs the new member in (httpOnly session cookies). */
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   }
   const accepted = await callApi('/invitations/accept', {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', ...clientIpHeaders(request) },
     body: JSON.stringify(parsed.data),
   });
   const body = (await accepted.json().catch(() => ({}))) as { email?: string };
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   const login = await callApi('/auth/login', {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', ...clientIpHeaders(request) },
     body: JSON.stringify({ email: body.email, password: parsed.data.password }),
   });
   if (!login.ok) return NextResponse.json(await login.json().catch(() => ({})), { status: login.status });

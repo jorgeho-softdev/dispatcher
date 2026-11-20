@@ -40,6 +40,7 @@ Un cambio está terminado solo si cumple todo esto:
 
 ## 3. API (NestJS)
 
+- **Endpoints públicos con credenciales** (registro, login, aceptar invitación) llevan `@AuthRateLimit()`. Cuando el BFF los llama, reenvía la IP del navegador con `clientIpHeaders(request)`; si no, todos los usuarios de la web compartirían un mismo límite.
 - **Un módulo por dominio** en `src/modules/<dominio>/`, con `*.module.ts`, `*.controller.ts` y `*.service.ts` (y `providers/` si aplica).
 - **Controllers delgados:** solo reciben, validan (`ZodValidationPipe`) y delegan. La lógica va en el servicio.
 - **Seguridad por defecto:**

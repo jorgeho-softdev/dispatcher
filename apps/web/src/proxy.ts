@@ -10,7 +10,7 @@ import { routing } from './i18n/routing';
 const intl = createIntlMiddleware(routing);
 
 const REFRESH_COOKIE = 'ad_refresh';
-const PUBLIC_PATHS = ['/login'];
+const PUBLIC_PATHS = ['/login', '/signup'];
 /** Reachable with or without a session (e.g. accepting an invitation). */
 const OPEN_PATHS = ['/invite'];
 

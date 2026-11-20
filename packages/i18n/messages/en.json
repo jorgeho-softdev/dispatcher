@@ -165,7 +165,8 @@
     "BROKER_ALREADY_RATED": "You already rated this broker for this trip.",
     "INVITATION_INVALID": "This invitation is invalid, expired or already used.",
     "LAST_OWNER": "The organization needs at least one owner.",
-    "CANNOT_CHANGE_SELF": "You can't change or remove your own access."
+    "CANNOT_CHANGE_SELF": "You can't change or remove your own access.",
+    "RATE_LIMITED": "Too many attempts. Wait a minute and try again."
   },
   "auth": {
     "email": "Email",
@@ -176,7 +177,17 @@
     "signingIn": "Signing in…",
     "invalidFormat": "Check your email and password.",
     "signOut": "Sign out",
-    "signOutConfirm": "Sign out of HaulGenius?"
+    "signOutConfirm": "Sign out of HaulGenius?",
+    "name": "Your name",
+    "companyName": "Company name",
+    "companyHint": "Driving on your own? Use your name or your truck’s name.",
+    "passwordHint": "At least 8 characters.",
+    "createAccount": "Create account",
+    "creatingAccount": "Creating account…",
+    "signupSubtitle": "Your AI dispatcher, ready in a minute.",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signupInvalid": "Check your details: name and company with at least 2 letters, a valid email and a password of 8+ characters."
   },
   "web": {
     "meta": {

@@ -23,3 +23,4 @@ Cada decisión técnica relevante se documenta aquí (es **obligatorio**; ver [`
 | [0017](./0017-web-maps.md) | MapLibre GL con estilo configurable para el mapa web | Aceptado |
 | [0018](./0018-team-invitations.md) | Invitaciones por enlace, una organización por usuario, alcance del conductor | Aceptado |
 | [0019](./0019-hosting-railway.md) | Hosting en Railway con imágenes Docker del monorepo | Aceptado |
+| [0020](./0020-signup-and-auth-rate-limit.md) | Registro propio y límite de intentos en la autenticación | Aceptado |

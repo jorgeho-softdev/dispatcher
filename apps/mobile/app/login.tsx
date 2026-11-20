@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, Text, View } from 'react-native';
+import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { loginSchema } from '@dispatcher/shared';
 import { Button } from '@/components/ui/Button';
@@ -71,6 +72,11 @@ export default function LoginScreen() {
         {error && <Text className="mt-4 font-sans text-sm text-danger">{error}</Text>}
       </View>
       <Button title={t('auth.signIn')} loading={pending} onPress={submit} />
+      <Pressable className="mt-4 items-center py-2" accessibilityRole="link" onPress={() => router.push('/signup')}>
+        <Text className="font-sans text-sm text-muted">
+          {t('auth.noAccount')} <Text className="font-sans-bold text-primary">{t('auth.createAccount')}</Text>
+        </Text>
+      </Pressable>
     </KeyboardAvoidingView>
   );
 }

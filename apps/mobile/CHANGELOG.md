@@ -7,6 +7,7 @@ actually ships.
 
 ## Unreleased (pending next build)
 
+- Added: "Create account" screen — new carriers can sign up from the app (they become owner of their company).
 - Changed: the app is now called **HaulGenius** (home screen name, permission prompts, notifications) the launch screen shows the new H-arrow logo, and the sign-in screen shows the full HaulGenius logo (light and dark theme variants). New app icon on iOS and Android (adaptive and themed).
 - Changed: bundle ID / Android package is now `com.jorgehurtado.haulgenius` (installs as a new app; sign in again).
 - Added: initial project scaffold (expo-kickstart, 2026-11-14).

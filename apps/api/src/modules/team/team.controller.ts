@@ -24,6 +24,7 @@ import { Auth, Public, RequirePermission } from '../../common/decorators';
 import { ZodValidationPipe } from '../../common/zod-validation.pipe';
 import type { AuthContext } from '../../common/auth-context';
 import { TeamService } from './team.service';
+import { AuthRateLimit } from '../../common/auth-rate-limit';
 
 const tokenQuery = z.object({ token: z.string().min(20).max(200) });
 
@@ -96,6 +97,7 @@ export class TeamController {
   }
 
   @Public()
+  @AuthRateLimit()
   @Post('invitations/accept')
   @HttpCode(200)
   accept(

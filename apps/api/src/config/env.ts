@@ -42,6 +42,12 @@ const baseEnvSchema = z.object({
   S3_ACCESS_KEY_ID: z.string().min(1),
   S3_SECRET_ACCESS_KEY: z.string().min(1),
   S3_FORCE_PATH_STYLE: z.stringbool().default(true),
+  /**
+   * Max attempts per minute and client IP on the public credential endpoints
+   * (register, login, accept invitation). Stops password guessing and signup
+   * spam. Raised in e2e, where every request comes from one IP.
+   */
+  AUTH_RATE_LIMIT_PER_MINUTE: z.coerce.number().int().positive().default(10),
   /** Public URL of the web admin (invitation links). */
   WEB_URL: z.url().default('http://localhost:3000'),
   CORS_ORIGINS: z
